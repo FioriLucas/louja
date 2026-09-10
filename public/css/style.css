@@ -1,0 +1,179 @@
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+background-color: #f4f4f4;
+color: #000;
+overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
+}
+
+/* Nav fixa no estilo minimalista Zara */
+header {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+padding: 35px 50px;
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+z-index: 100;
+mix-blend-mode: difference;
+color: #fff;
+}
+
+.brand {
+font-size: 3.5rem;
+font-weight: 900;
+letter-spacing: -3px;
+line-height: 0.8;
+text-transform: uppercase;
+text-decoration: none;
+color: inherit;
+}
+
+nav ul {
+list-style: none;
+display: flex;
+gap: 30px;
+}
+
+nav a {
+color: inherit;
+text-decoration: none;
+font-size: 0.75rem;
+text-transform: uppercase;
+letter-spacing: 1.5px;
+}
+
+/* Estrutura para animação horizontal */
+.outer-wrapper {
+overflow: hidden;
+}
+
+.horizontal-container {
+display: flex;
+height: 100vh;
+}
+
+.panel {
+width: 100vw;
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 100px 80px 40px;
+}
+
+.product-card {
+display: flex;
+gap: 60px;
+align-items: flex-end;
+max-width: 1100px;
+width: 100%;
+}
+
+.image-container {
+width: 55%;
+height: 70vh;
+overflow: hidden;
+background-color: #e0e0e0;
+}
+
+.image-container img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+filter: grayscale(100%);
+transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover .image-container img {
+filter: grayscale(0%);
+transform: scale(1.03);
+}
+
+.info-container {
+width: 45%;
+padding-bottom: 20px;
+}
+
+.category {
+font-size: 0.7rem;
+text-transform: uppercase;
+letter-spacing: 2px;
+color: #777;
+margin-bottom: 15px;
+}
+
+.title {
+font-size: 2.2rem;
+font-weight: 300;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+line-height: 1.1;
+margin-bottom: 25px;
+}
+
+.price {
+font-size: 0.9rem;
+font-weight: 400;
+letter-spacing: 1px;
+}
+
+/* Footer fixo */
+.footer-guide {
+position: fixed;
+bottom: 40px;
+left: 50px;
+font-size: 0.7rem;
+letter-spacing: 2px;
+text-transform: uppercase;
+z-index: 100;
+color: #000;
+}
+ /* Custom scrollbar suppression for high fashion look */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        * {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Mix blend mode header contrast */
+        .blend-header {
+            mix-blend-mode: difference;
+        }
+
+        /* Image grayscale hover transition */
+        .fashion-img {
+            filter: grayscale(100%);
+            transition: filter 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .product-card:hover .fashion-img {
+            filter: grayscale(0%);
+            transform: scale(1.04);
+        }
+
+        /* Custom drawer & modal backdrop blur */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+        }
+
+        .dark-glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Smooth slide animation transitions */
+        .drawer-transition {
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
