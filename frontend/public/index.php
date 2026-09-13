@@ -1,6 +1,6 @@
 <?php
 // Inclui a conexão subindo um nível de diretório (de /public para /config)
-require_once __DIR__ . '/../config/conexao.php';
+require_once __DIR__ . '/../../backend/conexao.php';
 
 // Busca todos os produtos cadastrados no banco de dados
 try {
