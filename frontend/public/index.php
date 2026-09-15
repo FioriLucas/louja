@@ -31,26 +31,7 @@ try {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-    <style>
-        /* Estilização rápida para o botão de Login no Header */
-        .btn-login {
-            background-color: #18181b;
-            color: #ffffff !important;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-        }
-        .btn-login:hover {
-            background-color: #3f3f46;
-        }
-        .user-name {
-            font-size: 14px;
-            color: #333;
-            margin-right: 10px;
-        }
-    </style>
+
 </head>
 <body>
 
@@ -71,7 +52,7 @@ try {
                     </li>
                 <?php else: ?>
                     <li>
-                        <a href="login.php" class="btn-login">Entrar</a>
+                        <a href="login/login.php" class="btn-login">Entrar</a>
                     </li>
                 <?php endif; ?>
             </ul>

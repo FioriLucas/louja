@@ -1,4 +1,6 @@
-CREATE DATABASE IF NOT EXISTS louja
+DROP DATABASE IF EXISTS louja;
+CREATE DATABASE louja CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE louja;CREATE DATABASE IF NOT EXISTS louja 
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
 
@@ -36,7 +38,7 @@ CREATE TABLE categorias (
     descricao TEXT
 ) ENGINE=InnoDB;
 
--- 4. TABELA DE JOGOS (PRODUTOS)
+-- 4. TABELA DE JOGOS
 CREATE TABLE jogos (
     jogo_id INT AUTO_INCREMENT PRIMARY KEY,
     categoria_id INT NOT NULL,
@@ -64,7 +66,7 @@ CREATE TABLE pedidos (
     FOREIGN KEY (endereco_id) REFERENCES enderecos(endereco_id)
 ) ENGINE=InnoDB;
 
--- 6. TABELA INTERMEDIÁRIA (ITENS DO PEDIDO - RELAÇÃO N:M)
+-- 6. TABELA ITENS DO PEDIDO
 CREATE TABLE itens_pedido (
     item_id INT AUTO_INCREMENT PRIMARY KEY,
     pedido_id INT NOT NULL,
@@ -76,22 +78,16 @@ CREATE TABLE itens_pedido (
     FOREIGN KEY (jogo_id) REFERENCES jogos(jogo_id)
 ) ENGINE=InnoDB;
 
--- ========================================================
--- DADOS INICIAIS PARA TESTAR A PÁGINA PHP
--- ========================================================
-
--- Inserir Categorias
+-- INSERÇÃO DOS DADOS INICIAIS DE TESTE
 INSERT INTO categorias (nome, descricao) VALUES 
 ('RPG', 'Jogos de interpretação de papéis e mundos abertos'),
 ('Ação e Aventura', 'Jogos com foco em combate e exploração'),
 ('Esportes', 'Simulação de modalidades esportivas');
 
--- Inserir Jogos de Exemplo
 INSERT INTO jogos (categoria_id, titulo, descricao, plataforma, preco, quantidade_estoque, img_url, ativo) VALUES 
 (1, 'Elden Ring', 'RPG de ação em mundo aberto.', 'PC / PS5 / Xbox', 249.90, 15, 'https://via.placeholder.com/400x500?text=Elden+Ring', 1),
 (2, 'God of War Ragnarök', 'Aventura épica na mitologia nórdica.', 'PS5', 299.00, 10, 'https://via.placeholder.com/400x500?text=God+of+War', 1),
 (3, 'EA Sports FC 24', 'Simulador de futebol profissional.', 'PC / PS5 / Xbox', 199.90, 20, 'https://via.placeholder.com/400x500?text=FC+24', 1);
 
--- Inserir Usuário Administrador de Teste (Senha: admin123)
 INSERT INTO usuarios (nome, email, senha, perfil, email_verificado) VALUES 
 ('Administrador', 'admin@loja.com', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe1f8O09gTjWb9sY/Z6M8wD1o1J2i3Cq6', 'admin', 1);
