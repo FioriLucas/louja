@@ -1,65 +1,55 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
 session_start();
 
 // Inclui a conexão com o banco de dados
-require_once __DIR__ . '/../config/conexao.php';
+require_once __DIR__ . '/conexao.php';
 
-// Garante que o acesso ocorra via método POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // Sanitize e captura dos dados recebidos
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $senha = $_POST['senha'] ?? '';
+    // Captura os dados (aceita tanto 'username'/'email' quanto 'password'/'senha')
+    $email = trim($_POST['username'] ?? $_POST['email'] ?? '');
+    $password = $_POST['password'] ?? $_POST['senha'] ?? '';
 
     // Validação de campos vazios
-    if (!$email || empty($senha)) {
-        header('Location: login.php?erro=vazio');
+    if (empty($email) || empty($password)) {
+        echo json_encode(['success' => false, 'message' => 'Preencha todos os campos.']);
         exit;
     }
 
     try {
-        // Consulta o usuário pelo e-mail cadastrado
-        $sql = "SELECT usr_id, nome, email, senha, perfil FROM usuarios WHERE email = :email LIMIT 1";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':email', $email);
-        $stmt->execute();
-
+        // Consulta o usuário pelo e-mail no banco de dados
+        $stmt = $pdo->prepare("SELECT usr_id, nome, email, senha, perfil FROM usuarios WHERE email = :email LIMIT 1");
+        $stmt->execute([':email' => $email]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Verifica se o usuário existe e valida a Hash da senha
-        if ($usuario && password_verify($senha, $usuario['senha'])) {
-            
-            // Regrava o ID da sessão por questões de segurança
+        // Valida usuário e hash da senha
+        if ($usuario && password_verify($password, $usuario['senha'])) {
             session_regenerate_id(true);
 
-            // Armazena informações relevantes do usuário na Sessão PHP
+            // Armazena dados do usuário na sessão
             $_SESSION['usr_id']     = $usuario['usr_id'];
             $_SESSION['usr_nome']   = $usuario['nome'];
             $_SESSION['usr_email']  = $usuario['email'];
             $_SESSION['usr_perfil'] = $usuario['perfil'];
 
-            // Redireciona conforme o perfil do usuário
-            if ($usuario['perfil'] === 'admin') {
-                header('Location: admin_dashboard.php');
-            } else {
-                header('Location: index.php');
-            }
-            exit;
-
+            echo json_encode([
+                'success' => true,
+                'message' => 'Login realizado com sucesso.',
+                'perfil'  => $usuario['perfil']
+            ]);
         } else {
-            // Credenciais inválidas (E-mail ou senha incorretos)
-            header('Location: login.php?erro=credenciais');
-            exit;
+            echo json_encode([
+                'success' => false, 
+                'message' => 'E-mail ou senha incorretos.'
+            ]);
         }
-
     } catch (PDOException $e) {
-        // Trata eventuais erros de execução no BD
-        header('Location: login.php?erro=bd');
-        exit;
+        error_log($e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Erro interno no servidor.']);
     }
-
+    exit;
 } else {
-    // Redireciona se tentar acessar diretamente a URL sem enviar o formulário
-    header('Location: login.php');
+    echo json_encode(['success' => false, 'message' => 'Método de requisição inválido.']);
     exit;
 }
+?>
