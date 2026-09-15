@@ -1,8 +1,8 @@
-CREATE DATABASE IF NOT EXISTS loja_jogos 
+CREATE DATABASE IF NOT EXISTS louja
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
 
-USE loja_jogos;
+USE louja;
 
 -- 1. TABELA DE USUÁRIOS
 CREATE TABLE usuarios (

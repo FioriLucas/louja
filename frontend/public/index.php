@@ -1,11 +1,20 @@
 <?php
-// Inclui a conexão subindo um nível de diretório (de /public para /config)
+// Inicializa a sessão para verificar o status de login do usuário
+session_start();
+
+// Inclui a conexão subindo o diretório correto
 require_once __DIR__ . '/../../backend/config/conexao.php';
 
-// Busca todos os produtos cadastrados no banco de dados
+// Busca os jogos com suas respectivas categorias
 try {
-    $stmt = $pdo->query("SELECT * FROM produtos ORDER BY id DESC");
-    $produtos = $stmt->fetchAll();
+    $sql = "SELECT j.jogo_id, j.titulo, j.preco, j.img_url, c.nome AS categoria 
+            FROM jogos j
+            INNER JOIN categorias c ON j.categoria_id = c.categoria_id
+            WHERE j.ativo = 1
+            ORDER BY j.jogo_id DESC";
+            
+    $stmt = $pdo->query($sql);
+    $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $produtos = [];
 }
@@ -15,12 +24,33 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Louja</title>
+    <title>Louja - Game Store</title>
     <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
     
     <!-- GSAP e ScrollTrigger CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* Estilização rápida para o botão de Login no Header */
+        .btn-login {
+            background-color: #18181b;
+            color: #ffffff !important;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+        .btn-login:hover {
+            background-color: #3f3f46;
+        }
+        .user-name {
+            font-size: 14px;
+            color: #333;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -32,6 +62,18 @@ try {
                 <li><a href="#">Coleção</a></li>
                 <li><a href="#">Editorial</a></li>
                 <li><a href="#">Buscar</a></li>
+                
+                <!-- BOTÃO DE LOGIN / PERFIL -->
+                <?php if (isset($_SESSION['usr_id'])): ?>
+                    <li>
+                        <span class="user-name">Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
+                        <a href="logout.php" class="btn-login" style="background-color: #dc2626;">Sair</a>
+                    </li>
+                <?php else: ?>
+                    <li>
+                        <a href="login.php" class="btn-login">Entrar</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>
@@ -45,11 +87,11 @@ try {
                     <section class="panel">
                         <div class="product-card">
                             <div class="image-container">
-                                <img src="<?= htmlspecialchars($produto['imagem']) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>">
+                                <img src="<?= htmlspecialchars($produto['img_url'] ?? 'img/placeholder.jpg') ?>" alt="<?= htmlspecialchars($produto['titulo']) ?>">
                             </div>
                             <div class="info-container">
                                 <p class="category"><?= htmlspecialchars($produto['categoria']) ?></p>
-                                <h2 class="title"><?= htmlspecialchars($produto['nome']) ?></h2>
+                                <h2 class="title"><?= htmlspecialchars($produto['titulo']) ?></h2>
                                 <p class="price">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
                             </div>
                         </div>
