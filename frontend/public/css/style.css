@@ -1,179 +1,263 @@
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-background-color: #f4f4f4;
-color: #000;
-overflow-x: hidden;
--webkit-font-smoothing: antialiased;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #111;
 }
 
-/* Nav fixa no estilo minimalista Zara */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 header {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-padding: 35px 50px;
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-z-index: 100;
-mix-blend-mode: difference;
-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 25px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    background: rgba(245,245,245,.9);
 }
 
-.brand {
-font-size: 3.5rem;
-font-weight: 900;
-letter-spacing: -3px;
-line-height: 0.8;
-text-transform: uppercase;
-text-decoration: none;
-color: inherit;
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: -1px;
 }
 
-nav ul {
-list-style: none;
-display: flex;
-gap: 30px;
+nav {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    font-size: 14px;
 }
 
-nav a {
-color: inherit;
-text-decoration: none;
-font-size: 0.75rem;
-text-transform: uppercase;
-letter-spacing: 1.5px;
+nav a:hover {
+    text-decoration: underline;
 }
 
-/* Estrutura para animação horizontal */
-.outer-wrapper {
-overflow: hidden;
+.loja {
+    overflow: hidden;
 }
 
-.horizontal-container {
-display: flex;
-height: 100vh;
+.produtos {
+    display: flex;
+    height: 100vh;
 }
 
-.panel {
-width: 100vw;
-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 100px 80px 40px;
+.produto {
+    flex: 0 0 100vw;
+    height: 100vh;
+    padding: 110px 8vw 50px;
+    display: flex;
+    gap: 50px;
+    align-items: center;
 }
 
-.product-card {
-display: flex;
-gap: 60px;
-align-items: flex-end;
-max-width: 1100px;
-width: 100%;
+.imagem {
+    width: 55%;
+    height: 70vh;
+    overflow: hidden;
+    background: #ddd;
 }
 
-.image-container {
-width: 55%;
-height: 70vh;
-overflow: hidden;
-background-color: #e0e0e0;
+.imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: .5s;
 }
 
-.image-container img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-filter: grayscale(100%);
-transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+.produto:hover .imagem img {
+    filter: grayscale(0);
+    transform: scale(1.03);
 }
 
-.product-card:hover .image-container img {
-filter: grayscale(0%);
-transform: scale(1.03);
+.info {
+    width: 35%;
 }
 
-.info-container {
-width: 45%;
-padding-bottom: 20px;
+.categoria,
+.plataforma {
+    color: #777;
+    font-size: 13px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
 }
 
-.category {
-font-size: 0.7rem;
-text-transform: uppercase;
-letter-spacing: 2px;
-color: #777;
-margin-bottom: 15px;
+.info h2 {
+    font-size: 40px;
+    font-weight: 400;
+    margin-bottom: 20px;
 }
 
-.title {
-font-size: 2.2rem;
-font-weight: 300;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-line-height: 1.1;
-margin-bottom: 25px;
+.preco {
+    font-size: 20px;
+    margin-bottom: 25px;
 }
 
-.price {
-font-size: 0.9rem;
-font-weight: 400;
-letter-spacing: 1px;
+.botao,
+button {
+    display: inline-block;
+    border: 0;
+    background: #111;
+    color: white;
+    padding: 12px 18px;
+    cursor: pointer;
 }
 
-/* Footer fixo */
-.footer-guide {
-position: fixed;
-bottom: 40px;
-left: 50px;
-font-size: 0.7rem;
-letter-spacing: 2px;
-text-transform: uppercase;
-z-index: 100;
-color: #000;
+.botao:hover,
+button:hover {
+    background: #333;
 }
- /* Custom scrollbar suppression for high fashion look */
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        * {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
 
-        /* Mix blend mode header contrast */
-        .blend-header {
-            mix-blend-mode: difference;
-        }
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        /* Image grayscale hover transition */
-        .fashion-img {
-            filter: grayscale(100%);
-            transition: filter 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .product-card:hover .fashion-img {
-            filter: grayscale(0%);
-            transform: scale(1.04);
-        }
+.login-box,
+.admin,
+.pagina {
+    width: min(900px, 90%);
+    margin: 120px auto 40px;
+}
 
-        /* Custom drawer & modal backdrop blur */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(20px);
-        }
+.login-box {
+    max-width: 400px;
+    text-align: center;
+}
 
-        .dark-glass {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-        }
+.login-box h1,
+.admin h1,
+.pagina h1 {
+    margin: 20px 0 10px;
+}
 
-        /* Smooth slide animation transitions */
-        .drawer-transition {
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+.login-box p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.login-box form,
+.form-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    background: white;
+    font: inherit;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.erro {
+    background: #ffdede;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.voltar {
+    display: block;
+    margin-top: 20px;
+    color: #666;
+}
+
+.pagina h1 {
+    font-size: 42px;
+}
+
+.item-carrinho {
+    display: flex;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+}
+
+.item-carrinho img {
+    width: 100px;
+    height: 130px;
+    object-fit: cover;
+}
+
+.item-carrinho a {
+    color: #b00;
+}
+
+.tabela {
+    margin-top: 30px;
+}
+
+.linha {
+    display: grid;
+    grid-template-columns: 2fr 1fr 80px 80px;
+    gap: 15px;
+    padding: 18px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.admin > a {
+    margin-right: 15px;
+}
+
+.form-admin {
+    margin: 30px 0;
+}
+
+@media (max-width: 700px) {
+    header {
+        padding: 20px;
+    }
+
+    nav {
+        gap: 10px;
+        font-size: 12px;
+    }
+
+    .produto {
+        padding: 100px 25px 30px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 25px;
+    }
+
+    .imagem,
+    .info {
+        width: 100%;
+    }
+
+    .imagem {
+        height: 50vh;
+    }
+
+    .info h2 {
+        font-size: 28px;
+    }
+
+    .linha {
+        grid-template-columns: 1fr;
+    }
+}
