@@ -4,8 +4,12 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background: #f5f5f5;
     color: #111;
 }
@@ -15,112 +19,264 @@ a {
     text-decoration: none;
 }
 
+/* =========================
+   CABEÇALHO
+========================= */
 header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 25px 40px;
+    height: 82px;
+    padding: 0 42px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 10;
-    background: rgba(245,245,245,.9);
+    z-index: 100;
+    color: #fff;
+    background: linear-gradient(to bottom, rgba(0,0,0,.65), transparent);
 }
 
-.logo {
-    font-size: 28px;
-    font-weight: bold;
-    letter-spacing: -1px;
+.logo img {
+    display: block;
+    width: 125px;
+    height: auto;
 }
 
 nav {
     display: flex;
-    gap: 22px;
+    gap: 25px;
     align-items: center;
     font-size: 14px;
+    font-weight: 600;
+}
+
+nav a,
+nav span {
+    transition: opacity .2s ease;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    opacity: .7;
 }
 
+/* =========================
+   HERO / CARROSSEL
+========================= */
 .loja {
+    width: 100%;
+}
+
+.hero-carousel {
+    position: relative;
+    width: 100%;
+    height: min(760px, 100vh);
+    min-height: 560px;
     overflow: hidden;
+    background: #111;
 }
 
-.produtos {
-    display: flex;
-    height: 100vh;
+.slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-.produto {
-    flex: 0 0 100vw;
-    height: 100vh;
-    padding: 110px 8vw 50px;
+.slide {
+    position: absolute;
+    inset: 0;
     display: flex;
-    gap: 50px;
     align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .55s ease, visibility .55s ease;
 }
 
-.imagem {
-    width: 55%;
-    height: 70vh;
-    overflow: hidden;
-    background: #ddd;
+.slide.ativo {
+    visibility: visible;
+    opacity: 1;
+    z-index: 2;
 }
 
-.imagem img {
+.slide-bg {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(100%);
-    transition: .5s;
+    object-position: center;
+    transform: scale(1.02);
+    filter: saturate(1.05);
 }
 
-.produto:hover .imagem img {
-    filter: grayscale(0);
-    transform: scale(1.03);
+/* Deixa a imagem forte à esquerda e escura à direita, como no print */
+.slide-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg,
+            rgba(0,0,0,.05) 0%,
+            rgba(0,0,0,.10) 35%,
+            rgba(8,8,12,.62) 62%,
+            rgba(8,8,12,.96) 100%),
+        linear-gradient(0deg,
+            rgba(0,0,0,.58) 0%,
+            transparent 35%,
+            rgba(0,0,0,.12) 100%);
 }
 
-.info {
-    width: 35%;
+.slide-content {
+    position: relative;
+    z-index: 3;
+    width: min(520px, 42vw);
+    margin-left: auto;
+    margin-right: 8vw;
+    color: #fff;
+    padding-top: 55px;
 }
 
-.categoria,
-.plataforma {
-    color: #777;
-    font-size: 13px;
+.categoria {
+    display: inline-block;
+    margin-bottom: 17px;
+    padding: 5px 10px;
+    background: #9b4dff;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
     text-transform: uppercase;
-    margin-bottom: 15px;
+    letter-spacing: .4px;
 }
 
-.info h2 {
-    font-size: 40px;
-    font-weight: 400;
-    margin-bottom: 20px;
+.slide-content h1 {
+    max-width: 570px;
+    margin-bottom: 16px;
+    font-size: clamp(38px, 4vw, 64px);
+    line-height: 1.02;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+}
+
+.plataforma {
+    margin-bottom: 18px;
+    color: rgba(255,255,255,.75);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
 }
 
 .preco {
-    font-size: 20px;
-    margin-bottom: 25px;
+    margin-bottom: 28px;
+    font-size: 22px;
+    font-weight: 700;
 }
 
-.botao,
-button {
-    display: inline-block;
+.botao {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
     border: 0;
-    background: #111;
-    color: white;
-    padding: 12px 18px;
+    background: #9b4dff;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    transition: transform .2s ease, background .2s ease;
+}
+
+.botao span {
+    font-size: 22px;
+    line-height: 12px;
+}
+
+.botao:hover {
+    background: #7f32e6;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   SETAS E INDICADORES
+========================= */
+.seta {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 50%;
+    background: rgba(0,0,0,.25);
+    color: #fff;
+    font-size: 31px;
+    line-height: 1;
     cursor: pointer;
+    transform: translateY(-50%);
+    transition: background .2s ease, transform .2s ease;
 }
 
-.botao:hover,
-button:hover {
-    background: #333;
+.seta:hover {
+    background: rgba(155,77,255,.85);
+    transform: translateY(-50%) scale(1.08);
 }
 
+.seta-esquerda {
+    left: 28px;
+}
+
+.seta-direita {
+    right: 28px;
+}
+
+.indicadores {
+    position: absolute;
+    left: 50%;
+    bottom: 27px;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    transform: translateX(-50%);
+}
+
+.indicador {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 1px solid rgba(255,255,255,.85);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: width .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.indicador.ativo {
+    width: 28px;
+    border-radius: 10px;
+    border-color: #9b4dff;
+    background: #9b4dff;
+}
+
+/* =========================
+   CONTEÚDO ABAIXO DO HERO
+========================= */
+.conteudo-loja {
+    width: min(1200px, 90%);
+    margin: 0 auto;
+    padding: 70px 0;
+}
+
+.conteudo-loja h2 {
+    margin-bottom: 8px;
+    font-size: 32px;
+}
+
+.conteudo-loja p {
+    color: #666;
+}
+
+/* =========================
+   OUTRAS PÁGINAS
+========================= */
 .login-page {
     min-height: 100vh;
     display: flex;
@@ -227,37 +383,89 @@ textarea {
     margin: 30px 0;
 }
 
-@media (max-width: 700px) {
+button {
+    font: inherit;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 800px) {
     header {
-        padding: 20px;
+        height: 70px;
+        padding: 0 20px;
+    }
+
+    .logo img {
+        width: 100px;
     }
 
     nav {
-        gap: 10px;
-        font-size: 12px;
+        gap: 12px;
+        font-size: 11px;
     }
 
-    .produto {
-        padding: 100px 25px 30px;
-        flex-direction: column;
-        justify-content: center;
-        gap: 25px;
+    nav span {
+        display: none;
     }
 
-    .imagem,
-    .info {
-        width: 100%;
+    .hero-carousel {
+        height: 680px;
+        min-height: 600px;
     }
 
-    .imagem {
-        height: 50vh;
+    .slide-bg {
+        object-position: 35% center;
     }
 
-    .info h2 {
-        font-size: 28px;
+    .slide-overlay {
+        background:
+            linear-gradient(180deg,
+                rgba(0,0,0,.05) 0%,
+                rgba(0,0,0,.28) 38%,
+                rgba(8,8,12,.96) 100%);
     }
 
-    .linha {
-        grid-template-columns: 1fr;
+    .slide-content {
+        width: 90%;
+        margin: auto;
+        align-self: flex-end;
+        padding: 0 0 90px;
+    }
+
+    .slide-content h1 {
+        font-size: 38px;
+    }
+
+    .seta {
+        width: 38px;
+        height: 38px;
+        font-size: 25px;
+    }
+
+    .seta-esquerda {
+        left: 14px;
+    }
+
+    .seta-direita {
+        right: 14px;
+    }
+}
+
+@media (max-width: 500px) {
+    nav a:nth-child(1) {
+        display: none;
+    }
+
+    .hero-carousel {
+        height: 650px;
+    }
+
+    .slide-content h1 {
+        font-size: 32px;
+    }
+
+    .preco {
+        font-size: 19px;
     }
 }

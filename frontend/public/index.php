@@ -25,9 +25,6 @@ $produtos = $pdo->query($sql)->fetchAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Louja - Game Store</title>
     <link rel="stylesheet" href="css/style.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body>
 
@@ -51,29 +48,49 @@ $produtos = $pdo->query($sql)->fetchAll();
 </header>
 
 <main class="loja">
-    <div class="produtos">
+    <section class="hero-carousel" aria-label="Destaques da loja">
+        <div class="slides">
+            <?php foreach ($produtos as $i => $produto): ?>
+                <article class="slide <?= $i === 0 ? 'ativo' : '' ?>">
+                    <img class="slide-bg"
+                         src="<?= htmlspecialchars($produto['img_url']) ?>"
+                         alt=""
+                         aria-hidden="true">
+                    <div class="slide-overlay"></div>
 
-        <?php foreach ($produtos as $produto): ?>
-            <section class="produto">
-                <div class="imagem">
-                    <img src="<?= htmlspecialchars($produto['img_url']) ?>"
-                         alt="<?= htmlspecialchars($produto['titulo']) ?>">
-                </div>
+                    <div class="slide-content">
+                        <p class="categoria"><?= htmlspecialchars($produto['categoria']) ?></p>
+                        <h1><?= htmlspecialchars($produto['titulo']) ?></h1>
+                        <p class="plataforma"><?= htmlspecialchars($produto['plataforma']) ?></p>
+                        <p class="preco">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
 
-                <div class="info">
-                    <p class="categoria"><?= htmlspecialchars($produto['categoria']) ?></p>
-                    <h2><?= htmlspecialchars($produto['titulo']) ?></h2>
-                    <p class="plataforma"><?= htmlspecialchars($produto['plataforma']) ?></p>
-                    <p class="preco">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
+                        <a class="botao" href="adicionar_carrinho.php?id=<?= $produto['jogo_id'] ?>">
+                            Adicionar ao carrinho <span>›</span>
+                        </a>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
 
-                    <a class="botao" href="adicionar_carrinho.php?id=<?= $produto['jogo_id'] ?>">
-                        Adicionar ao carrinho
-                    </a>
-                </div>
-            </section>
-        <?php endforeach; ?>
+        <?php if (count($produtos) > 1): ?>
+            <button class="seta seta-esquerda" type="button" aria-label="Jogo anterior">‹</button>
+            <button class="seta seta-direita" type="button" aria-label="Próximo jogo">›</button>
 
-    </div>
+            <div class="indicadores" aria-label="Selecionar jogo">
+                <?php foreach ($produtos as $i => $produto): ?>
+                    <button class="indicador <?= $i === 0 ? 'ativo' : '' ?>"
+                            type="button"
+                            aria-label="Ir para <?= htmlspecialchars($produto['titulo']) ?>"
+                            aria-current="<?= $i === 0 ? 'true' : 'false' ?>"></button>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </section>
+
+    <section class="conteudo-loja">
+        <h2>Explore nossos jogos</h2>
+        <p>Confira outros títulos disponíveis na Louja.</p>
+    </section>
 </main>
 
 <script src="js/animacoes.js"></script>
