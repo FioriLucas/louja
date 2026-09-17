@@ -22,7 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($senha !== $confirmarSenha) {
         $erro = 'As senhas não coincidem.';
     } else {
-
+        $conexao = new Conexao();
+        $pdo = $conexao->conectar();
         $stmt = $pdo->prepare(
             'SELECT usr_id FROM usuarios WHERE email = ?'
         );

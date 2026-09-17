@@ -7,6 +7,9 @@ session_start();
 
 require_once __DIR__ . '/../../backend/config/conexao.php';
 
+$conexao = new Conexao();
+$pdo = $conexao->conectar();
+
 $sql = "SELECT jogos.*, categorias.nome AS categoria
         FROM jogos
         JOIN categorias ON jogos.categoria_id = categorias.categoria_id
