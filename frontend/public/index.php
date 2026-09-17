@@ -10,9 +10,18 @@ require_once __DIR__ . '/../../backend/config/conexao.php';
 $conexao = new Conexao();
 $pdo = $conexao->conectar();
 
+// Busca apenas um registro de cada jogo pelo título.
+// Isso evita que o carrossel mostre o mesmo jogo mais de uma vez
+// caso existam registros duplicados no banco de dados.
 $sql = "SELECT jogos.*, categorias.nome AS categoria
         FROM jogos
         JOIN categorias ON jogos.categoria_id = categorias.categoria_id
+        JOIN (
+            SELECT titulo, MAX(jogo_id) AS jogo_id
+            FROM jogos
+            WHERE ativo = 1
+            GROUP BY titulo
+        ) AS unicos ON unicos.jogo_id = jogos.jogo_id
         WHERE jogos.ativo = 1
         ORDER BY jogos.jogo_id DESC";
 

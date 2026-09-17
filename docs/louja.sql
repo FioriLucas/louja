@@ -37,7 +37,7 @@ INSERT INTO categorias (nome) VALUES
 ('Esportes');
 
 
--- Senha de teste: admin123
+/*-- Senha de teste: admin123
 INSERT INTO usuarios (nome, email, senha, perfil)
 VALUES (
     'Administrador',
@@ -45,6 +45,7 @@ VALUES (
     '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe1f8O09gTjWb9sY/Z6M8wD1o1J2i3Cq6',
     'admin'
 );
+*/
 
 INSERT INTO jogos
 (categoria_id, titulo, descricao, plataforma, preco, quantidade_estoque, img_url)

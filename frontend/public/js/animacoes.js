@@ -1,5 +1,19 @@
-const slides = Array.from(document.querySelectorAll('.slide'));
-const indicadores = Array.from(document.querySelectorAll('.indicador'));
+// Garante que o carrossel nunca trabalhe com slides duplicados.
+// O PHP já filtra o banco, mas esta proteção evita repetição caso
+// algum slide duplicado seja renderizado no HTML.
+const todosSlides = Array.from(document.querySelectorAll('.slide'));
+const titulosVistos = new Set();
+const slides = todosSlides.filter((slide) => {
+    const titulo = slide.querySelector('h1')?.textContent.trim().toLowerCase();
+    if (!titulo || titulosVistos.has(titulo)) {
+        slide.remove();
+        return false;
+    }
+    titulosVistos.add(titulo);
+    return true;
+});
+
+const indicadores = Array.from(document.querySelectorAll('.indicador')).slice(0, slides.length);
 const anterior = document.querySelector('.seta-esquerda');
 const proximo = document.querySelector('.seta-direita');
 const carousel = document.querySelector('.hero-carousel');
