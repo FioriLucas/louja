@@ -12,7 +12,7 @@ if (isset($_SESSION['usr_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Louja</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body class="login-page">
 
@@ -37,7 +37,10 @@ if (isset($_SESSION['usr_id'])) {
         <input type="email" name="email" placeholder="E-mail" required>
         <input type="password" name="senha" placeholder="Senha" required>
         <button type="submit">Entrar</button>
-    </form>
+    </form> 
+<a href="cadastro.php" class="btn-cadastro">
+    Não possui conta? Cadastre-se
+</a>
 
     <a href="index.php" class="voltar">Voltar para a loja</a>
 </div>
