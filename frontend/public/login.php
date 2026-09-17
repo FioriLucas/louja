@@ -33,7 +33,7 @@ if (isset($_SESSION['usr_id'])) {
         </div>
     <?php endif; ?>
 
-    <form action="../../backend/config/loginBE.php" method="POST">
+    <form action="../../backend/classes/loginBE.php" method="POST">
         <input type="email" name="email" placeholder="E-mail" required>
         <input type="password" name="senha" placeholder="Senha" required>
         <button type="submit">Entrar</button>

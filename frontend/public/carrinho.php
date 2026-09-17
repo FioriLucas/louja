@@ -6,6 +6,8 @@ session_set_cookie_params([
 session_start();
 
 require_once __DIR__ . '/../../backend/config/conexao.php';
+$conexao = new Conexao();
+$pdo = $conexao->conectar();
 
 $carrinho = $_SESSION['carrinho'] ?? [];
 $produtos = [];
