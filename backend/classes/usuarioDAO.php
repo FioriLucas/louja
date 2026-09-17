@@ -24,7 +24,7 @@ class UsuarioDAO {
     }
 
     public function buscarPorEmail(string $email): ?Usuario {
-        $sql = "SELECT * FROM usuarios WHERE email = :email LIMIT 1";
+        $sql = "SELECT usr_id, nome, email, senha, perfil FROM usuarios WHERE email = :email LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':email' => $email]);
 
@@ -33,7 +33,13 @@ class UsuarioDAO {
             return null;
         }
 
-        return new Usuario($data['id'], $data['nome'], $data['email'], $data['senha']);
+        return new Usuario(
+            (int) $data['usr_id'],
+            $data['nome'],
+            $data['email'],
+            $data['senha'],
+            $data['perfil'] ?? 'cliente'
+        );
     }
 
     public function autenticar(string $email, string $senha): ?Usuario {
