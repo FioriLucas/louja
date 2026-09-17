@@ -38,7 +38,7 @@ $produtos = $pdo->query($sql)->fetchAll();
 <body>
 
 <header>
-    <a href="index.php" class="logo"><img src="logolouja.png" alt="Louja"></a>
+    <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
 
     <nav>
         <a href="index.php">Jogos</a>
