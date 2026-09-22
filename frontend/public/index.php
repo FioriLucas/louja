@@ -1,23 +1,31 @@
 <?php
-// Inicializa a sessão para verificar o status de login do usuário
+session_set_cookie_params([
+    'lifetime' => 60 * 60 * 24 * 7,
+    'path' => '/'
+]);
 session_start();
 
-// Inclui a conexão subindo o diretório correto
 require_once __DIR__ . '/../../backend/config/conexao.php';
 
-// Busca os jogos com suas respectivas categorias
-try {
-    $sql = "SELECT j.jogo_id, j.titulo, j.preco, j.img_url, c.nome AS categoria 
-            FROM jogos j
-            INNER JOIN categorias c ON j.categoria_id = c.categoria_id
-            WHERE j.ativo = 1
-            ORDER BY j.jogo_id DESC";
-            
-    $stmt = $pdo->query($sql);
-    $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $produtos = [];
-}
+$conexao = new Conexao();
+$pdo = $conexao->conectar();
+
+// Busca apenas um registro de cada jogo pelo título.
+// Isso evita que o carrossel mostre o mesmo jogo mais de uma vez
+// caso existam registros duplicados no banco de dados.
+$sql = "SELECT jogos.*, categorias.nome AS categoria
+        FROM jogos
+        JOIN categorias ON jogos.categoria_id = categorias.categoria_id
+        JOIN (
+            SELECT titulo, MAX(jogo_id) AS jogo_id
+            FROM jogos
+            WHERE ativo = 1
+            GROUP BY titulo
+        ) AS unicos ON unicos.jogo_id = jogos.jogo_id
+        WHERE jogos.ativo = 1
+        ORDER BY jogos.jogo_id DESC";
+
+$produtos = $pdo->query($sql)->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -25,110 +33,75 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Louja - Game Store</title>
-    <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>">
-    
-    <!-- GSAP e ScrollTrigger CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
-    <style>
-        /* Estilização rápida para o botão de Login no Header */
-        .btn-login {
-            background-color: #18181b;
-            color: #ffffff !important;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-        }
-        .btn-login:hover {
-            background-color: #3f3f46;
-        }
-        .user-name {
-            font-size: 14px;
-            color: #333;
-            margin-right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- CABEÇALHO -->
-    <header>
-        <a href="#" class="brand">Louja</a>
-        <nav>
-            <ul>
-                <li><a href="#">Coleção</a></li>
-                <li><a href="#">Editorial</a></li>
-                <li><a href="#">Buscar</a></li>
-                
-                <!-- BOTÃO DE LOGIN / PERFIL -->
-                <?php if (isset($_SESSION['usr_id'])): ?>
-                    <li>
-                        <span class="user-name">Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
-                        <a href="logout.php" class="btn-login" style="background-color: #dc2626;">Sair</a>
-                    </li>
-                <?php else: ?>
-                    <li>
-                        <a href="login.php" class="btn-login">Entrar</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
 
-    <!-- PRODUTOS -->
-    <div class="outer-wrapper">
-        <div class="horizontal-container" style="width: <?= max(count($produtos), 1) * 100 ?>vw;">
-            
-            <?php if (!empty($produtos)): ?>
-                <?php foreach ($produtos as $produto): ?>
-                    <section class="panel">
-                        <div class="product-card">
-                            <div class="image-container">
-                                <img src="<?= htmlspecialchars($produto['img_url'] ?? 'img/placeholder.jpg') ?>" alt="<?= htmlspecialchars($produto['titulo']) ?>">
-                            </div>
-                            <div class="info-container">
-                                <p class="category"><?= htmlspecialchars($produto['categoria']) ?></p>
-                                <h2 class="title"><?= htmlspecialchars($produto['titulo']) ?></h2>
-                                <p class="price">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
-                            </div>
-                        </div>
-                    </section>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <section class="panel">
-                    <div class="product-card" style="justify-content: center; text-align: center;">
-                        <div class="info-container" style="width: 100%;">
-                            <h2 class="title">NENHUM PRODUTO ENCONTRADO</h2>
-                            <p class="category">Cadastre produtos no banco de dados para exibi-los aqui.</p>
-                        </div>
-                    </div>
-                </section>
+    <nav>
+        <a href="index.php">Jogos</a>
+        <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
+
+        <?php if (isset($_SESSION['usr_id'])): ?>
+            <span>Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
+            <?php if ($_SESSION['usr_perfil'] === 'admin'): ?>
+                <a href="admin/index.php">Admin</a>
             <?php endif; ?>
+            <a href="logout.php">Sair</a>
+        <?php else: ?>
+            <a href="login.php">Entrar</a>
+        <?php endif; ?>
+    </nav>
+</header>
 
+<main class="loja">
+    <section class="hero-carousel" aria-label="Destaques da loja">
+        <div class="slides">
+            <?php foreach ($produtos as $i => $produto): ?>
+                <article class="slide <?= $i === 0 ? 'ativo' : '' ?>">
+                    <img class="slide-bg"
+                         src="<?= htmlspecialchars($produto['img_url']) ?>"
+                         alt=""
+                         aria-hidden="true">
+                    <div class="slide-overlay"></div>
+
+                    <div class="slide-content">
+                        <p class="categoria"><?= htmlspecialchars($produto['categoria']) ?></p>
+                        <h1><?= htmlspecialchars($produto['titulo']) ?></h1>
+                        <p class="plataforma"><?= htmlspecialchars($produto['plataforma']) ?></p>
+                        <p class="preco">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
+
+                        <a class="botao" href="adicionar_carrinho.php?id=<?= $produto['jogo_id'] ?>">
+                            Adicionar ao carrinho <span>›</span>
+                        </a>
+                    </div>
+                </article>
+            <?php endforeach; ?>
         </div>
-    </div>
 
-    <!-- GSAP -->
-    <script>
-        gsap.registerPlugin(ScrollTrigger);
+        <?php if (count($produtos) > 1): ?>
+            <button class="seta seta-esquerda" type="button" aria-label="Jogo anterior">‹</button>
+            <button class="seta seta-direita" type="button" aria-label="Próximo jogo">›</button>
 
-        const sections = gsap.utils.toArray(".panel");
+            <div class="indicadores" aria-label="Selecionar jogo">
+                <?php foreach ($produtos as $i => $produto): ?>
+                    <button class="indicador <?= $i === 0 ? 'ativo' : '' ?>"
+                            type="button"
+                            aria-label="Ir para <?= htmlspecialchars($produto['titulo']) ?>"
+                            aria-current="<?= $i === 0 ? 'true' : 'false' ?>"></button>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </section>
 
-        if (sections.length > 1) {
-            gsap.to(sections, {
-                xPercent: -100 * (sections.length - 1),
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".horizontal-container",
-                    pin: true,
-                    scrub: 1,
-                    end: () => "+=" + document.querySelector(".horizontal-container").offsetWidth
-                }
-            });
-        }
-    </script>
+    <section class="conteudo-loja">
+        <h2>Explore nossos jogos</h2>
+        <p>Confira outros títulos disponíveis na Louja.</p>
+    </section>
+</main>
+
+<script src="js/animacoes.js"></script>
 </body>
 </html>

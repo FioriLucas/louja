@@ -1,179 +1,471 @@
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-background-color: #f4f4f4;
-color: #000;
-overflow-x: hidden;
--webkit-font-smoothing: antialiased;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f5f5;
+    color: #111;
 }
 
-/* Nav fixa no estilo minimalista Zara */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* =========================
+   CABEÇALHO
+========================= */
 header {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-padding: 35px 50px;
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-z-index: 100;
-mix-blend-mode: difference;
-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 82px;
+    padding: 0 42px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    color: #fff;
+    background: linear-gradient(to bottom, rgba(0,0,0,.65), transparent);
 }
 
-.brand {
-font-size: 3.5rem;
-font-weight: 900;
-letter-spacing: -3px;
-line-height: 0.8;
-text-transform: uppercase;
-text-decoration: none;
-color: inherit;
+.logo img {
+    display: block;
+    width: 125px;
+    height: auto;
 }
 
-nav ul {
-list-style: none;
-display: flex;
-gap: 30px;
+nav {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
 }
 
-nav a {
-color: inherit;
-text-decoration: none;
-font-size: 0.75rem;
-text-transform: uppercase;
-letter-spacing: 1.5px;
+nav a,
+nav span {
+    transition: opacity .2s ease;
 }
 
-/* Estrutura para animação horizontal */
-.outer-wrapper {
-overflow: hidden;
+nav a:hover {
+    opacity: .7;
 }
 
-.horizontal-container {
-display: flex;
-height: 100vh;
+/* =========================
+   HERO / CARROSSEL
+========================= */
+.loja {
+    width: 100%;
 }
 
-.panel {
-width: 100vw;
-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 100px 80px 40px;
+.hero-carousel {
+    position: relative;
+    width: 100%;
+    height: min(760px, 100vh);
+    min-height: 560px;
+    overflow: hidden;
+    background: #111;
 }
 
-.product-card {
-display: flex;
-gap: 60px;
-align-items: flex-end;
-max-width: 1100px;
-width: 100%;
+.slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-.image-container {
-width: 55%;
-height: 70vh;
-overflow: hidden;
-background-color: #e0e0e0;
+.slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .55s ease, visibility .55s ease;
 }
 
-.image-container img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-filter: grayscale(100%);
-transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+.slide.ativo {
+    visibility: visible;
+    opacity: 1;
+    z-index: 2;
 }
 
-.product-card:hover .image-container img {
-filter: grayscale(0%);
-transform: scale(1.03);
+.slide-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.02);
+    filter: saturate(1.05);
 }
 
-.info-container {
-width: 45%;
-padding-bottom: 20px;
+/* Deixa a imagem forte à esquerda e escura à direita, como no print */
+.slide-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg,
+            rgba(0,0,0,.05) 0%,
+            rgba(0,0,0,.10) 35%,
+            rgba(8,8,12,.62) 62%,
+            rgba(8,8,12,.96) 100%),
+        linear-gradient(0deg,
+            rgba(0,0,0,.58) 0%,
+            transparent 35%,
+            rgba(0,0,0,.12) 100%);
 }
 
-.category {
-font-size: 0.7rem;
-text-transform: uppercase;
-letter-spacing: 2px;
-color: #777;
-margin-bottom: 15px;
+.slide-content {
+    position: relative;
+    z-index: 3;
+    width: min(520px, 42vw);
+    margin-left: auto;
+    margin-right: 8vw;
+    color: #fff;
+    padding-top: 55px;
 }
 
-.title {
-font-size: 2.2rem;
-font-weight: 300;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-line-height: 1.1;
-margin-bottom: 25px;
+.categoria {
+    display: inline-block;
+    margin-bottom: 17px;
+    padding: 5px 10px;
+    background: #9b4dff;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .4px;
 }
 
-.price {
-font-size: 0.9rem;
-font-weight: 400;
-letter-spacing: 1px;
+.slide-content h1 {
+    max-width: 570px;
+    margin-bottom: 16px;
+    font-size: clamp(38px, 4vw, 64px);
+    line-height: 1.02;
+    font-weight: 800;
+    letter-spacing: -1.5px;
 }
 
-/* Footer fixo */
-.footer-guide {
-position: fixed;
-bottom: 40px;
-left: 50px;
-font-size: 0.7rem;
-letter-spacing: 2px;
-text-transform: uppercase;
-z-index: 100;
-color: #000;
+.plataforma {
+    margin-bottom: 18px;
+    color: rgba(255,255,255,.75);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
 }
- /* Custom scrollbar suppression for high fashion look */
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        * {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
 
-        /* Mix blend mode header contrast */
-        .blend-header {
-            mix-blend-mode: difference;
-        }
+.preco {
+    margin-bottom: 28px;
+    font-size: 22px;
+    font-weight: 700;
+}
 
-        /* Image grayscale hover transition */
-        .fashion-img {
-            filter: grayscale(100%);
-            transition: filter 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .product-card:hover .fashion-img {
-            filter: grayscale(0%);
-            transform: scale(1.04);
-        }
+.botao {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: 0;
+    background: #9b4dff;
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    transition: transform .2s ease, background .2s ease;
+}
 
-        /* Custom drawer & modal backdrop blur */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(20px);
-        }
+.botao span {
+    font-size: 22px;
+    line-height: 12px;
+}
 
-        .dark-glass {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-        }
+.botao:hover {
+    background: #7f32e6;
+    transform: translateY(-2px);
+}
 
-        /* Smooth slide animation transitions */
-        .drawer-transition {
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+/* =========================
+   SETAS E INDICADORES
+========================= */
+.seta {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 50%;
+    background: rgba(0,0,0,.25);
+    color: #fff;
+    font-size: 31px;
+    line-height: 1;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background .2s ease, transform .2s ease;
+}
+
+.seta:hover {
+    background: rgba(155,77,255,.85);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.seta-esquerda {
+    left: 28px;
+}
+
+.seta-direita {
+    right: 28px;
+}
+
+.indicadores {
+    position: absolute;
+    left: 50%;
+    bottom: 27px;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    transform: translateX(-50%);
+}
+
+.indicador {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 1px solid rgba(255,255,255,.85);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    transition: width .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.indicador.ativo {
+    width: 28px;
+    border-radius: 10px;
+    border-color: #9b4dff;
+    background: #9b4dff;
+}
+
+/* =========================
+   CONTEÚDO ABAIXO DO HERO
+========================= */
+.conteudo-loja {
+    width: min(1200px, 90%);
+    margin: 0 auto;
+    padding: 70px 0;
+}
+
+.conteudo-loja h2 {
+    margin-bottom: 8px;
+    font-size: 32px;
+}
+
+.conteudo-loja p {
+    color: #666;
+}
+
+/* =========================
+   OUTRAS PÁGINAS
+========================= */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box,
+.admin,
+.pagina {
+    width: min(900px, 90%);
+    margin: 120px auto 40px;
+}
+
+.login-box {
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box h1,
+.admin h1,
+.pagina h1 {
+    margin: 20px 0 10px;
+}
+
+.login-box p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.login-box form,
+.form-admin {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    background: white;
+    font: inherit;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.erro {
+    background: #ffdede;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.voltar {
+    display: block;
+    margin-top: 20px;
+    color: #666;
+}
+
+.pagina h1 {
+    font-size: 42px;
+}
+
+.item-carrinho {
+    display: flex;
+    gap: 20px;
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+}
+
+.item-carrinho img {
+    width: 100px;
+    height: 130px;
+    object-fit: cover;
+}
+
+.item-carrinho a {
+    color: #b00;
+}
+
+.tabela {
+    margin-top: 30px;
+}
+
+.linha {
+    display: grid;
+    grid-template-columns: 2fr 1fr 80px 80px;
+    gap: 15px;
+    padding: 18px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.admin > a {
+    margin-right: 15px;
+}
+
+.form-admin {
+    margin: 30px 0;
+}
+
+button {
+    font: inherit;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 800px) {
+    header {
+        height: 70px;
+        padding: 0 20px;
+    }
+
+    .logo img {
+        width: 100px;
+    }
+
+    nav {
+        gap: 12px;
+        font-size: 11px;
+    }
+
+    nav span {
+        display: none;
+    }
+
+    .hero-carousel {
+        height: 680px;
+        min-height: 600px;
+    }
+
+    .slide-bg {
+        object-position: 35% center;
+    }
+
+    .slide-overlay {
+        background:
+            linear-gradient(180deg,
+                rgba(0,0,0,.05) 0%,
+                rgba(0,0,0,.28) 38%,
+                rgba(8,8,12,.96) 100%);
+    }
+
+    .slide-content {
+        width: 90%;
+        margin: auto;
+        align-self: flex-end;
+        padding: 0 0 90px;
+    }
+
+    .slide-content h1 {
+        font-size: 38px;
+    }
+
+    .seta {
+        width: 38px;
+        height: 38px;
+        font-size: 25px;
+    }
+
+    .seta-esquerda {
+        left: 14px;
+    }
+
+    .seta-direita {
+        right: 14px;
+    }
+}
+
+@media (max-width: 500px) {
+    nav a:nth-child(1) {
+        display: none;
+    }
+
+    .hero-carousel {
+        height: 650px;
+    }
+
+    .slide-content h1 {
+        font-size: 32px;
+    }
+
+    .preco {
+        font-size: 19px;
+    }
+}
