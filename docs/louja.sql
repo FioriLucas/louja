@@ -554,3 +554,35 @@ VALUES
  'Aventura e gerenciamento com elementos roguelike.',
  'PC', 99.90, 10,
  'https://cdn.cloudflare.steamstatic.com/steam/apps/1313140/header.jpg', 0);
+/*Forza 5 */
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202501/2717/0c5df2b67b23263d055f3b78aeb77a6ce4668bb078fced77.jpg'
+where jogo_id = 8;
+/*resident evil 4 */
+UPDATE jogos
+SET img_url = 'https://assets.nintendo.com/image/upload/q_auto/f_auto/store/software/switch/70010000012858/f4d4fd20c956621c4a342a8cade2e366f0e3cd43765bb52eccd0fea32b1606ce'
+where jogo_id = 7;
+/*Elden Ring */
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/YMUoJUYNX0xWk6eTKuZLr5Iw.jpg'
+where jogo_id = 6;
+/*CYBERPUNK 2077 */
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202111/3013/bxSj4jO0KBqUgAbH3zuNjCje.jpg'
+where jogo_id = 5;
+/*THE WITCHER 3 */
+UPDATE jogos
+SET img_url = 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch2/70010000128692/da1a51c79e918768af5d1556e7416c0bc906665606fd273622ecbbd5cc8cfa26'
+where jogo_id = 4;
+/*Red dead redemption 2 */
+UPDATE jogos
+SET img_url = 'https://cdn2.unrealengine.com/Diesel/productv2/heather/home/EGS_RockstarGames_RedDeadRedemption2_G1A_00-1920x1080-308f101576da37225c889173094f373f2afc56c1.jpg'
+where jogo_id = 3;
+/*gta V*/
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202606/0815/41b2f694a897c9c95337d2313cabc6c1fbf17b26714ed75c.jpg'
+where jogo_id = 2;
+/*Minecraft */
+UPDATE jogos
+SET img_url = 'https://sm.ign.com/ign_br/screenshot/default/tmp-cgtjz0-bb7faa1483782db2-minecraft-horizontal-key-art_n1te.jpg'
+where jogo_id = 1;
