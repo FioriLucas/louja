@@ -22,3 +22,6 @@ class Conexao {
         }
     }
 }
+
+$conexao = new Conexao();
+$pdo = $conexao->conectar();
