@@ -63,103 +63,81 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <title>Cadastro | Louja</title>
 
+    <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/cadastro.css">
 </head>
 
-<body>
+<body class="login-page">
 
-<div class="cadastro-container">
+<div class="login-box">
+    <a href="index.php" class="logo">LOUJA</a>
+    <h1>Criar conta</h1>
+    <p>Crie sua conta para continuar.</p>
 
-    <div class="cadastro-box">
-
-        <div class="logo">
-            LOUJA
+    <?php if ($erro): ?>
+        <div class="mensagem erro">
+            <?= htmlspecialchars($erro) ?>
         </div>
+    <?php endif; ?>
 
-        <div class="subtitulo">
-            Crie sua conta
+    <?php if ($sucesso): ?>
+        <div class="mensagem sucesso">
+            <?= htmlspecialchars($sucesso) ?>
         </div>
+    <?php endif; ?>
 
-        <?php if ($erro): ?>
-            <div class="mensagem erro">
-                <?= htmlspecialchars($erro) ?>
-            </div>
-        <?php endif; ?>
+    <form method="POST" class="form-cadastro">
+        <input
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Nome"
+            value="<?= htmlspecialchars($nome ?? '') ?>"
+            required
+        >
 
-        <?php if ($sucesso): ?>
-            <div class="mensagem sucesso">
-                <?= htmlspecialchars($sucesso) ?>
-            </div>
-        <?php endif; ?>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="E-mail"
+            value="<?= htmlspecialchars($email ?? '') ?>"
+            required
+        >
 
-        <form method="POST">
+        <input
+            type="password"
+            id="senha"
+            name="senha"
+            placeholder="Senha"
+            required
+        >
 
-            <div class="campo">
-                <label for="nome">Nome</label>
+        <input
+            type="password"
+            id="confirmar_senha"
+            name="confirmar_senha"
+            placeholder="Confirmar senha"
+            required
+        >
 
-                <input
-                    type="text"
-                    id="nome"
-                    name="nome"
-                    placeholder="Digite seu nome"
-                    value="<?= htmlspecialchars($nome ?? '') ?>"
-                    required
-                >
-            </div>
+        <button type="submit">Criar conta</button>
+    </form>
 
-            <div class="campo">
-                <label for="email">E-mail</label>
+    <a href="login.php" class="btn-cadastro">
+        Já possui conta? Entrar
+    </a>
 
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Digite seu e-mail"
-                    value="<?= htmlspecialchars($email ?? '') ?>"
-                    required
-                >
-            </div>
-
-            <div class="campo">
-                <label for="senha">Senha</label>
-
-                <input
-                    type="password"
-                    id="senha"
-                    name="senha"
-                    placeholder="Digite sua senha"
-                    required
-                >
-            </div>
-
-            <div class="campo">
-                <label for="confirmar_senha">Confirmar senha</label>
-
-                <input
-                    type="password"
-                    id="confirmar_senha"
-                    name="confirmar_senha"
-                    placeholder="Digite a senha novamente"
-                    required
-                >
-            </div>
-
-            <button
-                type="submit"
-                class="btn-cadastro"
-            >
-                Criar conta
-            </button>
-
-        </form>
-
-        <a href="login.php" class="voltar">
-            Já possui conta? Entrar
-        </a>
-
-    </div>
-
+    <a href="index.php" class="voltar">Voltar para a loja</a>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+gsap.from(".login-box", {
+    opacity: 0,
+    y: 30,
+    duration: 0.7
+});
+</script>
 </body>
 </html>
