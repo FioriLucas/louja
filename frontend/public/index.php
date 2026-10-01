@@ -13,7 +13,6 @@ $pdo = $conexao->conectar();
 $colunaDestaqueExiste = (bool) $pdo->query("SHOW COLUMNS FROM jogos LIKE 'destaque_carrossel'")->fetch();
 
 if ($colunaDestaqueExiste) {
-    // Busca os jogos marcados para aparecer no carrossel.
     $sqlDestaques = "SELECT jogos.*, categorias.nome AS categoria
             FROM jogos
             JOIN categorias ON jogos.categoria_id = categorias.categoria_id
@@ -23,7 +22,6 @@ if ($colunaDestaqueExiste) {
 
     $produtos = $pdo->query($sqlDestaques)->fetchAll();
 
-    // Busca os jogos que não estão no carrossel.
     $sqlCatalogo = "SELECT jogos.*, categorias.nome AS categoria
             FROM jogos
             JOIN categorias ON jogos.categoria_id = categorias.categoria_id
@@ -63,7 +61,7 @@ if ($colunaDestaqueExiste) {
         <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
 
         <?php if (isset($_SESSION['usr_id'])): ?>
-            <span>Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
+            <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
 
             <?php if ($_SESSION['usr_perfil'] === 'admin'): ?>
                 <a href="admin/index.php">Admin</a>
@@ -77,170 +75,81 @@ if ($colunaDestaqueExiste) {
 </header>
 
 <main class="loja">
-
     <section class="hero-carousel" aria-label="Destaques da loja">
-
         <div class="slides">
-
             <?php foreach ($produtos as $i => $produto): ?>
-
                 <article class="slide <?= $i === 0 ? 'ativo' : '' ?>">
-
                     <img class="slide-bg"
                          src="<?= htmlspecialchars($produto['img_url']) ?>"
                          alt=""
                          aria-hidden="true">
-
                     <div class="slide-overlay"></div>
-
                     <div class="slide-content">
-
-                        <p class="categoria">
-                            <?= htmlspecialchars($produto['categoria']) ?>
-                        </p>
-
-                        <h1>
-                            <?= htmlspecialchars($produto['titulo']) ?>
-                        </h1>
-
-                        <p class="plataforma">
-                            <?= htmlspecialchars($produto['plataforma']) ?>
-                        </p>
-
-                        <p class="preco">
-                            R$ <?= number_format($produto['preco'], 2, ',', '.') ?>
-                        </p>
-
-                        <a class="botao"
-                           href="adicionar_carrinho.php?id=<?= $produto['jogo_id'] ?>">
-                            Adicionar ao carrinho <span>›</span>
+                        <p class="categoria"><?= htmlspecialchars($produto['categoria']) ?></p>
+                        <h1><?= htmlspecialchars($produto['titulo']) ?></h1>
+                        <p class="plataforma"><?= htmlspecialchars($produto['plataforma']) ?></p>
+                        <p class="preco">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
+                        <a class="botao" href="adicionar_carrinho.php?id=<?= $produto['jogo_id'] ?>">
+                            Adicionar ao carrinho <span>&rsaquo;</span>
                         </a>
-
                     </div>
-
                 </article>
-
             <?php endforeach; ?>
-
         </div>
 
         <?php if (count($produtos) > 1): ?>
-
-            <button class="seta seta-esquerda"
-                    type="button"
-                    aria-label="Jogo anterior">
-                ‹
-            </button>
-
-            <button class="seta seta-direita"
-                    type="button"
-                    aria-label="Próximo jogo">
-                ›
-            </button>
-
+            <button class="seta seta-esquerda" type="button" aria-label="Jogo anterior">&lsaquo;</button>
+            <button class="seta seta-direita" type="button" aria-label="Pr&oacute;ximo jogo">&rsaquo;</button>
             <div class="indicadores" aria-label="Selecionar jogo">
-
                 <?php foreach ($produtos as $i => $produto): ?>
-
                     <button class="indicador <?= $i === 0 ? 'ativo' : '' ?>"
                             type="button"
                             aria-label="Ir para <?= htmlspecialchars($produto['titulo']) ?>"
                             aria-current="<?= $i === 0 ? 'true' : 'false' ?>">
                     </button>
-
                 <?php endforeach; ?>
-
             </div>
-
         <?php endif; ?>
-
     </section>
 
     <section class="biblioteca" id="biblioteca">
-
         <div class="biblioteca-cabecalho">
-
             <div>
                 <h2>Explore nossos jogos</h2>
-                <p>Confira outros títulos disponíveis na Louja.</p>
+                <p>Confira outros t&iacute;tulos dispon&iacute;veis na Louja.</p>
             </div>
-
             <div class="biblioteca-controles">
-
-                <button class="catalogo-seta catalogo-anterior"
-                        type="button"
-                        aria-label="Jogos anteriores">
-                    ‹
-                </button>
-
-                <button class="catalogo-seta catalogo-proximo"
-                        type="button"
-                        aria-label="Próximos jogos">
-                    ›
-                </button>
-
+                <button class="catalogo-seta catalogo-anterior" type="button" aria-label="Jogos anteriores">&lsaquo;</button>
+                <button class="catalogo-seta catalogo-proximo" type="button" aria-label="Pr&oacute;ximos jogos">&rsaquo;</button>
             </div>
-
         </div>
 
         <div class="catalogo-viewport">
-
             <div class="catalogo-track">
-
                 <?php foreach ($catalogo as $produto): ?>
-
-                    <a class="jogo-card"
-                       href="jogo.php?id=<?= $produto['jogo_id'] ?>">
-
+                    <a class="jogo-card" href="jogo.php?id=<?= $produto['jogo_id'] ?>">
                         <div class="jogo-card-imagem">
-
                             <img src="<?= htmlspecialchars($produto['img_url']) ?>"
                                  alt="Capa de <?= htmlspecialchars($produto['titulo']) ?>"
                                  loading="lazy">
-
-                            <span class="jogo-categoria">
-                                <?= htmlspecialchars($produto['categoria']) ?>
-                            </span>
-
+                            <span class="jogo-categoria"><?= htmlspecialchars($produto['categoria']) ?></span>
                         </div>
-
                         <div class="jogo-card-info">
-
-                            <h3>
-                                <?= htmlspecialchars($produto['titulo']) ?>
-                            </h3>
-
-                            <span class="jogo-plataforma">
-                                <?= htmlspecialchars($produto['plataforma']) ?>
-                            </span>
-
-                            <strong>
-                                R$ <?= number_format($produto['preco'], 2, ',', '.') ?>
-                            </strong>
-
+                            <h3><?= htmlspecialchars($produto['titulo']) ?></h3>
+                            <span class="jogo-plataforma"><?= htmlspecialchars($produto['plataforma']) ?></span>
+                            <strong>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></strong>
                         </div>
-
                     </a>
-
                 <?php endforeach; ?>
-
             </div>
-
         </div>
 
         <?php if (empty($catalogo)): ?>
-
-            <div class="catalogo-vazio">
-                Nenhum jogo disponível no catálogo.
-            </div>
-
+            <div class="catalogo-vazio">Nenhum jogo dispon&iacute;vel no cat&aacute;logo.</div>
         <?php endif; ?>
-
     </section>
-
 </main>
 
 <script src="js/animacoes.js"></script>
-
 </body>
 </html>

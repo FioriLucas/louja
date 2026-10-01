@@ -116,7 +116,7 @@ if (nav) {
 
 // =====================================================
 // BIBLIOTECA DE JOGOS
-// Mostra 6 cards por vez no desktop e adapta a quantidade
+// Mostra 8 cards por vez no desktop e adapta a quantidade
 // automaticamente em telas menores.
 // =====================================================
 const catalogoTrack = document.querySelector('.catalogo-track');
@@ -131,8 +131,8 @@ if (catalogoTrack && catalogoViewport) {
     function cardsVisiveis() {
         if (window.innerWidth <= 600) return 2;
         if (window.innerWidth <= 900) return 4;
-        if (window.innerWidth <= 1200) return 5;
-        return 6;
+        if (window.innerWidth <= 1200) return 6;
+        return 8;
     }
 
     function atualizarCatalogo() {
