@@ -115,69 +115,47 @@ if (nav) {
 
 
 // =====================================================
-// BIBLIOTECA DE JOGOS
-// Mostra 8 cards por vez no desktop e adapta a quantidade
-// automaticamente em telas menores.
+// PESQUISA E FILTROS DA BIBLIOTECA
 // =====================================================
 const catalogoTrack = document.querySelector('.catalogo-track');
-const catalogoViewport = document.querySelector('.catalogo-viewport');
-const catalogoAnterior = document.querySelector('.catalogo-anterior');
-const catalogoProximo = document.querySelector('.catalogo-proximo');
+const campoBusca = document.querySelector('#catalogo-busca');
+const filtroCategoria = document.querySelector('#catalogo-categoria');
+const filtroPlataforma = document.querySelector('#catalogo-plataforma');
+const resultadoCatalogo = document.querySelector('#catalogo-resultado');
+const vazioCatalogo = document.querySelector('#catalogo-vazio');
 
-if (catalogoTrack && catalogoViewport) {
-    let paginaCatalogo = 0;
-    const gapCatalogo = 14;
+if (catalogoTrack && campoBusca && filtroCategoria && filtroPlataforma) {
+    const cardsCatalogo = Array.from(catalogoTrack.querySelectorAll('.jogo-card'));
+    const normalizar = (valor) => valor
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLocaleLowerCase('pt-BR');
 
-    function cardsVisiveis() {
-        if (window.innerWidth <= 600) return 2;
-        if (window.innerWidth <= 900) return 4;
-        if (window.innerWidth <= 1200) return 6;
-        return 8;
+    function filtrarCatalogo() {
+        const termo = normalizar(campoBusca.value.trim());
+        const categoriaSelecionada = normalizar(filtroCategoria.value);
+        const plataformaSelecionada = normalizar(filtroPlataforma.value);
+        let quantidadeVisivel = 0;
+
+        cardsCatalogo.forEach((card) => {
+            const titulo = card.querySelector('h3')?.textContent ?? '';
+            const categoria = card.querySelector('.jogo-categoria')?.textContent ?? '';
+            const plataforma = card.querySelector('.jogo-plataforma')?.textContent ?? '';
+            const textoPesquisa = normalizar(`${titulo} ${categoria} ${plataforma}`);
+            const corresponde = textoPesquisa.includes(termo)
+                && (!categoriaSelecionada || normalizar(categoria) === categoriaSelecionada)
+                && (!plataformaSelecionada || normalizar(plataforma) === plataformaSelecionada);
+
+            card.style.display = corresponde ? '' : 'none';
+            quantidadeVisivel += corresponde ? 1 : 0;
+        });
+
+        resultadoCatalogo.textContent = `${quantidadeVisivel} de ${cardsCatalogo.length} jogos`;
+        vazioCatalogo.hidden = quantidadeVisivel > 0;
     }
 
-    function atualizarCatalogo() {
-        const cards = Array.from(catalogoTrack.querySelectorAll('.jogo-card'));
-        const visiveis = cardsVisiveis();
-
-        if (!cards.length) return;
-
-        const larguraViewport = catalogoViewport.clientWidth;
-        const larguraCard =
-            (larguraViewport - gapCatalogo * (visiveis - 1)) / visiveis;
-
-        catalogoTrack.style.setProperty('--card-width', `${larguraCard}px`);
-        catalogoTrack.style.gap = `${gapCatalogo}px`;
-
-        const totalPaginas = Math.max(1, Math.ceil(cards.length / visiveis));
-        paginaCatalogo = Math.max(
-            0,
-            Math.min(paginaCatalogo, totalPaginas - 1)
-        );
-
-        // Cada página ocupa exatamente a largura do viewport.
-        catalogoTrack.style.transform =
-            `translateX(-${paginaCatalogo * larguraViewport}px)`;
-
-        if (catalogoAnterior) {
-            catalogoAnterior.disabled = paginaCatalogo === 0;
-        }
-
-        if (catalogoProximo) {
-            catalogoProximo.disabled =
-                paginaCatalogo >= totalPaginas - 1;
-        }
-    }
-
-    catalogoProximo?.addEventListener('click', () => {
-        paginaCatalogo++;
-        atualizarCatalogo();
-    });
-
-    catalogoAnterior?.addEventListener('click', () => {
-        paginaCatalogo--;
-        atualizarCatalogo();
-    });
-
-    window.addEventListener('resize', atualizarCatalogo);
-    atualizarCatalogo();
+    campoBusca.addEventListener('input', filtrarCatalogo);
+    filtroCategoria.addEventListener('change', filtrarCatalogo);
+    filtroPlataforma.addEventListener('change', filtrarCatalogo);
+    filtrarCatalogo();
 }
