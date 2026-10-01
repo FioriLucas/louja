@@ -27,8 +27,8 @@ if ($colunaDestaqueExiste) {
             JOIN categorias ON jogos.categoria_id = categorias.categoria_id
             WHERE jogos.ativo = 1
               AND jogos.destaque_carrossel = 0
-                        ORDER BY RAND()
-                        LIMIT 27";
+            ORDER BY RAND()
+            LIMIT 27";
 
     $catalogo = $pdo->query($sqlCatalogo)->fetchAll();
 } else {
@@ -45,6 +45,11 @@ if ($colunaDestaqueExiste) {
     shuffle($catalogo);
     $catalogo = array_slice($catalogo, 0, 27);
 }
+
+$categoriasCatalogo = array_unique(array_column($catalogo, 'categoria'));
+$plataformasCatalogo = array_unique(array_column($catalogo, 'plataforma'));
+sort($categoriasCatalogo, SORT_NATURAL | SORT_FLAG_CASE);
+sort($plataformasCatalogo, SORT_NATURAL | SORT_FLAG_CASE);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -119,7 +124,7 @@ if ($colunaDestaqueExiste) {
         <div class="biblioteca-cabecalho">
             <div>
                 <h2>Explore nossos jogos</h2>
-                <p>Confira outros t&iacute;tulos dispon&iacute;veis na Louja.</p>
+                <p>Pesquise e filtre os t&iacute;tulos dispon&iacute;veis na Louja.</p>
             </div>
             <div class="biblioteca-controles">
                 <button class="catalogo-seta catalogo-anterior" type="button" aria-label="Jogos anteriores">&lsaquo;</button>
@@ -127,6 +132,32 @@ if ($colunaDestaqueExiste) {
             </div>
         </div>
 
+        <div class="catalogo-filtros" role="search" aria-label="Pesquisar e filtrar jogos">
+            <label class="catalogo-busca">
+                <span>Pesquisar</span>
+                <input id="catalogo-busca" type="search" placeholder="Nome, categoria ou plataforma">
+            </label>
+            <label>
+                <span>Categoria</span>
+                <select id="catalogo-categoria">
+                    <option value="">Todas</option>
+                    <?php foreach ($categoriasCatalogo as $categoria): ?>
+                        <option value="<?= htmlspecialchars($categoria, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($categoria) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+            <label>
+                <span>Plataforma</span>
+                <select id="catalogo-plataforma">
+                    <option value="">Todas</option>
+                    <?php foreach ($plataformasCatalogo as $plataforma): ?>
+                        <option value="<?= htmlspecialchars($plataforma, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($plataforma) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
+        </div>
+
+        <p class="catalogo-resultado" id="catalogo-resultado" aria-live="polite"></p>
         <div class="catalogo-viewport">
             <div class="catalogo-track">
                 <?php foreach ($catalogo as $produto): ?>
@@ -147,9 +178,9 @@ if ($colunaDestaqueExiste) {
             </div>
         </div>
 
-        <?php if (empty($catalogo)): ?>
-            <div class="catalogo-vazio">Nenhum jogo dispon&iacute;vel no cat&aacute;logo.</div>
-        <?php endif; ?>
+        <div class="catalogo-vazio" id="catalogo-vazio" <?= empty($catalogo) ? '' : 'hidden' ?>>
+            Nenhum jogo encontrado com esses filtros.
+        </div>
     </section>
 </main>
 
