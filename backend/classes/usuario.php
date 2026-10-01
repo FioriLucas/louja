@@ -1,7 +1,4 @@
 <?php
-require_once __DIR__ . '/../config/conexao.php';
-require_once __DIR__ . '/usuario.php';
-
 class Usuario {
     private ?int $id;
     private string $nome;
