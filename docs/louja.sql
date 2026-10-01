@@ -40,9 +40,13 @@ INSERT INTO usuarios (nome, email, senha, perfil)
 VALUES (
     'Administrador', 
     'admin@louja.com', 
-    '$2y$10$8K1p/a0dL1LXMIgoEDd3GuV58N2v.N.y4IylXyJ5RjP.M/Gz2KnmC', 
+    '$2y$10$sPN1FRZP84eiYnGpr7mOsePRgEFFhHkb7hUL3KKUzEwQJ26S6HkKm', 
     'admin'
-);
+)
+ON DUPLICATE KEY UPDATE
+    nome = 'Administrador',
+    senha = '$2y$10$sPN1FRZP84eiYnGpr7mOsePRgEFFhHkb7hUL3KKUzEwQJ26S6HkKm',
+    perfil = 'admin';
 
 -- =====================================================
 -- 100 JOGOS
