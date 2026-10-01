@@ -553,7 +553,7 @@ VALUES
 (3, 'Cult of the Lamb',
  'Aventura e gerenciamento com elementos roguelike.',
  'PC', 99.90, 10,
- 'https://cdn.cloudflare.steamstatic.com/steam/apps/1313140/header.jpg', 0);
+ 'https://image.api.playstation.com/vulcan/ap/rnd/202512/1518/ea3296f59652aea59db01dd6668c93f1dd23102f84d18807.png', 0);
 /*Forza 5 */
 UPDATE jogos
 SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202501/2717/0c5df2b67b23263d055f3b78aeb77a6ce4668bb078fced77.jpg'
@@ -586,8 +586,7 @@ where jogo_id = 2;
 UPDATE jogos
 SET img_url = 'https://sm.ign.com/ign_br/screenshot/default/tmp-cgtjz0-bb7faa1483782db2-minecraft-horizontal-key-art_n1te.jpg'
 where jogo_id = 1;
-
-/*Cult of the Lamb */
+/*cult of the lamb*/
 UPDATE jogos
-SET img_url = 'https://upload.wikimedia.org/wikipedia/en/d/d4/Cult_of_the_Lamb_Key_Art.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202512/1518/ea3296f59652aea59db01dd6668c93f1dd23102f84d18807.png'
 where jogo_id = 100;

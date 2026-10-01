@@ -27,7 +27,8 @@ if ($colunaDestaqueExiste) {
             JOIN categorias ON jogos.categoria_id = categorias.categoria_id
             WHERE jogos.ativo = 1
               AND jogos.destaque_carrossel = 0
-            ORDER BY jogos.jogo_id DESC";
+                        ORDER BY RAND()
+                        LIMIT 27";
 
     $catalogo = $pdo->query($sqlCatalogo)->fetchAll();
 } else {
@@ -41,6 +42,8 @@ if ($colunaDestaqueExiste) {
 
     $produtos = array_slice($todosJogos, 0, 5);
     $catalogo = array_slice($todosJogos, 5);
+    shuffle($catalogo);
+    $catalogo = array_slice($catalogo, 0, 27);
 }
 ?>
 <!DOCTYPE html>
