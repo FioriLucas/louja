@@ -337,10 +337,11 @@ nav a:hover {
 .catalogo-track {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: calc((100% - 84px) / 8);
-    gap: 12px;
+    grid-auto-columns: var(--card-width, 200px);
+    gap: 14px;
     width: max-content;
     transition: transform .35s ease;
+    will-change: transform;
 }
 
 .jogo-card {
@@ -348,6 +349,7 @@ nav a:hover {
     display: block;
     background: #fff;
     border: 1px solid #e6e6e6;
+    border-radius: 10px;
     overflow: hidden;
     transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
@@ -360,7 +362,7 @@ nav a:hover {
 
 .jogo-card-imagem {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
     background: #ddd;
 }
@@ -387,15 +389,16 @@ nav a:hover {
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
+    border-radius: 4px;
 }
 
 .jogo-card-info {
-    padding: 13px 13px 15px;
+    padding: 12px 13px 14px;
 }
 
 .jogo-card-info h3 {
     min-height: 38px;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
     font-size: 15px;
     line-height: 1.25;
 }
@@ -406,6 +409,9 @@ nav a:hover {
     color: #777;
     font-size: 11px;
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .jogo-card-info strong {
@@ -700,16 +706,7 @@ button {
 }
 
 
-@media (max-width: 1200px) {
-    .catalogo-track {
-        grid-auto-columns: calc((100% - 60px) / 6);
-    }
-}
-
 @media (max-width: 900px) {
-    .catalogo-track {
-        grid-auto-columns: calc((100% - 36px) / 4);
-    }
 
     .jogo-detalhe-box {
         grid-template-columns: 1fr;
@@ -730,11 +727,6 @@ button {
         align-items: flex-start;
         flex-direction: column;
     }
-
-    .catalogo-track {
-        grid-auto-columns: calc((100% - 12px) / 2);
-    }
-
     .jogo-detalhe {
         padding-top: 95px;
     }

@@ -116,8 +116,8 @@ if (nav) {
 
 // =====================================================
 // BIBLIOTECA DE JOGOS
-// Mostra 8 cards por vez no desktop e permite navegar
-// pelo restante do catálogo sem duplicar jogos.
+// Mostra 6 cards por vez no desktop e adapta a quantidade
+// automaticamente em telas menores.
 // =====================================================
 const catalogoTrack = document.querySelector('.catalogo-track');
 const catalogoViewport = document.querySelector('.catalogo-viewport');
@@ -126,28 +126,46 @@ const catalogoProximo = document.querySelector('.catalogo-proximo');
 
 if (catalogoTrack && catalogoViewport) {
     let paginaCatalogo = 0;
+    const gapCatalogo = 14;
 
     function cardsVisiveis() {
         if (window.innerWidth <= 600) return 2;
         if (window.innerWidth <= 900) return 4;
-        if (window.innerWidth <= 1200) return 6;
-        return 8;
+        if (window.innerWidth <= 1200) return 5;
+        return 6;
     }
 
     function atualizarCatalogo() {
         const cards = Array.from(catalogoTrack.querySelectorAll('.jogo-card'));
         const visiveis = cardsVisiveis();
+
+        if (!cards.length) return;
+
+        const larguraViewport = catalogoViewport.clientWidth;
+        const larguraCard =
+            (larguraViewport - gapCatalogo * (visiveis - 1)) / visiveis;
+
+        catalogoTrack.style.setProperty('--card-width', `${larguraCard}px`);
+        catalogoTrack.style.gap = `${gapCatalogo}px`;
+
         const totalPaginas = Math.max(1, Math.ceil(cards.length / visiveis));
-        paginaCatalogo = Math.max(0, Math.min(paginaCatalogo, totalPaginas - 1));
+        paginaCatalogo = Math.max(
+            0,
+            Math.min(paginaCatalogo, totalPaginas - 1)
+        );
 
-        const primeiroCard = cards[0];
-        if (!primeiroCard) return;
+        // Cada página ocupa exatamente a largura do viewport.
+        catalogoTrack.style.transform =
+            `translateX(-${paginaCatalogo * larguraViewport}px)`;
 
-        const distancia = primeiroCard.getBoundingClientRect().width + 12;
-        catalogoTrack.style.transform = `translateX(-${paginaCatalogo * visiveis * distancia}px)`;
+        if (catalogoAnterior) {
+            catalogoAnterior.disabled = paginaCatalogo === 0;
+        }
 
-        if (catalogoAnterior) catalogoAnterior.disabled = paginaCatalogo === 0;
-        if (catalogoProximo) catalogoProximo.disabled = paginaCatalogo >= totalPaginas - 1;
+        if (catalogoProximo) {
+            catalogoProximo.disabled =
+                paginaCatalogo >= totalPaginas - 1;
+        }
     }
 
     catalogoProximo?.addEventListener('click', () => {
