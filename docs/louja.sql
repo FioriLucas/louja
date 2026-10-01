@@ -1,10 +1,46 @@
+CREATE DATABASE IF NOT EXISTS louja 
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
+
 USE louja;
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE itens_pedido;
+TRUNCATE TABLE jogos;
+SET FOREIGN_KEY_CHECKS = 1;
+CREATE TABLE IF NOT EXISTS usuarios (
+    usr_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    perfil ENUM('cliente', 'admin') DEFAULT 'cliente'
+);
 
--- =====================================================
+INSERT INTO usuarios (nome, email, senha, perfil)
+VALUES (
+    'Administrador',
+    'admin@louja.com',
+    '$2y$10$sPN1FRZP84eiYnGpr7mOsePRgEFFhHkb7hUL3KKUzEwQJ26S6HkKm',
+    'admin'
+)
+ON DUPLICATE KEY UPDATE
+    nome = 'Administrador',
+    senha = '$2y$10$sPN1FRZP84eiYnGpr7mOsePRgEFFhHkb7hUL3KKUzEwQJ26S6HkKm',
+    perfil = 'admin';
 
--- =====================================================
--- CRIA A NOVA TABELA DE JOGOS
--- =====================================================
+CREATE TABLE IF NOT EXISTS categorias (
+    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
+);
+
+INSERT INTO categorias (nome) VALUES
+('RPG'),
+('Ação'),
+('Aventura'),
+('Horror'),
+('Sobrevivência'),
+('FPS'),
+('Esportes');
+USE louja;
 
 CREATE TABLE IF NOT exists jogos (
     jogo_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -22,47 +58,12 @@ CREATE TABLE IF NOT exists jogos (
         REFERENCES categorias(categoria_id)
 );
 
-CREATE TABLE IF NOT EXISTS usuarios (
-    usr_id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    senha VARCHAR(255) NOT NULL,
-    perfil VARCHAR(20) DEFAULT 'cliente'
-);
 
--- =====================================================
--- USUÁRIO ADMINISTRADOR
--- Email: admin@louja.com
--- Senha: admin123
--- =====================================================
-
-INSERT INTO usuarios (nome, email, senha, perfil) 
-VALUES (
-    'Administrador', 
-    'admin@louja.com', 
-    '$2y$10$sPN1FRZP84eiYnGpr7mOsePRgEFFhHkb7hUL3KKUzEwQJ26S6HkKm', 
-    'admin'
-)
-ON DUPLICATE KEY UPDATE
-    nome = 'Administrador',
-    senha = '$2y$10$sPN1FRZP84eiYnGpr7mOsePRgEFFhHkb7hUL3KKUzEwQJ26S6HkKm',
-    perfil = 'admin';
-
--- =====================================================
--- 100 JOGOS
---
--- destaque_carrossel = 1 -> Banner principal
--- destaque_carrossel = 0 -> Catálogo
--- =====================================================
 
 INSERT INTO jogos
 (categoria_id, titulo, descricao, plataforma, preco,
  quantidade_estoque, img_url, destaque_carrossel)
 VALUES
-
--- =====================================================
--- BANNER PRINCIPAL - 8 JOGOS
--- =====================================================
 
 (5, 'Minecraft',
  'Jogo sandbox de sobrevivência e construção.',
@@ -105,9 +106,6 @@ VALUES
  'https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg', 1),
 
 
--- =====================================================
--- CATÁLOGO - 92 JOGOS
--- =====================================================
 
 (2, 'God of War',
  'Aventura de ação baseada na mitologia nórdica.',
@@ -567,4 +565,491 @@ VALUES
 (3, 'Cult of the Lamb',
  'Aventura e gerenciamento com elementos roguelike.',
  'PC', 99.90, 10,
- 'https://cdn.cloudflare.steamstatic.com/steam/apps/1313140/header.jpg', 0);
+ 'https://image.api.playstation.com/vulcan/ap/rnd/202512/1518/ea3296f59652aea59db01dd6668c93f1dd23102f84d18807.png', 0);
+/*Forza 5 */
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202501/2717/0c5df2b67b23263d055f3b78aeb77a6ce4668bb078fced77.jpg'
+where jogo_id = 8;
+/*resident evil 4 */
+UPDATE jogos
+SET img_url = 'https://assets.nintendo.com/image/upload/q_auto/f_auto/store/software/switch/70010000012858/f4d4fd20c956621c4a342a8cade2e366f0e3cd43765bb52eccd0fea32b1606ce'
+where jogo_id = 7;
+/*Elden Ring */
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/YMUoJUYNX0xWk6eTKuZLr5Iw.jpg'
+where jogo_id = 6;
+/*CYBERPUNK 2077 */
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202111/3013/bxSj4jO0KBqUgAbH3zuNjCje.jpg'
+where jogo_id = 5;
+/*THE WITCHER 3 */
+UPDATE jogos
+SET img_url = 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch2/70010000128692/da1a51c79e918768af5d1556e7416c0bc906665606fd273622ecbbd5cc8cfa26'
+where jogo_id = 4;
+/*Red dead redemption 2 */
+UPDATE jogos
+SET img_url = 'https://cdn2.unrealengine.com/Diesel/productv2/heather/home/EGS_RockstarGames_RedDeadRedemption2_G1A_00-1920x1080-308f101576da37225c889173094f373f2afc56c1.jpg'
+where jogo_id = 3;
+/*gta V*/
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202606/0815/41b2f694a897c9c95337d2313cabc6c1fbf17b26714ed75c.jpg'
+where jogo_id = 2;
+/*Minecraft */
+UPDATE jogos
+SET img_url = 'https://sm.ign.com/ign_br/screenshot/default/tmp-cgtjz0-bb7faa1483782db2-minecraft-horizontal-key-art_n1te.jpg'
+where jogo_id = 1;
+
+/*cult of the lamb*/
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202512/1518/ea3296f59652aea59db01dd6668c93f1dd23102f84d18807.png'
+where jogo_id = 100;
+/*Hades II */
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202603/2318/cabc65dfd2ab1ffa31f51b20b7128ac69491ea9858c0daa3.png'
+where jogo_id = 99;
+/*Dragon''s Dogma 2*/
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202305/3007/2fff756fa904befe46b838dd6f27fa49f6b53d9f3dbbb776.png'
+where jogo_id = 98;
+/*Kingdom Come: Deliverance II*/
+UPDATE jogos
+SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202408/1208/05a84ce968125d79fa36484c5a756a1c8d9b05622aae21c1.png'
+where jogo_id = 97;
+/*Mafia II: Definitive Edition*/
+UPDATE jogos
+SET img_url = 'https://assets-prd.ignimgs.com/2020/07/07/mafia-ii-button-fin-1594154630039.jpg?crop=1%3A1%2Csmart&format=jpg&auto=webp&quality=80'
+where jogo_id = 96;
+/*Mafia: Definitive Edition*/
+UPDATE jogos
+SET img_url = 'https://cdn1.epicgames.com/ee8802651a004c48999169fa32eb4903/offer/EGS_MafiaDefinitiveEditionPreOrder_Hangar13_S2-1200x1600-3674a5caa0e10eca89feb4dba0484112.jpg'
+where jogo_id = 95;
+
+-- God of War
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1593500/library_600x900_2x.jpg'
+WHERE jogo_id = 9;
+
+-- God of War Ragnarök
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2322010/library_600x900_2x.jpg'
+WHERE jogo_id = 10;
+
+-- Marvel's Spider-Man Remastered
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/library_600x900_2x.jpg'
+WHERE jogo_id = 11;
+
+-- Marvel's Spider-Man 2
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2651280/library_600x900_2x.jpg'
+WHERE jogo_id = 12;
+
+-- Horizon Zero Dawn
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1151640/library_600x900_2x.jpg'
+WHERE jogo_id = 13;
+
+-- Horizon Forbidden West
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/library_600x900_2x.jpg'
+WHERE jogo_id = 14;
+
+-- The Last of Us Part I
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/library_600x900_2x.jpg'
+WHERE jogo_id = 15;
+
+-- The Last of Us Part II
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2531310/library_600x900_2x.jpg'
+WHERE jogo_id = 16;
+
+-- Uncharted: Legacy of Thieves Collection
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659420/library_600x900_2x.jpg'
+WHERE jogo_id = 17;
+
+-- Ghost of Tsushima
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/library_600x900_2x.jpg'
+WHERE jogo_id = 18;
+
+-- Assassin's Creed Valhalla
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2208920/library_600x900_2x.jpg'
+WHERE jogo_id = 19;
+
+-- Assassin's Creed Odyssey
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/812140/library_600x900_2x.jpg'
+WHERE jogo_id = 20;
+
+-- Far Cry 6
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2369390/library_600x900_2x.jpg'
+WHERE jogo_id = 21;
+
+-- Resident Evil Village
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1196590/library_600x900_2x.jpg'
+WHERE jogo_id = 22;
+
+-- Dead Space
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1693980/library_600x900_2x.jpg'
+WHERE jogo_id = 23;
+
+-- Hogwarts Legacy
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/990080/library_600x900_2x.jpg'
+WHERE jogo_id = 24;
+
+-- Star Wars Jedi: Survivor
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1774580/library_600x900_2x.jpg'
+WHERE jogo_id = 25;
+
+-- Baldur's Gate 3
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1086940/library_600x900_2x.jpg'
+WHERE jogo_id = 26;
+
+-- Diablo IV
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2344520/library_600x900_2x.jpg'
+WHERE jogo_id = 27;
+
+-- Monster Hunter: World
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582010/library_600x900_2x.jpg'
+WHERE jogo_id = 28;
+
+-- Monster Hunter Wilds
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2246340/library_600x900_2x.jpg'
+WHERE jogo_id = 29;
+
+-- Need for Speed Heat
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1222680/library_600x900_2x.jpg'
+WHERE jogo_id = 30;
+
+-- Rainbow Six Siege
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/359550/library_600x900_2x.jpg'
+WHERE jogo_id = 31;
+
+-- Terraria
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/105600/library_600x900_2x.jpg'
+WHERE jogo_id = 32;
+
+-- Stardew Valley
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/413150/library_600x900_2x.jpg'
+WHERE jogo_id = 33;
+
+-- Hades
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1145360/library_600x900_2x.jpg'
+WHERE jogo_id = 34;
+
+-- Hollow Knight
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/367520/library_600x900_2x.jpg'
+WHERE jogo_id = 35;
+
+-- Cuphead
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/268910/library_600x900_2x.jpg'
+WHERE jogo_id = 36;
+
+-- It Takes Two
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1426210/library_600x900_2x.jpg'
+WHERE jogo_id = 37;
+
+-- Sekiro: Shadows Die Twice
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/814380/library_600x900_2x.jpg'
+WHERE jogo_id = 38;
+
+-- Dark Souls III
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/374320/library_600x900_2x.jpg'
+WHERE jogo_id = 39;
+
+-- Dark Souls Remastered
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/570940/library_600x900_2x.jpg'
+WHERE jogo_id = 40;
+
+-- Dark Souls II: Scholar of the First Sin
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/335300/library_600x900_2x.jpg'
+WHERE jogo_id = 41;
+
+-- Black Myth: Wukong
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2358720/library_600x900_2x.jpg'
+WHERE jogo_id = 42;
+
+-- Lies of P
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1627720/library_600x900_2x.jpg'
+WHERE jogo_id = 43;
+
+-- Sifu
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2138710/library_600x900_2x.jpg'
+WHERE jogo_id = 44;
+
+-- Stray
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1332010/library_600x900_2x.jpg'
+WHERE jogo_id = 45;
+
+-- Days Gone
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1259420/library_600x900_2x.jpg'
+WHERE jogo_id = 46;
+
+-- DEATH STRANDING DIRECTOR'S CUT
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1850570/library_600x900_2x.jpg'
+WHERE jogo_id = 47;
+
+-- Control Ultimate Edition
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/870780/library_600x900_2x.jpg'
+WHERE jogo_id = 48;
+
+-- DOOM Eternal
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/782330/library_600x900_2x.jpg'
+WHERE jogo_id = 49;
+
+-- DOOM
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/379720/library_600x900_2x.jpg'
+WHERE jogo_id = 50;
+
+-- Titanfall 2
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1237970/library_600x900_2x.jpg'
+WHERE jogo_id = 51;
+
+-- Battlefield 1
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1238840/library_600x900_2x.jpg'
+WHERE jogo_id = 52;
+
+-- Battlefield V
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1238810/library_600x900_2x.jpg'
+WHERE jogo_id = 53;
+
+-- Battlefield 2042
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1517290/library_600x900_2x.jpg'
+WHERE jogo_id = 54;
+
+-- Borderlands 3
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/397540/library_600x900_2x.jpg'
+WHERE jogo_id = 55;
+
+-- Tiny Tina's Wonderlands
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1286680/library_600x900_2x.jpg'
+WHERE jogo_id = 56;
+
+-- Metro Exodus
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/412020/library_600x900_2x.jpg'
+WHERE jogo_id = 57;
+
+-- Dying Light
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/239140/library_600x900_2x.jpg'
+WHERE jogo_id = 58;
+
+-- Dying Light 2 Stay Human
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/534380/library_600x900_2x.jpg'
+WHERE jogo_id = 59;
+
+-- Subnautica
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/264710/library_600x900_2x.jpg'
+WHERE jogo_id = 60;
+
+-- Subnautica: Below Zero
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/848450/library_600x900_2x.jpg'
+WHERE jogo_id = 61;
+
+-- No Man's Sky
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/275850/library_600x900_2x.jpg'
+WHERE jogo_id = 62;
+
+-- Grounded
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/962130/library_600x900_2x.jpg'
+WHERE jogo_id = 63;
+
+-- The Long Dark
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/305620/library_600x900_2x.jpg'
+WHERE jogo_id = 64;
+
+-- Sons Of The Forest
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1326470/library_600x900_2x.jpg'
+WHERE jogo_id = 65;
+
+-- Valheim
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/892970/library_600x900_2x.jpg'
+WHERE jogo_id = 66;
+
+-- Palworld
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1623730/library_600x900_2x.jpg'
+WHERE jogo_id = 67;
+
+-- Raft
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/648800/library_600x900_2x.jpg'
+WHERE jogo_id = 68;
+
+-- Project Zomboid
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/108600/library_600x900_2x.jpg'
+WHERE jogo_id = 69;
+
+-- Factorio
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/427520/library_600x900_2x.jpg'
+WHERE jogo_id = 70;
+
+-- Satisfactory
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/526870/library_600x900_2x.jpg'
+WHERE jogo_id = 71;
+
+-- DAVE THE DIVER
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1868140/library_600x900_2x.jpg'
+WHERE jogo_id = 72;
+
+-- Sea of Stars
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1244090/library_600x900_2x.jpg'
+WHERE jogo_id = 73;
+
+-- Balatro
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2379780/library_600x900_2x.jpg'
+WHERE jogo_id = 74;
+
+-- Slay the Spire
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/646570/library_600x900_2x.jpg'
+WHERE jogo_id = 75;
+
+-- Celeste
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/504230/library_600x900_2x.jpg'
+WHERE jogo_id = 76;
+
+-- Undertale
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/391540/library_600x900_2x.jpg'
+WHERE jogo_id = 77;
+
+-- Ori and the Blind Forest: Definitive Edition
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/387290/library_600x900_2x.jpg'
+WHERE jogo_id = 78;
+
+-- Ori and the Will of the Wisps
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1057090/library_600x900_2x.jpg'
+WHERE jogo_id = 79;
+
+-- Persona 5 Royal
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1687950/library_600x900_2x.jpg'
+WHERE jogo_id = 80;
+
+-- Persona 4 Golden
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1113000/library_600x900_2x.jpg'
+WHERE jogo_id = 81;
+
+-- Final Fantasy VII Remake Intergrade
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1462040/library_600x900_2x.jpg'
+WHERE jogo_id = 82;
+
+-- FINAL FANTASY XV WINDOWS EDITION
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/637650/library_600x900_2x.jpg'
+WHERE jogo_id = 83;
+
+-- Yakuza: Like a Dragon
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1235140/library_600x900_2x.jpg'
+WHERE jogo_id = 84;
+
+-- Like a Dragon: Infinite Wealth
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2072450/library_600x900_2x.jpg'
+WHERE jogo_id = 85;
+
+-- TEKKEN 8
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1778820/library_600x900_2x.jpg'
+WHERE jogo_id = 86;
+
+-- Street Fighter 6
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1364780/library_600x900_2x.jpg'
+WHERE jogo_id = 87;
+
+-- Mortal Kombat 1
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1971870/library_600x900_2x.jpg'
+WHERE jogo_id = 88;
+
+-- LEGO Star Wars: The Skywalker Saga
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/920210/library_600x900_2x.jpg'
+WHERE jogo_id = 89;
+
+-- A Plague Tale: Requiem
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1182900/library_600x900_2x.jpg'
+WHERE jogo_id = 90;
+
+-- A Plague Tale: Innocence
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/752590/library_600x900_2x.jpg'
+WHERE jogo_id = 91;
+
+-- Tomb Raider
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/203160/library_600x900_2x.jpg'
+WHERE jogo_id = 92;
+
+-- Rise of the Tomb Raider
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/391220/library_600x900_2x.jpg'
+WHERE jogo_id = 93;
+
+-- Shadow of the Tomb Raider
+UPDATE jogos
+SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/750920/library_600x900_2x.jpg'
+WHERE jogo_id = 94;
