@@ -302,48 +302,60 @@ nav a:hover {
     color: #666;
 }
 
-.biblioteca-controles {
-    display: flex;
-    gap: 8px;
-}
-
-.catalogo-seta {
-    width: 42px;
-    height: 42px;
-    border: 1px solid #d2d2d2;
+.catalogo-filtros {
+    display: grid;
+    grid-template-columns: minmax(240px, 2fr) repeat(2, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 16px;
+    border: 1px solid #dedede;
     background: #fff;
-    color: #111;
-    font-size: 28px;
-    line-height: 1;
-    cursor: pointer;
-    transition: .2s ease;
 }
 
-.catalogo-seta:hover:not(:disabled) {
-    background: #9b4dff;
-    border-color: #9b4dff;
-    color: #fff;
+.catalogo-filtros label {
+    display: grid;
+    gap: 7px;
+    color: #4d4d4d;
+    font-size: 12px;
+    font-weight: 700;
 }
 
-.catalogo-seta:disabled {
-    opacity: .35;
-    cursor: default;
+.catalogo-filtros input,
+.catalogo-filtros select {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid #cfcfcf;
+    border-radius: 3px;
+    background: #fff;
+    color: #171717;
+    font: inherit;
+    font-size: 14px;
+}
+
+.catalogo-filtros input:focus,
+.catalogo-filtros select:focus {
+    outline: 2px solid #9b4dff;
+    outline-offset: 1px;
+}
+
+.catalogo-resultado {
+    min-height: 20px;
+    margin-bottom: 12px;
+    color: #666;
+    font-size: 13px;
 }
 
 .catalogo-viewport {
-    overflow: hidden;
     width: 100%;
     padding: 3px 1px 8px;
 }
 
 .catalogo-track {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: var(--card-width, 165px);
-    gap: 14px;
-    width: max-content;
-    transition: transform .35s ease;
-    will-change: transform;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 165px), 1fr));
+    gap: 18px 14px;
+    width: 100%;
 }
 
 /* Card compacto: imagem em destaque + somente nome e preço. */
@@ -352,7 +364,7 @@ nav a:hover {
     display: block;
     background: #fff;
     border: 1px solid #e1e1e1;
-    border-radius: 9px;
+    border-radius: 6px;
     overflow: hidden;
     transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
 }
@@ -424,6 +436,10 @@ nav a:hover {
     text-align: center;
     background: #fff;
     color: #666;
+}
+
+.catalogo-vazio[hidden] {
+    display: none;
 }
 
 /* =========================
@@ -728,6 +744,12 @@ button {
         align-items: flex-start;
         flex-direction: column;
     }
+
+    .catalogo-filtros {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+
     .jogo-detalhe {
         padding-top: 95px;
     }
