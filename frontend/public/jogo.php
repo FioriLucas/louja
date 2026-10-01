@@ -64,7 +64,6 @@ if (!$produto) {
 
             <div class="jogo-detalhe-meta">
                 <span>Plataforma: <?= htmlspecialchars($produto['plataforma']) ?></span>
-                <span>Em estoque: <?= (int)$produto['quantidade_estoque'] ?></span>
             </div>
 
             <p class="jogo-detalhe-descricao">
