@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/../config/conexao.php';
-
 
 class Usuario {
     private ?int $id;
