@@ -1,34 +1,10 @@
-CREATE DATABASE IF NOT EXISTS louja 
-CHARACTER SET utf8mb4 
-COLLATE utf8mb4_unicode_ci;
-
 USE louja;
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE itens_pedido;
-TRUNCATE TABLE jogos;
-SET FOREIGN_KEY_CHECKS = 1;
-CREATE TABLE IF NOT EXISTS usuarios (
-    usr_id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    senha VARCHAR(255) NOT NULL,
-    perfil ENUM('cliente', 'admin') DEFAULT 'cliente'
-);
 
-CREATE TABLE IF NOT EXISTS categorias (
-    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL
-);
+-- =====================================================
 
-INSERT INTO categorias (nome) VALUES
-('RPG'),
-('Ação'),
-('Aventura'),
-('Horror'),
-('Sobrevivência'),
-('FPS'),
-('Esportes');
-USE louja;
+-- =====================================================
+-- CRIA A NOVA TABELA DE JOGOS
+-- =====================================================
 
 CREATE TABLE IF NOT exists jogos (
     jogo_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,12 +22,43 @@ CREATE TABLE IF NOT exists jogos (
         REFERENCES categorias(categoria_id)
 );
 
+CREATE TABLE IF NOT EXISTS usuarios (
+    usr_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    perfil VARCHAR(20) DEFAULT 'cliente'
+);
 
+-- =====================================================
+-- USUÁRIO ADMINISTRADOR
+-- Email: admin@louja.com
+-- Senha: admin123
+-- =====================================================
+
+INSERT INTO usuarios (nome, email, senha, perfil) 
+VALUES (
+    'Administrador', 
+    'admin@louja.com', 
+    '$2y$10$8K1p/a0dL1LXMIgoEDd3GuV58N2v.N.y4IylXyJ5RjP.M/Gz2KnmC', 
+    'admin'
+);
+
+-- =====================================================
+-- 100 JOGOS
+--
+-- destaque_carrossel = 1 -> Banner principal
+-- destaque_carrossel = 0 -> Catálogo
+-- =====================================================
 
 INSERT INTO jogos
 (categoria_id, titulo, descricao, plataforma, preco,
  quantidade_estoque, img_url, destaque_carrossel)
 VALUES
+
+-- =====================================================
+-- BANNER PRINCIPAL - 8 JOGOS
+-- =====================================================
 
 (5, 'Minecraft',
  'Jogo sandbox de sobrevivência e construção.',
@@ -94,6 +101,9 @@ VALUES
  'https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg', 1),
 
 
+-- =====================================================
+-- CATÁLOGO - 92 JOGOS
+-- =====================================================
 
 (2, 'God of War',
  'Aventura de ação baseada na mitologia nórdica.',
@@ -554,40 +564,3 @@ VALUES
  'Aventura e gerenciamento com elementos roguelike.',
  'PC', 99.90, 10,
  'https://cdn.cloudflare.steamstatic.com/steam/apps/1313140/header.jpg', 0);
-/*Forza 5 */
-UPDATE jogos
-SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202501/2717/0c5df2b67b23263d055f3b78aeb77a6ce4668bb078fced77.jpg'
-where jogo_id = 8;
-/*resident evil 4 */
-UPDATE jogos
-SET img_url = 'https://assets.nintendo.com/image/upload/q_auto/f_auto/store/software/switch/70010000012858/f4d4fd20c956621c4a342a8cade2e366f0e3cd43765bb52eccd0fea32b1606ce'
-where jogo_id = 7;
-/*Elden Ring */
-UPDATE jogos
-SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/YMUoJUYNX0xWk6eTKuZLr5Iw.jpg'
-where jogo_id = 6;
-/*CYBERPUNK 2077 */
-UPDATE jogos
-SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202111/3013/bxSj4jO0KBqUgAbH3zuNjCje.jpg'
-where jogo_id = 5;
-/*THE WITCHER 3 */
-UPDATE jogos
-SET img_url = 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch2/70010000128692/da1a51c79e918768af5d1556e7416c0bc906665606fd273622ecbbd5cc8cfa26'
-where jogo_id = 4;
-/*Red dead redemption 2 */
-UPDATE jogos
-SET img_url = 'https://cdn2.unrealengine.com/Diesel/productv2/heather/home/EGS_RockstarGames_RedDeadRedemption2_G1A_00-1920x1080-308f101576da37225c889173094f373f2afc56c1.jpg'
-where jogo_id = 3;
-/*gta V*/
-UPDATE jogos
-SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202606/0815/41b2f694a897c9c95337d2313cabc6c1fbf17b26714ed75c.jpg'
-where jogo_id = 2;
-/*Minecraft */
-UPDATE jogos
-SET img_url = 'https://sm.ign.com/ign_br/screenshot/default/tmp-cgtjz0-bb7faa1483782db2-minecraft-horizontal-key-art_n1te.jpg'
-where jogo_id = 1;
-
-/*Cult of the Lamb */
-UPDATE jogos
-SET img_url = 'https://upload.wikimedia.org/wikipedia/en/d/d4/Cult_of_the_Lamb_Key_Art.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original
-where jogo_id = 100;
