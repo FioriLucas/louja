@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../../backend/config/conexao.php';
+require_once __DIR__ . '/../../backend/config/conexao.php';
 
 $erro = '';
 $sucesso = '';

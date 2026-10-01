@@ -586,3 +586,8 @@ where jogo_id = 2;
 UPDATE jogos
 SET img_url = 'https://sm.ign.com/ign_br/screenshot/default/tmp-cgtjz0-bb7faa1483782db2-minecraft-horizontal-key-art_n1te.jpg'
 where jogo_id = 1;
+
+/*Cult of the Lamb */
+UPDATE jogos
+SET img_url = 'https://upload.wikimedia.org/wikipedia/en/d/d4/Cult_of_the_Lamb_Key_Art.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original
+where jogo_id = 100;
