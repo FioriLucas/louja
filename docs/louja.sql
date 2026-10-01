@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     perfil ENUM('cliente', 'admin') DEFAULT 'cliente'
 );
 
+<<<<<<< HEAD
 INSERT INTO usuarios (nome, email, senha, perfil)
 VALUES (
     'Administrador',
@@ -32,6 +33,13 @@ CREATE TABLE IF NOT EXISTS categorias (
     nome VARCHAR(50) NOT NULL
 );
 
+=======
+CREATE TABLE IF NOT EXISTS categorias (
+    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
+);
+
+>>>>>>> 4619d205c57a50667714ed390d08fffb7a135166
 INSERT INTO categorias (nome) VALUES
 ('RPG'),
 ('Ação'),

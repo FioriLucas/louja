@@ -302,6 +302,35 @@ nav a:hover {
     color: #666;
 }
 
+.biblioteca-controles {
+    display: flex;
+    gap: 8px;
+}
+
+.catalogo-seta {
+    width: 46px;
+    height: 46px;
+    border: 1px solid #d2d2d2;
+    border-radius: 50%;
+    background: #fff;
+    color: #111;
+    font-size: 31px;
+    line-height: 1;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.catalogo-seta:hover:not(:disabled) {
+    background: #9b4dff;
+    border-color: #9b4dff;
+    color: #fff;
+}
+
+.catalogo-seta:disabled {
+    opacity: .35;
+    cursor: default;
+}
+
 .catalogo-filtros {
     display: grid;
     grid-template-columns: minmax(240px, 2fr) repeat(2, minmax(150px, 1fr));
@@ -347,15 +376,19 @@ nav a:hover {
 }
 
 .catalogo-viewport {
+    overflow: hidden;
     width: 100%;
     padding: 3px 1px 8px;
 }
 
 .catalogo-track {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 165px), 1fr));
-    gap: 18px 14px;
-    width: 100%;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--card-width, 165px);
+    gap: 14px;
+    width: max-content;
+    transition: transform .35s ease;
+    will-change: transform;
 }
 
 /* Card compacto: imagem em destaque + somente nome e preço. */

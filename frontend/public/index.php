@@ -26,7 +26,9 @@ if ($colunaDestaqueExiste) {
             FROM jogos
             JOIN categorias ON jogos.categoria_id = categorias.categoria_id
             WHERE jogos.ativo = 1
-            ORDER BY jogos.jogo_id DESC";
+              AND jogos.destaque_carrossel = 0
+            ORDER BY RAND()
+            LIMIT 27";
 
     $catalogo = $pdo->query($sqlCatalogo)->fetchAll();
 } else {
@@ -39,7 +41,9 @@ if ($colunaDestaqueExiste) {
     $todosJogos = $pdo->query($sqlBase)->fetchAll();
 
     $produtos = array_slice($todosJogos, 0, 5);
-    $catalogo = $todosJogos;
+    $catalogo = array_slice($todosJogos, 5);
+    shuffle($catalogo);
+    $catalogo = array_slice($catalogo, 0, 27);
 }
 
 $categoriasCatalogo = array_unique(array_column($catalogo, 'categoria'));
@@ -121,6 +125,10 @@ sort($plataformasCatalogo, SORT_NATURAL | SORT_FLAG_CASE);
             <div>
                 <h2>Explore nossos jogos</h2>
                 <p>Pesquise e filtre os t&iacute;tulos dispon&iacute;veis na Louja.</p>
+            </div>
+            <div class="biblioteca-controles">
+                <button class="catalogo-seta catalogo-anterior" type="button" aria-label="Jogos anteriores">&lsaquo;</button>
+                <button class="catalogo-seta catalogo-proximo" type="button" aria-label="Pr&oacute;ximos jogos">&rsaquo;</button>
             </div>
         </div>
 
