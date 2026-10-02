@@ -121,13 +121,13 @@ const catalogoTrack = document.querySelector('.catalogo-track');
 const catalogoViewport = document.querySelector('.catalogo-viewport');
 const catalogoAnterior = document.querySelector('.catalogo-anterior');
 const catalogoProximo = document.querySelector('.catalogo-proximo');
+const formularioBusca = document.querySelector('#catalogo-busca-form');
+const botaoBusca = formularioBusca?.querySelector('button[type="submit"]');
 const campoBusca = document.querySelector('#catalogo-busca');
-const filtroCategoria = document.querySelector('#catalogo-categoria');
-const filtroPlataforma = document.querySelector('#catalogo-plataforma');
 const resultadoCatalogo = document.querySelector('#catalogo-resultado');
 const vazioCatalogo = document.querySelector('#catalogo-vazio');
 
-if (catalogoTrack && catalogoViewport && campoBusca && filtroCategoria && filtroPlataforma) {
+if (catalogoTrack && catalogoViewport && formularioBusca && campoBusca) {
     let paginaCatalogo = 0;
     const gapCatalogo = 14;
     const cardsCatalogo = Array.from(catalogoTrack.querySelectorAll('.jogo-card'));
@@ -167,18 +167,11 @@ if (catalogoTrack && catalogoViewport && campoBusca && filtroCategoria && filtro
 
     function filtrarCatalogo() {
         const termo = normalizar(campoBusca.value.trim());
-        const categoriaSelecionada = normalizar(filtroCategoria.value);
-        const plataformaSelecionada = normalizar(filtroPlataforma.value);
         let quantidadeVisivel = 0;
 
         cardsCatalogo.forEach((card) => {
-            const titulo = card.querySelector('h3')?.textContent ?? '';
-            const categoria = card.querySelector('.jogo-categoria')?.textContent ?? '';
-            const plataforma = card.querySelector('.jogo-plataforma')?.textContent ?? '';
-            const textoPesquisa = normalizar(`${titulo} ${categoria} ${plataforma}`);
-            const corresponde = textoPesquisa.includes(termo)
-                && (!categoriaSelecionada || normalizar(categoria) === categoriaSelecionada)
-                && (!plataformaSelecionada || normalizar(plataforma) === plataformaSelecionada);
+            const titulo = normalizar(card.querySelector('h3')?.textContent ?? '');
+            const corresponde = titulo.includes(termo);
 
             card.style.display = corresponde ? '' : 'none';
             quantidadeVisivel += corresponde ? 1 : 0;
@@ -200,9 +193,43 @@ if (catalogoTrack && catalogoViewport && campoBusca && filtroCategoria && filtro
         atualizarCatalogo();
     });
 
+    function fecharBusca() {
+        formularioBusca.classList.remove('aberta');
+        botaoBusca?.setAttribute('aria-expanded', 'false');
+        botaoBusca?.setAttribute('aria-label', 'Abrir pesquisa');
+    }
+
+    formularioBusca.addEventListener('submit', (evento) => {
+        evento.preventDefault();
+
+        if (!formularioBusca.classList.contains('aberta')) {
+            formularioBusca.classList.add('aberta');
+            botaoBusca?.setAttribute('aria-expanded', 'true');
+            botaoBusca?.setAttribute('aria-label', 'Pesquisar');
+            campoBusca.focus();
+            return;
+        }
+
+        filtrarCatalogo();
+        document.querySelector('#biblioteca')?.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    campoBusca.addEventListener('keydown', (evento) => {
+        if (evento.key === 'Escape') {
+            campoBusca.value = '';
+            filtrarCatalogo();
+            fecharBusca();
+            botaoBusca?.focus();
+        }
+    });
+
+    document.addEventListener('click', (evento) => {
+        if (!formularioBusca.contains(evento.target)) {
+            fecharBusca();
+        }
+    });
+
     campoBusca.addEventListener('input', filtrarCatalogo);
-    filtroCategoria.addEventListener('change', filtrarCatalogo);
-    filtroPlataforma.addEventListener('change', filtrarCatalogo);
     window.addEventListener('resize', atualizarCatalogo);
     filtrarCatalogo();
 }

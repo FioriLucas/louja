@@ -26,7 +26,6 @@ if ($colunaDestaqueExiste) {
             FROM jogos
             JOIN categorias ON jogos.categoria_id = categorias.categoria_id
             WHERE jogos.ativo = 1
-              AND jogos.destaque_carrossel = 0
             ORDER BY RAND()
             LIMIT 27";
 
@@ -41,15 +40,10 @@ if ($colunaDestaqueExiste) {
     $todosJogos = $pdo->query($sqlBase)->fetchAll();
 
     $produtos = array_slice($todosJogos, 0, 5);
-    $catalogo = array_slice($todosJogos, 5);
+    $catalogo = array_slice($todosJogos, 5, 27);
     shuffle($catalogo);
-    $catalogo = array_slice($catalogo, 0, 27);
 }
 
-$categoriasCatalogo = array_unique(array_column($catalogo, 'categoria'));
-$plataformasCatalogo = array_unique(array_column($catalogo, 'plataforma'));
-sort($categoriasCatalogo, SORT_NATURAL | SORT_FLAG_CASE);
-sort($plataformasCatalogo, SORT_NATURAL | SORT_FLAG_CASE);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -65,6 +59,15 @@ sort($plataformasCatalogo, SORT_NATURAL | SORT_FLAG_CASE);
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
 
     <nav>
+        <form class="busca-header" id="catalogo-busca-form" role="search" aria-label="Pesquisar jogos">
+            <button type="submit" aria-label="Abrir pesquisa" aria-expanded="false" aria-controls="catalogo-busca">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <circle cx="10.8" cy="10.8" r="6.8"></circle>
+                    <path d="m16 16 5 5"></path>
+                </svg>
+            </button>
+            <input id="catalogo-busca" type="search" placeholder="Buscar jogos..." aria-label="Buscar jogos pelo título">
+        </form>
         <a href="index.php">Jogos</a>
         <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
 
@@ -124,37 +127,12 @@ sort($plataformasCatalogo, SORT_NATURAL | SORT_FLAG_CASE);
         <div class="biblioteca-cabecalho">
             <div>
                 <h2>Explore nossos jogos</h2>
-                <p>Pesquise e filtre os t&iacute;tulos dispon&iacute;veis na Louja.</p>
+                <p>Confira os t&iacute;tulos dispon&iacute;veis na Louja.</p>
             </div>
             <div class="biblioteca-controles">
                 <button class="catalogo-seta catalogo-anterior" type="button" aria-label="Jogos anteriores">&lsaquo;</button>
                 <button class="catalogo-seta catalogo-proximo" type="button" aria-label="Pr&oacute;ximos jogos">&rsaquo;</button>
             </div>
-        </div>
-
-        <div class="catalogo-filtros" role="search" aria-label="Pesquisar e filtrar jogos">
-            <label class="catalogo-busca">
-                <span>Pesquisar</span>
-                <input id="catalogo-busca" type="search" placeholder="Nome, categoria ou plataforma">
-            </label>
-            <label>
-                <span>Categoria</span>
-                <select id="catalogo-categoria">
-                    <option value="">Todas</option>
-                    <?php foreach ($categoriasCatalogo as $categoria): ?>
-                        <option value="<?= htmlspecialchars($categoria, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($categoria) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </label>
-            <label>
-                <span>Plataforma</span>
-                <select id="catalogo-plataforma">
-                    <option value="">Todas</option>
-                    <?php foreach ($plataformasCatalogo as $plataforma): ?>
-                        <option value="<?= htmlspecialchars($plataforma, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($plataforma) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </label>
         </div>
 
         <p class="catalogo-resultado" id="catalogo-resultado" aria-live="polite"></p>
@@ -179,7 +157,7 @@ sort($plataformasCatalogo, SORT_NATURAL | SORT_FLAG_CASE);
         </div>
 
         <div class="catalogo-vazio" id="catalogo-vazio" <?= empty($catalogo) ? '' : 'hidden' ?>>
-            Nenhum jogo encontrado com esses filtros.
+            Nenhum jogo encontrado com esse nome.
         </div>
     </section>
 </main>
