@@ -8,7 +8,18 @@ if (!isset($_SESSION['usr_id']) || $_SESSION['usr_perfil'] !== 'admin') {
 }
 
 $produtos = $pdo->query(
-    "SELECT jogos.*, categorias.nome AS categoria
+    "SELECT jogos.*,
+            COALESCE((
+                SELECT GROUP_CONCAT(jc.nome SEPARATOR ', ')
+                FROM jogo_categorias AS jcat
+                JOIN categorias AS jc ON jc.categoria_id = jcat.categoria_id
+                WHERE jcat.jogo_id = jogos.jogo_id
+            ), categorias.nome, 'Sem categoria') AS categoria,
+            COALESCE((
+                SELECT GROUP_CONCAT(jp.plataforma SEPARATOR ', ')
+                FROM jogo_plataformas AS jp
+                WHERE jp.jogo_id = jogos.jogo_id
+            ), jogos.plataforma) AS plataformas
      FROM jogos
      LEFT JOIN categorias ON jogos.categoria_id = categorias.categoria_id
      ORDER BY jogos.jogo_id DESC"
@@ -57,8 +68,7 @@ $produtos = $pdo->query(
                 <div class="jogo-card-info">
                     <h3><?= htmlspecialchars($produto['titulo']) ?></h3>
                     <span class="admin-card-meta">
-                        <?= htmlspecialchars($produto['plataforma']) ?>
-                        &middot; Estoque: <?= (int) $produto['quantidade_estoque'] ?>
+                        <?= htmlspecialchars($produto['plataformas']) ?>
                     </span>
                     <strong>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></strong>
                 </div>

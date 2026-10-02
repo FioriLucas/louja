@@ -741,6 +741,45 @@ textarea {
     margin: 30px 0;
 }
 
+.selecao-opcoes {
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+.selecao-opcoes legend {
+    padding: 0 6px;
+    font-weight: 700;
+}
+
+.opcoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px 16px;
+}
+
+.opcao-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.opcao-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    margin: 0;
+    accent-color: #9b4dff;
+}
+
+.campo-ajuda {
+    margin-bottom: -8px;
+    color: #666;
+}
+
 button {
     font: inherit;
 }

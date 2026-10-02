@@ -18,26 +18,80 @@ if (!$produto) {
     exit;
 }
 
-$categorias = $pdo->query("SELECT * FROM categorias ORDER BY nome")->fetchAll();
+$categorias = $pdo->query(
+    "SELECT MIN(categoria_id) AS categoria_id, nome
+     FROM categorias
+     GROUP BY nome
+     ORDER BY nome"
+)->fetchAll();
+$plataformas = ['PC', 'PlayStation 4', 'PlayStation 5', 'Xbox One', 'Xbox Series X|S', 'Nintendo Switch'];
+$categoriasPermitidas = array_map('intval', array_column($categorias, 'categoria_id'));
+
+$stmt = $pdo->prepare('SELECT plataforma FROM jogo_plataformas WHERE jogo_id = ?');
+$stmt->execute([$id]);
+$plataformasSelecionadas = $stmt->fetchAll(PDO::FETCH_COLUMN);
+if (!$plataformasSelecionadas) {
+    $plataformasSelecionadas = [$produto['plataforma']];
+}
+
+$stmt = $pdo->prepare('SELECT categoria_id FROM jogo_categorias WHERE jogo_id = ?');
+$stmt->execute([$id]);
+$categoriasSelecionadas = array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
+if (!$categoriasSelecionadas) {
+    $categoriasSelecionadas = [(int) $produto['categoria_id']];
+}
+$erro = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $sql = "UPDATE jogos SET categoria_id=?, titulo=?, descricao=?, plataforma=?,
-            preco=?, quantidade_estoque=?, img_url=? WHERE jogo_id=?";
+    $plataformasEnviadas = is_array($_POST['plataformas'] ?? null) ? $_POST['plataformas'] : [];
+    $plataformasSelecionadas = array_values(array_unique(array_filter(
+        $plataformasEnviadas,
+        fn($plataforma) => is_string($plataforma) && in_array($plataforma, $plataformas, true)
+    )));
+    $categoriasEnviadas = is_array($_POST['categorias'] ?? null) ? $_POST['categorias'] : [];
+    $categoriasSelecionadas = array_values(array_unique(array_intersect(
+        array_map('intval', $categoriasEnviadas),
+        $categoriasPermitidas
+    )));
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        $_POST['categoria_id'],
-        $_POST['titulo'],
-        $_POST['descricao'],
-        $_POST['plataforma'],
-        $_POST['preco'],
-        $_POST['estoque'],
-        $_POST['img_url'],
-        $id
-    ]);
+    if (!$plataformasSelecionadas || !$categoriasSelecionadas) {
+        $erro = 'Selecione pelo menos uma plataforma e um gênero.';
+    } else {
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare(
+            "UPDATE jogos SET categoria_id=?, titulo=?, descricao=?, plataforma=?,
+             preco=?, img_url=? WHERE jogo_id=?"
+        );
+        $stmt->execute([
+            $categoriasSelecionadas[0],
+            $_POST['titulo'],
+            $_POST['descricao'],
+            $plataformasSelecionadas[0],
+            $_POST['preco'],
+            $_POST['img_url'],
+            $id
+        ]);
 
-    header('Location: index.php');
-    exit;
+        $pdo->prepare('DELETE FROM jogo_plataformas WHERE jogo_id = ?')->execute([$id]);
+        $stmtPlataforma = $pdo->prepare(
+            'INSERT INTO jogo_plataformas (jogo_id, plataforma) VALUES (?, ?)'
+        );
+        foreach ($plataformasSelecionadas as $plataforma) {
+            $stmtPlataforma->execute([$id, $plataforma]);
+        }
+
+        $pdo->prepare('DELETE FROM jogo_categorias WHERE jogo_id = ?')->execute([$id]);
+        $stmtCategoria = $pdo->prepare(
+            'INSERT INTO jogo_categorias (jogo_id, categoria_id) VALUES (?, ?)'
+        );
+        foreach ($categoriasSelecionadas as $categoriaId) {
+            $stmtCategoria->execute([$id, $categoriaId]);
+        }
+
+        $pdo->commit();
+        header('Location: index.php');
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -52,21 +106,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Editar produto</h1>
 
     <form method="POST" class="form-admin">
+        <?php if ($erro): ?>
+            <p role="alert"><?= htmlspecialchars($erro) ?></p>
+        <?php endif; ?>
         <input name="titulo" value="<?= htmlspecialchars($produto['titulo']) ?>" required>
         <textarea name="descricao"><?= htmlspecialchars($produto['descricao']) ?></textarea>
-        <input name="plataforma" value="<?= htmlspecialchars($produto['plataforma']) ?>" required>
+        <fieldset class="selecao-opcoes">
+            <legend>Plataformas</legend>
+            <div class="opcoes-grid">
+            <?php foreach ($plataformas as $plataforma): ?>
+                <label class="opcao-check">
+                    <input type="checkbox" name="plataformas[]" value="<?= htmlspecialchars($plataforma) ?>"
+                        <?= in_array($plataforma, $plataformasSelecionadas, true) ? 'checked' : '' ?>>
+                    <?= htmlspecialchars($plataforma) ?>
+                </label>
+            <?php endforeach; ?>
+            </div>
+        </fieldset>
         <input type="number" step="0.01" name="preco" value="<?= $produto['preco'] ?>" required>
-        <input type="number" name="estoque" value="<?= $produto['quantidade_estoque'] ?>" required>
+        <small class="campo-ajuda">A imagem deve ter 1024x1024 px.</small>
         <input name="img_url" value="<?= htmlspecialchars($produto['img_url']) ?>">
 
-        <select name="categoria_id">
+        <fieldset class="selecao-opcoes">
+            <legend>Gêneros</legend>
+            <div class="opcoes-grid">
             <?php foreach ($categorias as $categoria): ?>
-                <option value="<?= $categoria['categoria_id'] ?>"
-                    <?= $categoria['categoria_id'] == $produto['categoria_id'] ? 'selected' : '' ?>>
+                <label class="opcao-check">
+                    <input type="checkbox" name="categorias[]" value="<?= $categoria['categoria_id'] ?>"
+                        <?= in_array((int) $categoria['categoria_id'], $categoriasSelecionadas, true) ? 'checked' : '' ?>>
                     <?= htmlspecialchars($categoria['nome']) ?>
-                </option>
+                </label>
             <?php endforeach; ?>
-        </select>
+            </div>
+        </fieldset>
 
         <button class="botao" type="submit">Salvar alterações</button>
     </form>
