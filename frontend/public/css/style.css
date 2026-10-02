@@ -60,6 +60,85 @@ nav a:hover {
     opacity: .7;
 }
 
+.busca-header {
+    display: flex;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    margin: 0 -12px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    transition: width .32s ease, flex-basis .32s ease, border-color .2s ease, background .2s ease;
+}
+
+.busca-header.aberta {
+    flex-basis: 260px;
+    width: 260px;
+    border-color: #b36aff;
+    background: rgba(15,15,18,.94);
+}
+
+.busca-header input {
+    flex: 1 1 auto;
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .18s ease .08s, padding .32s ease, visibility 0s linear .32s;
+}
+
+.busca-header.aberta input {
+    padding: 0 12px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .18s ease .08s, padding .32s ease;
+}
+
+.busca-header input::placeholder {
+    color: rgba(255,255,255,.68);
+}
+
+.busca-header input::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
+.busca-header button {
+    display: grid;
+    flex: 0 0 38px;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+}
+
+.busca-header button:focus-visible {
+    outline: 2px solid #b36aff;
+    outline-offset: -3px;
+}
+
+.busca-header button:hover {
+    color: #c78fff;
+}
+
+.busca-header svg {
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2;
+}
+
 /* =========================
    HERO / CARROSSEL
 ========================= */
@@ -329,43 +408,6 @@ nav a:hover {
 .catalogo-seta:disabled {
     opacity: .35;
     cursor: default;
-}
-
-.catalogo-filtros {
-    display: grid;
-    grid-template-columns: minmax(240px, 2fr) repeat(2, minmax(150px, 1fr));
-    gap: 12px;
-    margin-bottom: 12px;
-    padding: 16px;
-    border: 1px solid #dedede;
-    background: #fff;
-}
-
-.catalogo-filtros label {
-    display: grid;
-    gap: 7px;
-    color: #4d4d4d;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.catalogo-filtros input,
-.catalogo-filtros select {
-    width: 100%;
-    height: 42px;
-    padding: 0 12px;
-    border: 1px solid #cfcfcf;
-    border-radius: 3px;
-    background: #fff;
-    color: #171717;
-    font: inherit;
-    font-size: 14px;
-}
-
-.catalogo-filtros input:focus,
-.catalogo-filtros select:focus {
-    outline: 2px solid #9b4dff;
-    outline-offset: 1px;
 }
 
 .catalogo-resultado {
@@ -807,6 +849,15 @@ button {
         font-size: 11px;
     }
 
+    .busca-header {
+        margin: 0 -4px;
+    }
+
+    .busca-header.aberta {
+        flex-basis: min(240px, 40vw);
+        width: min(240px, 40vw);
+    }
+
     nav span {
         display: none;
     }
@@ -855,6 +906,43 @@ button {
 }
 
 @media (max-width: 500px) {
+    header {
+        padding: 0 12px;
+    }
+
+    .logo img {
+        width: 72px;
+    }
+
+    .busca-header {
+        flex: 0 0 38px;
+        width: 38px;
+        height: 38px;
+    }
+
+    .busca-header.aberta {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        flex-basis: min(190px, calc(100vw - 150px));
+        width: min(190px, calc(100vw - 150px));
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+
+    nav {
+        position: relative;
+    }
+
+    .busca-header input {
+        padding: 0;
+        font-size: 12px;
+    }
+
+    .busca-header button {
+        flex-basis: 36px;
+    }
+
     nav a:nth-child(1) {
         display: none;
     }
@@ -893,11 +981,6 @@ button {
     .biblioteca-cabecalho {
         align-items: flex-start;
         flex-direction: column;
-    }
-
-    .catalogo-filtros {
-        grid-template-columns: 1fr;
-        padding: 12px;
     }
 
     .jogo-detalhe {
