@@ -797,8 +797,120 @@ textarea {
     margin-right: 15px;
 }
 
+.admin {
+    width: min(1450px, 92%);
+    margin-top: 125px;
+}
+
+.admin-cabecalho {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.admin-cabecalho h1 {
+    margin: 0 0 8px;
+}
+
+.admin-cabecalho p,
+.admin-card-meta {
+    color: #666;
+}
+
+.admin-catalogo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+    gap: 16px;
+}
+
+.admin-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-card .jogo-categoria {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    display: block;
+    padding: 5px 7px;
+    background: rgba(0, 0, 0, .72);
+    color: #fff;
+    font-size: 11px;
+}
+
+.admin-card-info {
+    flex: 1;
+}
+
+.admin-card-meta {
+    font-size: 11px;
+}
+
+.admin-acoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 10px 10px;
+}
+
+.admin-acoes a {
+    justify-content: center;
+    padding: 10px 6px;
+    font-size: 11px;
+}
+
+.admin-acoes .admin-excluir {
+    background: #b42d36;
+}
+
+.admin-acoes .admin-excluir:hover {
+    background: #901f27;
+}
+
 .form-admin {
     margin: 30px 0;
+}
+
+.selecao-opcoes {
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+.selecao-opcoes legend {
+    padding: 0 6px;
+    font-weight: 700;
+}
+
+.opcoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px 16px;
+}
+
+.opcao-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.opcao-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    margin: 0;
+    accent-color: #9b4dff;
+}
+
+.campo-ajuda {
+    margin-bottom: -8px;
+    color: #666;
 }
 
 button {
@@ -809,6 +921,11 @@ button {
    RESPONSIVO
 ========================= */
 @media (max-width: 800px) {
+    .admin-cabecalho {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
     header {
         height: 70px;
         padding: 0 20px;

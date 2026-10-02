@@ -15,11 +15,31 @@ CREATE TABLE IF NOT EXISTS usuarios (
     perfil ENUM('cliente', 'admin') DEFAULT 'cliente'
 );
 
+<<<<<<< HEAD
+INSERT INTO usuarios (nome, email, senha, perfil)
+VALUES (
+    'Administrador',
+    'admin@louja.com',
+    '$2y$10$sPN1FRZP84eiYnGpr7mOsePRgEFFhHkb7hUL3KKUzEwQJ26S6HkKm',
+    'admin'
+)
+ON DUPLICATE KEY UPDATE
+    nome = 'Administrador',
+    senha = '$2y$10$sPN1FRZP84eiYnGpr7mOsePRgEFFhHkb7hUL3KKUzEwQJ26S6HkKm',
+    perfil = 'admin';
+
 CREATE TABLE IF NOT EXISTS categorias (
     categoria_id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL
 );
 
+=======
+CREATE TABLE IF NOT EXISTS categorias (
+    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
+);
+
+>>>>>>> 4619d205c57a50667714ed390d08fffb7a135166
 INSERT INTO categorias (nome) VALUES
 ('RPG'),
 ('Ação'),

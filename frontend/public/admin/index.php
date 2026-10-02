@@ -7,7 +7,23 @@ if (!isset($_SESSION['usr_id']) || $_SESSION['usr_perfil'] !== 'admin') {
     exit;
 }
 
-$produtos = $pdo->query("SELECT * FROM jogos ORDER BY jogo_id DESC")->fetchAll();
+$produtos = $pdo->query(
+    "SELECT jogos.*,
+            COALESCE((
+                SELECT GROUP_CONCAT(jc.nome SEPARATOR ', ')
+                FROM jogo_categorias AS jcat
+                JOIN categorias AS jc ON jc.categoria_id = jcat.categoria_id
+                WHERE jcat.jogo_id = jogos.jogo_id
+            ), categorias.nome, 'Sem categoria') AS categoria,
+            COALESCE((
+                SELECT GROUP_CONCAT(jp.plataforma SEPARATOR ', ')
+                FROM jogo_plataformas AS jp
+                WHERE jp.jogo_id = jogos.jogo_id
+            ), jogos.plataforma) AS plataformas
+     FROM jogos
+     LEFT JOIN categorias ON jogos.categoria_id = categorias.categoria_id
+     ORDER BY jogos.jogo_id DESC"
+)->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -18,25 +34,58 @@ $produtos = $pdo->query("SELECT * FROM jogos ORDER BY jogo_id DESC")->fetchAll()
 </head>
 <body>
 
-<div class="admin">
-    <h1>Painel administrativo</h1>
-    <p>Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></p>
+<header>
+    <a href="../index.php" class="logo">
+        <img src="../../../docs/logolouja.png" alt="Louja">
+    </a>
+    <nav>
+        <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
+        <a href="../index.php">Voltar para a loja</a>
+        <a href="../logout.php">Sair</a>
+    </nav>
+</header>
 
-    <a class="botao" href="adicionar.php">+ Adicionar produto</a>
-    <a href="../index.php">Voltar para a loja</a>
+<main class="admin">
+    <div class="admin-cabecalho">
+        <div>
+            <h1>Painel administrativo</h1>
+            <p>Gerencie os produtos da loja.</p>
+        </div>
+        <a class="botao" href="adicionar.php">+ Adicionar produto</a>
+    </div>
 
-    <div class="tabela">
+    <div class="admin-catalogo">
         <?php foreach ($produtos as $produto): ?>
-            <div class="linha">
-                <strong><?= htmlspecialchars($produto['titulo']) ?></strong>
-                <span>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></span>
-                <a href="editar.php?id=<?= $produto['jogo_id'] ?>">Editar</a>
-                <a href="excluir.php?id=<?= $produto['jogo_id'] ?>"
-                   onclick="return confirm('Excluir este produto?')">Excluir</a>
-            </div>
+            <article class="jogo-card admin-card">
+                <div class="jogo-card-imagem">
+                    <img src="<?= htmlspecialchars($produto['img_url'] ?? '') ?>"
+                         alt="Capa de <?= htmlspecialchars($produto['titulo']) ?>"
+                         loading="lazy">
+                    <span class="jogo-categoria">
+                        <?= htmlspecialchars($produto['categoria'] ?? 'Sem categoria') ?>
+                    </span>
+                </div>
+                <div class="jogo-card-info">
+                    <h3><?= htmlspecialchars($produto['titulo']) ?></h3>
+                    <span class="admin-card-meta">
+                        <?= htmlspecialchars($produto['plataformas']) ?>
+                    </span>
+                    <strong>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></strong>
+                </div>
+                <div class="admin-acoes">
+                    <a class="botao" href="editar.php?id=<?= (int) $produto['jogo_id'] ?>">Editar</a>
+                    <a class="botao admin-excluir"
+                       href="excluir.php?id=<?= (int) $produto['jogo_id'] ?>"
+                       onclick="return confirm('Excluir este produto?')">Excluir</a>
+                </div>
+            </article>
         <?php endforeach; ?>
     </div>
-</div>
+
+    <?php if (empty($produtos)): ?>
+        <div class="catalogo-vazio">Nenhum produto cadastrado.</div>
+    <?php endif; ?>
+</main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
