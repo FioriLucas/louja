@@ -517,6 +517,97 @@ nav a:hover {
     display: none;
 }
 
+.vitrine-jogos {
+    width: min(1450px, 92%);
+    margin: 0 auto 32px;
+}
+
+.vitrine-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 12px;
+}
+
+.vitrine-cabecalho h2 {
+    font-size: 21px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.vitrine-cabecalho p {
+    margin-top: 4px;
+    color: #666;
+    font-size: 13px;
+}
+
+.vitrine-controles {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+}
+
+.vitrine-seta {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid #bdbdbd;
+    border-radius: 50%;
+    background: transparent;
+    color: #111;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, opacity .2s ease;
+}
+
+.vitrine-seta:hover:not(:disabled) {
+    background: #111;
+    color: #fff;
+}
+
+.vitrine-seta:disabled {
+    opacity: .35;
+    cursor: default;
+}
+
+.vitrine-viewport {
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+}
+
+.vitrine-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.vitrine-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: var(--card-width, 165px);
+    gap: 14px;
+    width: max-content;
+    padding: 2px 1px 8px;
+}
+
+.vitrine-card {
+    scroll-snap-align: start;
+}
+
+@media (max-width: 600px) {
+    .vitrine-jogos {
+        width: 92%;
+    }
+
+    .vitrine-seta {
+        width: 34px;
+        height: 34px;
+    }
+}
+
 /* =========================
    PÁGINA DO JOGO
 ========================= */

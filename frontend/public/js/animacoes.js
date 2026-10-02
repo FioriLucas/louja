@@ -126,6 +126,8 @@ const botaoBusca = formularioBusca?.querySelector('button[type="submit"]');
 const campoBusca = document.querySelector('#catalogo-busca');
 const resultadoCatalogo = document.querySelector('#catalogo-resultado');
 const vazioCatalogo = document.querySelector('#catalogo-vazio');
+const carrosselDestaques = document.querySelector('.hero-carousel');
+const secoesVitrine = Array.from(document.querySelectorAll('[data-vitrine]'));
 
 if (catalogoTrack && catalogoViewport && formularioBusca && campoBusca) {
     let paginaCatalogo = 0;
@@ -171,14 +173,28 @@ if (catalogoTrack && catalogoViewport && formularioBusca && campoBusca) {
 
         cardsCatalogo.forEach((card) => {
             const titulo = normalizar(card.querySelector('h3')?.textContent ?? '');
-            const corresponde = titulo.includes(termo);
+            const corresponde = termo
+                ? titulo.includes(termo)
+                : card.dataset.catalogoInicial === 'true';
 
             card.style.display = corresponde ? '' : 'none';
             quantidadeVisivel += corresponde ? 1 : 0;
         });
 
-        resultadoCatalogo.textContent = `${quantidadeVisivel} de ${cardsCatalogo.length} jogos`;
+        if (termo) {
+            const rotuloResultado = quantidadeVisivel === 1 ? 'resultado' : 'resultados';
+            resultadoCatalogo.textContent = `${quantidadeVisivel} ${rotuloResultado} para "${campoBusca.value.trim()}"`;
+        } else {
+            resultadoCatalogo.textContent = `${quantidadeVisivel} de ${cardsCatalogo.length} jogos`;
+        }
+
         vazioCatalogo.hidden = quantidadeVisivel > 0;
+        secoesVitrine.forEach((secao) => {
+            secao.hidden = Boolean(termo);
+        });
+        if (carrosselDestaques) {
+            carrosselDestaques.hidden = Boolean(termo);
+        }
         paginaCatalogo = 0;
         atualizarCatalogo();
     }
@@ -233,3 +249,52 @@ if (catalogoTrack && catalogoViewport && formularioBusca && campoBusca) {
     window.addEventListener('resize', atualizarCatalogo);
     filtrarCatalogo();
 }
+
+document.querySelectorAll('[data-vitrine]').forEach((vitrine) => {
+    const viewport = vitrine.querySelector('.vitrine-viewport');
+    const track = vitrine.querySelector('.vitrine-track');
+    const botoes = Array.from(vitrine.querySelectorAll('.vitrine-seta'));
+
+    if (!viewport || !track || botoes.length !== 2) return;
+
+    function cardsVisiveis() {
+        if (window.innerWidth <= 600) return 2;
+        if (window.innerWidth <= 900) return 4;
+        if (window.innerWidth <= 1200) return 6;
+        return 9;
+    }
+
+    function atualizarSetas() {
+        const gap = 14;
+        const visiveis = cardsVisiveis();
+        const larguraCard = (viewport.clientWidth - gap * (visiveis - 1)) / visiveis;
+        const limiteScroll = viewport.scrollWidth - viewport.clientWidth;
+        const posicaoAtual = viewport.scrollLeft;
+
+        track.style.setProperty('--card-width', `${larguraCard}px`);
+        track.style.gap = `${gap}px`;
+
+        botoes.forEach((botao) => {
+            const direcao = Number(botao.dataset.direcao);
+            botao.disabled = direcao < 0
+                ? posicaoAtual <= 2
+                : posicaoAtual >= limiteScroll - 2;
+        });
+    }
+
+    botoes.forEach((botao) => {
+        botao.addEventListener('click', () => {
+            viewport.scrollBy({
+                left: viewport.clientWidth * Number(botao.dataset.direcao) * 0.85,
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    viewport.addEventListener('scroll', atualizarSetas, { passive: true });
+    window.addEventListener('resize', () => {
+        atualizarSetas();
+        viewport.scrollLeft = 0;
+    });
+    atualizarSetas();
+});

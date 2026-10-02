@@ -44,6 +44,41 @@ if ($colunaDestaqueExiste) {
     shuffle($catalogo);
 }
 
+$sqlVitrine = "SELECT jogos.*, categorias.nome AS categoria
+        FROM jogos
+        JOIN categorias ON jogos.categoria_id = categorias.categoria_id
+        WHERE jogos.ativo = 1
+        ORDER BY jogos.titulo";
+$jogosVitrine = $pdo->query($sqlVitrine)->fetchAll();
+$categoriasVitrine = $pdo->query("SELECT nome FROM categorias
+        ORDER BY CASE nome WHEN 'Ação' THEN 0 WHEN 'Esportes' THEN 1 ELSE 2 END, nome")
+    ->fetchAll(PDO::FETCH_COLUMN);
+
+$idsCatalogoPesquisa = array_fill_keys(array_column($catalogo, 'jogo_id'), true);
+$jogosCatalogoPesquisa = $catalogo;
+foreach ($jogosVitrine as $jogoVitrine) {
+    if (!isset($idsCatalogoPesquisa[$jogoVitrine['jogo_id']])) {
+        $jogosCatalogoPesquisa[] = $jogoVitrine;
+    }
+}
+
+$jogosPorCategoria = [];
+foreach ($jogosVitrine as $jogoVitrine) {
+    $jogosPorCategoria[$jogoVitrine['categoria']][] = $jogoVitrine;
+}
+
+$ofertasVitrine = $jogosVitrine;
+usort($ofertasVitrine, function ($jogoA, $jogoB) {
+    return (float) $jogoA['preco'] <=> (float) $jogoB['preco'];
+});
+
+$secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
+foreach ($categoriasVitrine as $categoriaVitrine) {
+    if (!empty($jogosPorCategoria[$categoriaVitrine])) {
+        $secoesVitrine[$categoriaVitrine] = $jogosPorCategoria[$categoriaVitrine];
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -138,8 +173,11 @@ if ($colunaDestaqueExiste) {
         <p class="catalogo-resultado" id="catalogo-resultado" aria-live="polite"></p>
         <div class="catalogo-viewport">
             <div class="catalogo-track">
-                <?php foreach ($catalogo as $produto): ?>
-                    <a class="jogo-card" href="jogo.php?id=<?= $produto['jogo_id'] ?>">
+                <?php foreach ($jogosCatalogoPesquisa as $indiceCatalogo => $produto): ?>
+                    <a class="jogo-card"
+                       href="jogo.php?id=<?= $produto['jogo_id'] ?>"
+                       data-catalogo-inicial="<?= $indiceCatalogo < count($catalogo) ? 'true' : 'false' ?>"
+                       style="<?= $indiceCatalogo >= count($catalogo) ? 'display: none;' : '' ?>">
                         <div class="jogo-card-imagem">
                             <img src="<?= htmlspecialchars($produto['img_url']) ?>"
                                  alt="Capa de <?= htmlspecialchars($produto['titulo']) ?>"
@@ -160,6 +198,40 @@ if ($colunaDestaqueExiste) {
             Nenhum jogo encontrado com esse nome.
         </div>
     </section>
+
+    <?php foreach ($secoesVitrine as $nomeSecao => $jogosSecao): ?>
+        <section class="vitrine-jogos" data-vitrine>
+            <div class="vitrine-cabecalho">
+                <div>
+                    <h2><?= htmlspecialchars($nomeSecao) ?></h2>
+                    <?php if ($nomeSecao === 'Ofertas'): ?>
+                        <p>Uma sele&ccedil;&atilde;o dos menores pre&ccedil;os da loja.</p>
+                    <?php endif; ?>
+                </div>
+                <div class="vitrine-controles">
+                    <button class="vitrine-seta" type="button" data-direcao="-1" aria-label="Jogos anteriores de <?= htmlspecialchars($nomeSecao) ?>">&lsaquo;</button>
+                    <button class="vitrine-seta" type="button" data-direcao="1" aria-label="Pr&oacute;ximos jogos de <?= htmlspecialchars($nomeSecao) ?>">&rsaquo;</button>
+                </div>
+            </div>
+            <div class="vitrine-viewport">
+                <div class="vitrine-track">
+                    <?php foreach ($jogosSecao as $produto): ?>
+                        <a class="jogo-card vitrine-card" href="jogo.php?id=<?= $produto['jogo_id'] ?>">
+                            <div class="jogo-card-imagem">
+                                <img src="<?= htmlspecialchars($produto['img_url']) ?>"
+                                     alt="Capa de <?= htmlspecialchars($produto['titulo']) ?>"
+                                     loading="lazy">
+                            </div>
+                            <div class="jogo-card-info">
+                                <h3><?= htmlspecialchars($produto['titulo']) ?></h3>
+                                <strong>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></strong>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+    <?php endforeach; ?>
 </main>
 
 <script src="js/animacoes.js"></script>
