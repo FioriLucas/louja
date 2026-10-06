@@ -104,7 +104,7 @@ foreach ($categoriasVitrine as $categoriaVitrine) {
             </button>
             <input id="catalogo-busca" type="search" placeholder="Buscar jogos..." aria-label="Buscar jogos pelo título">
         </form>
-        <a href="index.php">Jogos</a>
+        <a href="jogos.php">Jogos</a>
         <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
 
         <?php if (isset($_SESSION['usr_id'])): ?>

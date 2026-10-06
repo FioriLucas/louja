@@ -517,6 +517,127 @@ nav a:hover {
     display: none;
 }
 
+.catalogo-completo-pagina {
+    width: min(1450px, 92%);
+    margin: 0 auto;
+    padding: 125px 0 80px;
+}
+
+.catalogo-completo-cabecalho {
+    margin-bottom: 24px;
+}
+
+.catalogo-completo-cabecalho h1 {
+    margin-bottom: 8px;
+    font-size: 32px;
+}
+
+.catalogo-completo-cabecalho p {
+    color: #666;
+}
+
+.catalogo-completo-filtros {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(220px, 300px) auto;
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.catalogo-completo-busca,
+.catalogo-completo-filtro {
+    display: grid;
+    gap: 6px;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.catalogo-completo-busca input,
+.catalogo-completo-filtro select {
+    min-width: 0;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.catalogo-completo-limpar {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    background: #fff;
+    color: #222;
+    cursor: pointer;
+    transition: border-color .2s ease, color .2s ease;
+}
+
+.catalogo-completo-limpar:hover {
+    border-color: #9b4dff;
+    color: #7f32e6;
+}
+
+.catalogo-completo-resultado {
+    min-height: 20px;
+    margin-bottom: 12px;
+    color: #666;
+    font-size: 13px;
+}
+
+.catalogo-completo-grade {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+    gap: 14px;
+}
+
+.catalogo-completo-card[hidden] {
+    display: none;
+}
+
+.catalogo-completo-card .jogo-categoria {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    display: block;
+    max-width: calc(100% - 16px);
+    padding: 5px 7px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, .72);
+    color: #fff;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.catalogo-completo-card .jogo-card-info {
+    min-height: 106px;
+}
+
+.catalogo-completo-card .jogo-card-info h2 {
+    height: 34px;
+    margin: 0;
+    overflow: hidden;
+    color: #171717;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.28;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.catalogo-completo-plataformas {
+    display: -webkit-box;
+    overflow: hidden;
+    color: #666;
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
 .vitrine-jogos {
     width: min(1450px, 92%);
     margin: 0 auto 32px;
@@ -605,6 +726,14 @@ nav a:hover {
     .vitrine-seta {
         width: 34px;
         height: 34px;
+    }
+
+    .catalogo-completo-filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .catalogo-completo-limpar {
+        width: 100%;
     }
 }
 
@@ -819,6 +948,39 @@ textarea {
     color: #666;
 }
 
+.admin-filtros {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(220px, 280px);
+    gap: 14px;
+    margin: 0 0 8px;
+}
+
+.admin-busca,
+.admin-filtro {
+    display: grid;
+    gap: 6px;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.admin-busca input,
+.admin-filtro select {
+    min-width: 0;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.admin-resultado {
+    min-height: 20px;
+    margin: 0 0 12px;
+    color: #666;
+    font-size: 13px;
+}
+
 .admin-catalogo {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
@@ -828,6 +990,10 @@ textarea {
 .admin-card {
     display: flex;
     flex-direction: column;
+}
+
+.admin-card[hidden] {
+    display: none;
 }
 
 .admin-card .jogo-categoria {
@@ -924,6 +1090,10 @@ button {
     .admin-cabecalho {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .admin-filtros {
+        grid-template-columns: 1fr;
     }
 
     header {

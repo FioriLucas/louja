@@ -39,7 +39,7 @@ foreach ($carrinho as $id => $quantidade) {
 <header>
     <a href="index.php" class="logo">LOUJA</a>
     <nav>
-        <a href="index.php">Jogos</a>
+        <a href="jogos.php">Jogos</a>
         <a href="carrinho.php">Carrinho</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <a href="logout.php">Sair</a>
