@@ -34,6 +34,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = 'Selecione pelo menos uma plataforma e um gênero.';
     } else {
         $pdo->beginTransaction();
+
+        $pdo->exec(
+            'DELETE jp
+             FROM jogo_plataformas AS jp
+             LEFT JOIN jogos ON jogos.jogo_id = jp.jogo_id
+             WHERE jogos.jogo_id IS NULL'
+        );
+        $pdo->exec(
+            'DELETE jc
+             FROM jogo_categorias AS jc
+             LEFT JOIN jogos ON jogos.jogo_id = jc.jogo_id
+             WHERE jogos.jogo_id IS NULL'
+        );
+
         $stmt = $pdo->prepare(
             "INSERT INTO jogos
              (categoria_id, titulo, descricao, plataforma, preco, quantidade_estoque, img_url)
