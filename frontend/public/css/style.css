@@ -1058,12 +1058,145 @@ textarea {
     gap: 8px 16px;
 }
 
+.selecao-opcoes {
+    padding: 18px 20px;
+    border-color: #e6e0ed;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(40, 20, 60, .04);
+}
+
+.selecao-opcoes-cabecalho,
+.dialogo-opcoes-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.selecao-opcoes-cabecalho h2,
+.dialogo-opcoes-cabecalho h2 {
+    margin: 0 0 5px;
+    color: #211b2a;
+    font-size: 17px;
+}
+
+.selecao-opcoes-cabecalho p,
+.dialogo-opcoes-cabecalho p {
+    margin: 0;
+    color: #746d7d;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.abrir-seletor {
+    display: inline-flex;
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    border: 1px solid #e2d5f1;
+    border-radius: 8px;
+    background: #f8f2ff;
+    color: #7833c2;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.abrir-seletor:hover {
+    border-color: #c9a8ee;
+    background: #f0e4ff;
+}
+
+.opcoes-ajuda {
+    min-height: 20px;
+    margin: 13px 0 0;
+    color: #8a8491;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.seletor-toggle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.seletor-toggle:focus-visible ~ .selecao-opcoes-cabecalho .abrir-seletor {
+    outline: 3px solid rgba(155, 77, 255, .35);
+    outline-offset: 3px;
+}
+
+.seletor-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease, visibility .18s ease;
+}
+
+.seletor-toggle:checked ~ .seletor-overlay {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.seletor-fundo {
+    position: absolute;
+    inset: 0;
+    background: rgba(24, 17, 32, .56);
+    backdrop-filter: blur(3px);
+}
+
+.dialogo-opcoes {
+    position: relative;
+    z-index: 1;
+    width: min(560px, calc(100% - 32px));
+    max-height: min(80vh, 620px);
+    padding: 24px;
+    overflow: auto;
+    border: 1px solid #e9e2f0;
+    border-radius: 16px;
+    background: #fff;
+    color: #211b2a;
+    box-shadow: 0 24px 80px rgba(23, 12, 36, .25);
+}
+
+.dialogo-opcoes .opcoes-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 22px 0;
+}
+
 .opcao-check {
     display: flex;
     align-items: center;
     gap: 8px;
     min-width: 0;
+    min-height: 46px;
+    padding: 10px 12px;
+    border: 1px solid #e8e3ec;
+    border-radius: 9px;
+    background: #fff;
+    color: #342d3b;
     cursor: pointer;
+    transition: border-color .18s ease, background .18s ease;
+}
+
+.opcao-check:has(input:checked) {
+    border-color: #b98ae9;
+    background: #f8f1ff;
+}
+
+.opcao-check:hover {
+    border-color: #c9a8ee;
 }
 
 .opcao-check input[type="checkbox"] {
@@ -1074,6 +1207,48 @@ textarea {
     accent-color: #9b4dff;
 }
 
+.dialogo-opcoes-acoes {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 14px;
+    border-top: 1px solid #eee9f2;
+}
+
+.confirmar-opcoes {
+    display: inline-flex;
+    min-width: 110px;
+    padding: 11px 18px;
+    border-radius: 8px;
+    background: #9347f5;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.confirmar-opcoes:hover {
+    background: #7d31df;
+}
+
+.fechar-dialogo {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    place-items: center;
+    padding: 0;
+    border-radius: 50%;
+    background: #f4f0f7;
+    color: #51485d;
+    cursor: pointer;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.fechar-dialogo:hover {
+    background: #eae2f0;
+}
+
 .campo-ajuda {
     margin-bottom: -8px;
     color: #666;
@@ -1081,6 +1256,25 @@ textarea {
 
 button {
     font: inherit;
+}
+
+@media (max-width: 560px) {
+    .selecao-opcoes {
+        padding: 15px;
+    }
+
+    .selecao-opcoes-cabecalho {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dialogo-opcoes {
+        padding: 19px;
+    }
+
+    .dialogo-opcoes .opcoes-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* =========================

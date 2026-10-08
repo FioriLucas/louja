@@ -10,6 +10,7 @@ if (!isset($_SESSION['usr_id']) || $_SESSION['usr_perfil'] !== 'admin') {
 $categorias = $pdo->query(
     "SELECT MIN(categoria_id) AS categoria_id, nome
      FROM categorias
+     WHERE nome <> 'Ação e Aventura'
      GROUP BY nome
      ORDER BY nome"
 )->fetchAll();
@@ -84,34 +85,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($erro): ?>
             <p role="alert"><?= htmlspecialchars($erro) ?></p>
         <?php endif; ?>
-        <fieldset class="selecao-opcoes">
-            <legend>Plataformas</legend>
-            <div class="opcoes-grid">
+        <section class="selecao-opcoes" aria-labelledby="titulo-plataformas">
+            <input class="seletor-toggle" type="checkbox" id="abrir-plataformas" aria-label="Abrir opções de plataformas">
+            <div class="selecao-opcoes-cabecalho">
+                <div>
+                    <h2 id="titulo-plataformas">Plataformas</h2>
+                    <p>Escolha onde este jogo pode ser jogado.</p>
+                </div>
+                <label class="abrir-seletor" for="abrir-plataformas">Escolher plataformas</label>
+            </div>
+            <p class="opcoes-ajuda">As opções marcadas serão salvas com o produto.</p>
+            <div class="seletor-overlay">
+                <label class="seletor-fundo" for="abrir-plataformas" aria-label="Fechar opções de plataformas"></label>
+                <section class="dialogo-opcoes" role="dialog" aria-modal="true" aria-labelledby="titulo-dialogo-plataformas">
+                    <div class="dialogo-opcoes-cabecalho">
+                        <div>
+                            <h2 id="titulo-dialogo-plataformas">Plataformas</h2>
+                            <p>Selecione uma ou mais opções.</p>
+                        </div>
+                        <label class="fechar-dialogo" for="abrir-plataformas" aria-label="Fechar">×</label>
+                    </div>
+                    <div class="opcoes-grid">
             <?php foreach ($plataformas as $plataforma): ?>
                 <label class="opcao-check">
                     <input type="checkbox" name="plataformas[]" value="<?= htmlspecialchars($plataforma) ?>"
                         <?= in_array($plataforma, $plataformasSelecionadas ?? [], true) ? 'checked' : '' ?>>
-                    <?= htmlspecialchars($plataforma) ?>
+                    <span><?= htmlspecialchars($plataforma) ?></span>
                 </label>
             <?php endforeach; ?>
+                    </div>
+                    <div class="dialogo-opcoes-acoes">
+                        <label class="confirmar-opcoes" for="abrir-plataformas">Concluir</label>
+                    </div>
+                </section>
             </div>
-        </fieldset>
+        </section>
         <input type="number" step="0.01" name="preco" placeholder="Preço" required>
         <small class="campo-ajuda">A imagem deve ter 1024x1024 px.</small>
         <input name="img_url" placeholder="URL da imagem">
 
-        <fieldset class="selecao-opcoes">
-            <legend>Gêneros</legend>
-            <div class="opcoes-grid">
+        <section class="selecao-opcoes" aria-labelledby="titulo-generos">
+            <input class="seletor-toggle" type="checkbox" id="abrir-generos" aria-label="Abrir opções de gêneros">
+            <div class="selecao-opcoes-cabecalho">
+                <div>
+                    <h2 id="titulo-generos">Gêneros</h2>
+                    <p>Ajude seus clientes a encontrar este jogo.</p>
+                </div>
+                <label class="abrir-seletor" for="abrir-generos">Escolher gêneros</label>
+            </div>
+            <p class="opcoes-ajuda">As opções marcadas serão salvas com o produto.</p>
+            <div class="seletor-overlay">
+                <label class="seletor-fundo" for="abrir-generos" aria-label="Fechar opções de gêneros"></label>
+                <section class="dialogo-opcoes" role="dialog" aria-modal="true" aria-labelledby="titulo-dialogo-generos">
+                    <div class="dialogo-opcoes-cabecalho">
+                        <div>
+                            <h2 id="titulo-dialogo-generos">Gêneros</h2>
+                            <p>Selecione um ou mais gêneros.</p>
+                        </div>
+                        <label class="fechar-dialogo" for="abrir-generos" aria-label="Fechar">×</label>
+                    </div>
+                    <div class="opcoes-grid">
             <?php foreach ($categorias as $categoria): ?>
                 <label class="opcao-check">
                     <input type="checkbox" name="categorias[]" value="<?= $categoria['categoria_id'] ?>"
                         <?= in_array((int) $categoria['categoria_id'], $categoriasSelecionadas ?? [], true) ? 'checked' : '' ?>>
-                    <?= htmlspecialchars($categoria['nome']) ?>
+                    <span><?= htmlspecialchars($categoria['nome']) ?></span>
                 </label>
             <?php endforeach; ?>
+                    </div>
+                    <div class="dialogo-opcoes-acoes">
+                        <label class="confirmar-opcoes" for="abrir-generos">Concluir</label>
+                    </div>
+                </section>
             </div>
-        </fieldset>
+        </section>
 
         <button class="botao" type="submit">Cadastrar</button>
     </form>

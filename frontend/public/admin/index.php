@@ -48,6 +48,7 @@ natcasesort($plataformasFiltro);
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Louja</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -141,14 +142,16 @@ natcasesort($plataformasFiltro);
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
-gsap.from(".admin", { opacity: 0, y: 25, duration: 0.6 });
+if (window.gsap) {
+    window.gsap.from(".admin", { opacity: 0, y: 25, duration: 0.6 });
+}
 
 const buscaAdmin = document.querySelector('#admin-busca');
 const filtroAdmin = document.querySelector('#admin-filtro');
 const resultadoAdmin = document.querySelector('#admin-resultado');
 const vazioAdmin = document.querySelector('#admin-vazio');
 const cardsAdmin = Array.from(document.querySelectorAll('.admin-card'));
-const normalizarAdmin = (valor) => valor
+const normalizarAdmin = (valor) => String(valor)
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLocaleLowerCase('pt-BR');
@@ -163,15 +166,25 @@ function filtrarJogosAdmin() {
 
     cardsAdmin.forEach((card) => {
         const titulo = normalizarAdmin(card.querySelector('h3')?.textContent ?? '');
+        const categorias = (card.dataset.categorias ?? '')
+            .split(',')
+            .map((opcao) => normalizarAdmin(opcao.trim()));
+        const plataformas = (card.dataset.plataformas ?? '')
+            .split(',')
+            .map((opcao) => normalizarAdmin(opcao.trim()));
         const opcoes = (card.dataset[tipo === 'categoria' ? 'categorias' : 'plataformas'] ?? '')
             .split(',')
             .map((opcao) => normalizarAdmin(opcao.trim()));
-        const corresponde = titulo.includes(termo) && (!tipo || opcoes.includes(valor));
+        const correspondeBusca = [titulo, ...categorias, ...plataformas]
+            .some((campo) => campo.includes(termo));
+        const correspondeFiltro = !tipo || opcoes.includes(valor);
+        const corresponde = correspondeBusca && correspondeFiltro;
         card.hidden = !corresponde;
         quantidadeVisivel += corresponde ? 1 : 0;
     });
 
-    resultadoAdmin.textContent = `${quantidadeVisivel} de ${cardsAdmin.length} jogos`;
+    const textoJogos = quantidadeVisivel === 1 ? 'jogo' : 'jogos';
+    resultadoAdmin.textContent = `${quantidadeVisivel} de ${cardsAdmin.length} ${textoJogos}`;
     if (vazioAdmin) vazioAdmin.hidden = quantidadeVisivel > 0;
 }
 

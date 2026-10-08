@@ -1,9 +1,9 @@
--- Execute depois de importar louja.sql. Atualiza o catalogo existente sem tocar em estoque ou preco.
+-- Execute depois de importar louja.sql e criar jogo_categorias.
+-- Atualiza o catalogo sem tocar em estoque ou preco.
 INSERT INTO categorias (nome)
 SELECT genero.nome
 FROM (
-    SELECT 'Ação e Aventura' AS nome
-    UNION ALL SELECT 'Corrida'
+    SELECT 'Corrida' AS nome
     UNION ALL SELECT 'Estratégia'
     UNION ALL SELECT 'Luta'
     UNION ALL SELECT 'Metroidvania'
@@ -15,33 +15,69 @@ WHERE NOT EXISTS (
     SELECT 1 FROM categorias WHERE categorias.nome = genero.nome
 );
 
+INSERT IGNORE INTO jogo_categorias (jogo_id, categoria_id)
+SELECT jogos.jogo_id, categoriasDestino.categoria_id
+FROM jogos
+JOIN categorias AS categoriaCombinada
+    ON categoriaCombinada.nome = 'Ação e Aventura'
+CROSS JOIN (
+    SELECT categoria_id, nome
+    FROM categorias
+    WHERE nome IN ('Ação', 'Aventura')
+) AS categoriasDestino
+LEFT JOIN jogo_categorias AS categoriasDoJogo
+    ON categoriasDoJogo.jogo_id = jogos.jogo_id
+   AND categoriasDoJogo.categoria_id = categoriaCombinada.categoria_id
+WHERE jogos.categoria_id = categoriaCombinada.categoria_id
+   OR categoriasDoJogo.jogo_id IS NOT NULL;
+
+UPDATE jogos
+SET categoria_id = (
+    SELECT MIN(categoria_id)
+    FROM categorias
+    WHERE nome = 'Ação'
+)
+WHERE categoria_id IN (
+    SELECT categoria_id
+    FROM categorias
+    WHERE nome = 'Ação e Aventura'
+);
+
+DELETE jogo_categorias
+FROM jogo_categorias
+JOIN categorias ON categorias.categoria_id = jogo_categorias.categoria_id
+WHERE categorias.nome = 'Ação e Aventura';
+
+DELETE FROM categorias
+WHERE nome = 'Ação e Aventura';
+
 UPDATE jogos AS jogo
 JOIN (
     SELECT 'Minecraft' AS titulo, 'Sobrevivência' AS categoria, 'Explore mundos feitos de blocos, colete recursos e construa livremente enquanto enfrenta os perigos da sobrevivência.' AS descricao
-    UNION ALL SELECT 'Grand Theft Auto V', 'Ação e Aventura', 'Acompanhe três criminosos em Los Santos enquanto seus destinos se cruzam em assaltos, perseguições e disputas pelo poder.'
-    UNION ALL SELECT 'Red Dead Redemption 2', 'Ação e Aventura', 'Viva a jornada de Arthur Morgan e da gangue Van der Linde em um Velho Oeste à beira de desaparecer.'
+    UNION ALL SELECT 'Grand Theft Auto V', 'Ação', 'Acompanhe três criminosos em Los Santos enquanto seus destinos se cruzam em assaltos, perseguições e disputas pelo poder.'
+    UNION ALL SELECT 'Red Dead Redemption 2', 'Ação', 'Viva a jornada de Arthur Morgan e da gangue Van der Linde em um Velho Oeste à beira de desaparecer.'
     UNION ALL SELECT 'The Witcher 3: Wild Hunt', 'RPG', 'Como Geralt de Rívia, rastreie monstros e procure Ciri em um mundo aberto marcado por escolhas e consequências.'
     UNION ALL SELECT 'Cyberpunk 2077', 'RPG', 'Explore Night City como V, uma pessoa mercenária envolvida em uma busca por um implante ligado à imortalidade.'
     UNION ALL SELECT 'Elden Ring', 'RPG', 'Explore as Terras Intermédias, enfrente criaturas e descubra os segredos de um mundo de fantasia criado por sua própria jornada.'
     UNION ALL SELECT 'Resident Evil 4', 'Horror', 'Como Leon Kennedy, procure a filha do presidente em uma região isolada e sobreviva a inimigos tomados por uma ameaça desconhecida.'
     UNION ALL SELECT 'Forza Horizon 5', 'Corrida', 'Dispute corridas por diferentes regiões do México e monte sua coleção de carros em um festival de automobilismo em mundo aberto.'
-    UNION ALL SELECT 'God of War', 'Ação e Aventura', 'Kratos e seu filho Atreus atravessam terras nórdicas em uma jornada que testa sua relação e os coloca diante de deuses e monstros.'
-    UNION ALL SELECT 'God of War Ragnarök', 'Ação e Aventura', 'Kratos e Atreus percorrem os Nove Reinos enquanto tentam compreender as profecias que anunciam o Ragnarök.'
-    UNION ALL SELECT 'Marvel''s Spider-Man Remastered', 'Ação e Aventura', 'Balance por Nova York como Peter Parker e enfrente uma ameaça que coloca a cidade e seus moradores em risco.'
-    UNION ALL SELECT 'Marvel''s Spider-Man 2', 'Ação e Aventura', 'Peter Parker e Miles Morales protegem Nova York enquanto enfrentam novos inimigos e equilibram suas vidas pessoais.'
+    UNION ALL SELECT 'God of War', 'Ação', 'Kratos e seu filho Atreus atravessam terras nórdicas em uma jornada que testa sua relação e os coloca diante de deuses e monstros.'
+    UNION ALL SELECT 'God of War Ragnarök', 'Ação', 'Kratos e Atreus percorrem os Nove Reinos enquanto tentam compreender as profecias que anunciam o Ragnarök.'
+    UNION ALL SELECT 'Marvel''s Spider-Man Remastered', 'Ação', 'Balance por Nova York como Peter Parker e enfrente uma ameaça que coloca a cidade e seus moradores em risco.'
+    UNION ALL SELECT 'Marvel''s Spider-Man 2', 'Ação', 'Peter Parker e Miles Morales protegem Nova York enquanto enfrentam novos inimigos e equilibram suas vidas pessoais.'
     UNION ALL SELECT 'Horizon Zero Dawn', 'RPG', 'Em um futuro dominado por máquinas, Aloy parte em busca de suas origens e dos segredos que transformaram o mundo.'
     UNION ALL SELECT 'Horizon Forbidden West', 'RPG', 'Aloy viaja para terras desconhecidas para investigar uma praga que ameaça a vida e enfrentar novas máquinas.'
-    UNION ALL SELECT 'The Last of Us Part I', 'Ação e Aventura', 'Joel e Ellie atravessam os Estados Unidos devastados por uma infecção em uma jornada de sobrevivência e confiança.'
-    UNION ALL SELECT 'The Last of Us Part II', 'Ação e Aventura', 'Acompanhe Ellie em uma jornada de vingança que explora o custo da violência em um mundo devastado.'
-    UNION ALL SELECT 'Uncharted: Legacy of Thieves Collection', 'Ação e Aventura', 'Nathan Drake e Chloe Frazer partem em expedições perigosas em busca de tesouros históricos e respostas do passado.'
-    UNION ALL SELECT 'Ghost of Tsushima', 'Ação e Aventura', 'Jin Sakai luta para proteger Tsushima da invasão mongol e precisa decidir até onde irá para salvar sua terra.'
+    UNION ALL SELECT 'The Last of Us Part I', 'Ação', 'Joel e Ellie atravessam os Estados Unidos devastados por uma infecção em uma jornada de sobrevivência e confiança.'
+    UNION ALL SELECT 'The Last of Us Part II', 'Ação', 'Acompanhe Ellie em uma jornada de vingança que explora o custo da violência em um mundo devastado.'
+    UNION ALL SELECT 'Uncharted: Legacy of Thieves Collection', 'Ação', 'Nathan Drake e Chloe Frazer partem em expedições perigosas em busca de tesouros históricos e respostas do passado.'
+    UNION ALL SELECT 'Ghost of Tsushima', 'Ação', 'Jin Sakai luta para proteger Tsushima da invasão mongol e precisa decidir até onde irá para salvar sua terra.'
     UNION ALL SELECT 'Assassin''s Creed Valhalla', 'RPG', 'Lidere Eivor e seu clã viking na busca por um novo lar na Inglaterra e participe de conflitos que moldam a região.'
     UNION ALL SELECT 'Assassin''s Creed Odyssey', 'RPG', 'Na Grécia Antiga, escolha seu caminho como mercenário e descubra a história de sua família durante a Guerra do Peloponeso.'
     UNION ALL SELECT 'Far Cry 6', 'FPS', 'Organize a resistência na ilha de Yara e lute contra o regime de Antón Castillo em um conflito de guerrilha.'
     UNION ALL SELECT 'Resident Evil Village', 'Horror', 'Ethan Winters chega a uma vila isolada para encontrar sua filha e encara criaturas e mistérios ligados à família Dimitrescu.'
     UNION ALL SELECT 'Dead Space', 'Horror', 'A bordo da nave Ishimura, Isaac Clarke precisa sobreviver a criaturas aterrorizantes e descobrir o que aconteceu com a tripulação.'
     UNION ALL SELECT 'Hogwarts Legacy', 'RPG', 'Estude magia em Hogwarts no século XIX e investigue um antigo poder que ameaça o mundo bruxo.'
-    UNION ALL SELECT 'Star Wars Jedi: Survivor', 'Ação e Aventura', 'Cal Kestis continua sua luta contra o Império e busca aliados e refúgio em uma galáxia sob domínio imperial.'
+    UNION ALL SELECT 'Star Wars Jedi: Survivor', 'Ação', 'Cal Kestis continua sua luta contra o Império e busca aliados e refúgio em uma galáxia sob domínio imperial.'
     UNION ALL SELECT 'Baldur''s Gate 3', 'RPG', 'Reúna companheiros e decida o destino de Faerûn em uma aventura de fantasia baseada nas regras de Dungeons & Dragons.'
     UNION ALL SELECT 'Diablo IV', 'RPG', 'Enfrente as forças demoníacas de Lilith em Santuário e escolha uma classe para explorar masmorras e missões.'
     UNION ALL SELECT 'Monster Hunter: World', 'RPG', 'Participe de expedições ao Novo Mundo, estude monstros e use os materiais obtidos para criar equipamentos.'
@@ -54,24 +90,24 @@ JOIN (
     UNION ALL SELECT 'Hollow Knight', 'Metroidvania', 'Explore Hallownest, um reino subterrâneo em ruínas, e descubra seus segredos em combates e caminhos interligados.'
     UNION ALL SELECT 'Cuphead', 'Plataforma', 'Ajude Cuphead e Mugman a quitar uma dívida com o Diabo em fases de plataforma e batalhas contra chefes.'
     UNION ALL SELECT 'It Takes Two', 'Aventura', 'Dois jogadores controlam um casal transformado em bonecos e precisam cooperar para atravessar desafios variados.'
-    UNION ALL SELECT 'Sekiro: Shadows Die Twice', 'Ação e Aventura', 'Um shinobi parte para resgatar seu senhor em uma versão fantástica do Japão do período Sengoku.'
+    UNION ALL SELECT 'Sekiro: Shadows Die Twice', 'Ação', 'Um shinobi parte para resgatar seu senhor em uma versão fantástica do Japão do período Sengoku.'
     UNION ALL SELECT 'Dark Souls III', 'RPG', 'Atravesse um reino em decadência e enfrente criaturas poderosas em uma jornada de fantasia sombria.'
     UNION ALL SELECT 'Dark Souls Remastered', 'RPG', 'Explore Lordran e enfrente seus desafios em uma aventura de fantasia sombria sobre a chama e seu ciclo.'
     UNION ALL SELECT 'Dark Souls II: Scholar of the First Sin', 'RPG', 'Busque uma cura para a maldição em Drangleic, um reino repleto de ruínas, inimigos e caminhos interligados.'
     UNION ALL SELECT 'Black Myth: Wukong', 'RPG', 'Assuma o papel do Predestinado e enfrente criaturas inspiradas na jornada mitológica chinesa de Sun Wukong.'
     UNION ALL SELECT 'Lies of P', 'RPG', 'Em uma cidade inspirada na Belle Époque, um autômato busca seu criador e enfrenta máquinas enlouquecidas.'
-    UNION ALL SELECT 'Sifu', 'Ação e Aventura', 'Um jovem artista marcial busca vingança contra os responsáveis pela morte de sua família, aprendendo com cada confronto.'
+    UNION ALL SELECT 'Sifu', 'Ação', 'Um jovem artista marcial busca vingança contra os responsáveis pela morte de sua família, aprendendo com cada confronto.'
     UNION ALL SELECT 'Stray', 'Aventura', 'Um gato perdido explora uma cidade subterrânea habitada por robôs e procura um caminho de volta à superfície.'
-    UNION ALL SELECT 'Days Gone', 'Ação e Aventura', 'Deacon St. John cruza uma região devastada por uma pandemia enquanto procura respostas e tenta sobreviver.'
+    UNION ALL SELECT 'Days Gone', 'Ação', 'Deacon St. John cruza uma região devastada por uma pandemia enquanto procura respostas e tenta sobreviver.'
     UNION ALL SELECT 'DEATH STRANDING DIRECTOR''S CUT', 'Aventura', 'Sam Porter Bridges conecta comunidades isoladas em uma América fragmentada por um fenômeno sobrenatural.'
-    UNION ALL SELECT 'Control Ultimate Edition', 'Ação e Aventura', 'Jesse Faden investiga uma agência secreta alterada por uma força sobrenatural e procura seu irmão desaparecido.'
+    UNION ALL SELECT 'Control Ultimate Edition', 'Ação', 'Jesse Faden investiga uma agência secreta alterada por uma força sobrenatural e procura seu irmão desaparecido.'
     UNION ALL SELECT 'DOOM Eternal', 'FPS', 'Enfrente uma invasão demoníaca na Terra em combates rápidos como o DOOM Slayer.'
     UNION ALL SELECT 'DOOM', 'FPS', 'Lute contra hordas demoníacas em uma instalação de pesquisa em Marte usando armas e movimentos rápidos.'
     UNION ALL SELECT 'Titanfall 2', 'FPS', 'Um piloto e seu titã formam uma parceria durante uma campanha de ficção científica e combates multiplayer.'
     UNION ALL SELECT 'Battlefield 1', 'FPS', 'Participe de diferentes histórias ambientadas nos campos de batalha da Primeira Guerra Mundial.'
     UNION ALL SELECT 'Battlefield V', 'FPS', 'Dispute batalhas da Segunda Guerra Mundial em campanhas para um jogador e confrontos multiplayer.'
     UNION ALL SELECT 'Battlefield 2042', 'FPS', 'Lute em conflitos de grande escala em um futuro próximo, com especialistas e cenários dinâmicos.'
-    UNION ALL SELECT 'Borderlands 3', 'Ação e Aventura', 'Explore Pandora e outros planetas em busca de tesouros enquanto enfrenta os líderes de um culto armado.'
+    UNION ALL SELECT 'Borderlands 3', 'Ação', 'Explore Pandora e outros planetas em busca de tesouros enquanto enfrenta os líderes de um culto armado.'
     UNION ALL SELECT 'Tiny Tina''s Wonderlands', 'RPG', 'Entre em uma aventura de fantasia narrada por Tiny Tina e monte um personagem para enfrentar monstros e masmorras.'
     UNION ALL SELECT 'Metro Exodus', 'FPS', 'Artyom e outros sobreviventes deixam o metrô de Moscou para cruzar uma Rússia devastada por uma guerra nuclear.'
     UNION ALL SELECT 'Dying Light', 'Sobrevivência', 'Explore uma cidade em quarentena durante o dia e enfrente infectados mais perigosos após o anoitecer.'
@@ -108,11 +144,11 @@ JOIN (
     UNION ALL SELECT 'LEGO Star Wars: The Skywalker Saga', 'Aventura', 'Reviva os nove filmes da saga Star Wars em fases de aventura e exploração no universo LEGO.'
     UNION ALL SELECT 'A Plague Tale: Requiem', 'Aventura', 'Amicia e Hugo buscam uma forma de conter a doença de Hugo em uma jornada por uma França assolada pela guerra.'
     UNION ALL SELECT 'A Plague Tale: Innocence', 'Aventura', 'Amicia tenta proteger seu irmão Hugo enquanto foge da Inquisição e de enxames de ratos na França medieval.'
-    UNION ALL SELECT 'Tomb Raider', 'Ação e Aventura', 'A jovem Lara Croft precisa sobreviver a um naufrágio e escapar de uma ilha hostil.'
-    UNION ALL SELECT 'Rise of the Tomb Raider', 'Ação e Aventura', 'Lara Croft parte para a Sibéria em busca de uma cidade lendária e do segredo da imortalidade.'
-    UNION ALL SELECT 'Shadow of the Tomb Raider', 'Ação e Aventura', 'Lara tenta impedir uma catástrofe enquanto explora tumbas e regiões da América Latina.'
-    UNION ALL SELECT 'Mafia: Definitive Edition', 'Ação e Aventura', 'Tommy Angelo entra para a máfia de Lost Heaven e ascende em uma história ambientada nos anos 1930.'
-    UNION ALL SELECT 'Mafia II: Definitive Edition', 'Ação e Aventura', 'Vito Scaletta tenta construir uma vida melhor em Empire Bay enquanto se envolve com o crime organizado.'
+    UNION ALL SELECT 'Tomb Raider', 'Ação', 'A jovem Lara Croft precisa sobreviver a um naufrágio e escapar de uma ilha hostil.'
+    UNION ALL SELECT 'Rise of the Tomb Raider', 'Ação', 'Lara Croft parte para a Sibéria em busca de uma cidade lendária e do segredo da imortalidade.'
+    UNION ALL SELECT 'Shadow of the Tomb Raider', 'Ação', 'Lara tenta impedir uma catástrofe enquanto explora tumbas e regiões da América Latina.'
+    UNION ALL SELECT 'Mafia: Definitive Edition', 'Ação', 'Tommy Angelo entra para a máfia de Lost Heaven e ascende em uma história ambientada nos anos 1930.'
+    UNION ALL SELECT 'Mafia II: Definitive Edition', 'Ação', 'Vito Scaletta tenta construir uma vida melhor em Empire Bay enquanto se envolve com o crime organizado.'
     UNION ALL SELECT 'Kingdom Come: Deliverance II', 'RPG', 'Henry retorna à Boêmia medieval em uma aventura de mundo aberto marcada por conflitos políticos e escolhas.'
     UNION ALL SELECT 'Dragon''s Dogma 2', 'RPG', 'Assuma o papel do Arisen e atravesse um mundo de fantasia com companheiros controlados por inteligência artificial.'
     UNION ALL SELECT 'Hades II', 'Roguelike', 'Controle Melinoë em tentativas de enfrentar Cronos, combinando armas e bênçãos em cada incursão.'
@@ -125,3 +161,35 @@ JOIN (
 ) AS genero ON genero.nome = conteudo.categoria
 SET jogo.categoria_id = genero.categoria_id,
     jogo.descricao = conteudo.descricao;
+
+INSERT IGNORE INTO jogo_categorias (jogo_id, categoria_id)
+SELECT jogos.jogo_id, categorias.categoria_id
+FROM jogos
+JOIN (
+    SELECT 'Grand Theft Auto V' AS titulo
+    UNION ALL SELECT 'Red Dead Redemption 2'
+    UNION ALL SELECT 'God of War'
+    UNION ALL SELECT 'God of War Ragnarök'
+    UNION ALL SELECT 'Marvel''s Spider-Man Remastered'
+    UNION ALL SELECT 'Marvel''s Spider-Man 2'
+    UNION ALL SELECT 'The Last of Us Part I'
+    UNION ALL SELECT 'The Last of Us Part II'
+    UNION ALL SELECT 'Uncharted: Legacy of Thieves Collection'
+    UNION ALL SELECT 'Ghost of Tsushima'
+    UNION ALL SELECT 'Star Wars Jedi: Survivor'
+    UNION ALL SELECT 'Sekiro: Shadows Die Twice'
+    UNION ALL SELECT 'Sifu'
+    UNION ALL SELECT 'Days Gone'
+    UNION ALL SELECT 'Control Ultimate Edition'
+    UNION ALL SELECT 'Borderlands 3'
+    UNION ALL SELECT 'Tomb Raider'
+    UNION ALL SELECT 'Rise of the Tomb Raider'
+    UNION ALL SELECT 'Shadow of the Tomb Raider'
+    UNION ALL SELECT 'Mafia: Definitive Edition'
+    UNION ALL SELECT 'Mafia II: Definitive Edition'
+) AS jogosAcaoAventura ON jogosAcaoAventura.titulo = jogos.titulo
+CROSS JOIN (
+    SELECT 'Ação' AS nome
+    UNION ALL SELECT 'Aventura'
+) AS generosSelecionados
+JOIN categorias ON categorias.nome = generosSelecionados.nome;
