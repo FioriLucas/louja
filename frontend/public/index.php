@@ -26,6 +26,7 @@ if ($colunaDestaqueExiste) {
             FROM jogos
             JOIN categorias ON jogos.categoria_id = categorias.categoria_id
             WHERE jogos.ativo = 1
+              AND jogos.destaque_carrossel = 0
             ORDER BY RAND()
             LIMIT 27";
 
@@ -40,7 +41,7 @@ if ($colunaDestaqueExiste) {
     $todosJogos = $pdo->query($sqlBase)->fetchAll();
 
     $produtos = array_slice($todosJogos, 0, 5);
-    $catalogo = array_slice($todosJogos, 5, 27);
+    $catalogo = array_slice($todosJogos, 5);
     shuffle($catalogo);
 }
 
@@ -103,7 +104,7 @@ foreach ($categoriasVitrine as $categoriaVitrine) {
             </button>
             <input id="catalogo-busca" type="search" placeholder="Buscar jogos..." aria-label="Buscar jogos pelo título">
         </form>
-        <a href="index.php">Jogos</a>
+        <a href="jogos.php">Jogos</a>
         <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
 
         <?php if (isset($_SESSION['usr_id'])): ?>

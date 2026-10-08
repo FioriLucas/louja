@@ -592,7 +592,7 @@ SET img_url = 'https://cdn2.unrealengine.com/Diesel/productv2/heather/home/EGS_R
 where jogo_id = 3;
 /*gta V*/
 UPDATE jogos
-SET img_url = 'https://image.api.playstation.com/vulcan/ap/rnd/202606/0815/41b2f694a897c9c95337d2313cabc6c1fbf17b26714ed75c.jpg'
+SET img_url = 'https://assetsio.gnwcdn.com/eurogamer-zjp1vx.jpg?width=1200&height=600&fit=crop&enable=upscale&auto=webp'
 where jogo_id = 2;
 /*Minecraft */
 UPDATE jogos

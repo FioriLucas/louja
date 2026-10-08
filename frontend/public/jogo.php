@@ -39,7 +39,7 @@ if (!$produto) {
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
 
     <nav>
-        <a href="index.php">Jogos</a>
+        <a href="jogos.php">Jogos</a>
         <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>

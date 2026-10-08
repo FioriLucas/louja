@@ -24,6 +24,25 @@ $produtos = $pdo->query(
      LEFT JOIN categorias ON jogos.categoria_id = categorias.categoria_id
      ORDER BY jogos.jogo_id DESC"
 )->fetchAll();
+
+$categoriasFiltro = [];
+$plataformasFiltro = [];
+foreach ($produtos as $produto) {
+    foreach (explode(',', $produto['categoria'] ?? '') as $categoria) {
+        $categoria = trim($categoria);
+        if ($categoria !== '') {
+            $categoriasFiltro[$categoria] = $categoria;
+        }
+    }
+    foreach (explode(',', $produto['plataformas'] ?? '') as $plataforma) {
+        $plataforma = trim($plataforma);
+        if ($plataforma !== '') {
+            $plataformasFiltro[$plataforma] = $plataforma;
+        }
+    }
+}
+natcasesort($categoriasFiltro);
+natcasesort($plataformasFiltro);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -39,6 +58,7 @@ $produtos = $pdo->query(
         <img src="../../../docs/logolouja.png" alt="Louja">
     </a>
     <nav>
+        <a href="index.php" aria-current="page">Jogos</a>
         <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
         <a href="../index.php">Voltar para a loja</a>
         <a href="../logout.php">Sair</a>
@@ -54,9 +74,39 @@ $produtos = $pdo->query(
         <a class="botao" href="adicionar.php">+ Adicionar produto</a>
     </div>
 
+    <div class="admin-filtros" role="search" aria-label="Pesquisar e filtrar jogos">
+        <label class="admin-busca">
+            <span>Buscar jogos</span>
+            <input id="admin-busca" type="search" placeholder="Buscar pelo título...">
+        </label>
+        <label class="admin-filtro">
+            <span>Categoria ou plataforma</span>
+            <select id="admin-filtro">
+                <option value="">Todas</option>
+                <optgroup label="Categorias">
+                    <?php foreach ($categoriasFiltro as $categoria): ?>
+                        <option value="categoria:<?= htmlspecialchars($categoria, ENT_QUOTES, 'UTF-8') ?>">
+                            <?= htmlspecialchars($categoria) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </optgroup>
+                <optgroup label="Plataformas">
+                    <?php foreach ($plataformasFiltro as $plataforma): ?>
+                        <option value="plataforma:<?= htmlspecialchars($plataforma, ENT_QUOTES, 'UTF-8') ?>">
+                            <?= htmlspecialchars($plataforma) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </optgroup>
+            </select>
+        </label>
+    </div>
+    <p class="admin-resultado" id="admin-resultado" aria-live="polite"></p>
+
     <div class="admin-catalogo">
         <?php foreach ($produtos as $produto): ?>
-            <article class="jogo-card admin-card">
+            <article class="jogo-card admin-card"
+                     data-categorias="<?= htmlspecialchars($produto['categoria'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                     data-plataformas="<?= htmlspecialchars($produto['plataformas'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                 <div class="jogo-card-imagem">
                     <img src="<?= htmlspecialchars($produto['img_url'] ?? '') ?>"
                          alt="Capa de <?= htmlspecialchars($produto['titulo']) ?>"
@@ -84,12 +134,50 @@ $produtos = $pdo->query(
 
     <?php if (empty($produtos)): ?>
         <div class="catalogo-vazio">Nenhum produto cadastrado.</div>
+    <?php else: ?>
+        <div class="catalogo-vazio" id="admin-vazio" hidden>Nenhum jogo encontrado com esses filtros.</div>
     <?php endif; ?>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 gsap.from(".admin", { opacity: 0, y: 25, duration: 0.6 });
+
+const buscaAdmin = document.querySelector('#admin-busca');
+const filtroAdmin = document.querySelector('#admin-filtro');
+const resultadoAdmin = document.querySelector('#admin-resultado');
+const vazioAdmin = document.querySelector('#admin-vazio');
+const cardsAdmin = Array.from(document.querySelectorAll('.admin-card'));
+const normalizarAdmin = (valor) => valor
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('pt-BR');
+
+function filtrarJogosAdmin() {
+    const termo = normalizarAdmin(buscaAdmin.value.trim());
+    const selecao = filtroAdmin.value;
+    const separador = selecao.indexOf(':');
+    const tipo = separador === -1 ? '' : selecao.slice(0, separador);
+    const valor = separador === -1 ? '' : normalizarAdmin(selecao.slice(separador + 1));
+    let quantidadeVisivel = 0;
+
+    cardsAdmin.forEach((card) => {
+        const titulo = normalizarAdmin(card.querySelector('h3')?.textContent ?? '');
+        const opcoes = (card.dataset[tipo === 'categoria' ? 'categorias' : 'plataformas'] ?? '')
+            .split(',')
+            .map((opcao) => normalizarAdmin(opcao.trim()));
+        const corresponde = titulo.includes(termo) && (!tipo || opcoes.includes(valor));
+        card.hidden = !corresponde;
+        quantidadeVisivel += corresponde ? 1 : 0;
+    });
+
+    resultadoAdmin.textContent = `${quantidadeVisivel} de ${cardsAdmin.length} jogos`;
+    if (vazioAdmin) vazioAdmin.hidden = quantidadeVisivel > 0;
+}
+
+buscaAdmin.addEventListener('input', filtrarJogosAdmin);
+filtroAdmin.addEventListener('change', filtrarJogosAdmin);
+filtrarJogosAdmin();
 </script>
 </body>
 </html>
