@@ -51,9 +51,6 @@ $sqlVitrine = "SELECT jogos.*, categorias.nome AS categoria
         WHERE jogos.ativo = 1
         ORDER BY jogos.titulo";
 $jogosVitrine = $pdo->query($sqlVitrine)->fetchAll();
-$categoriasVitrine = $pdo->query("SELECT nome FROM categorias
-        ORDER BY CASE nome WHEN 'Ação' THEN 0 WHEN 'Esportes' THEN 1 ELSE 2 END, nome")
-    ->fetchAll(PDO::FETCH_COLUMN);
 
 $idsCatalogoPesquisa = array_fill_keys(array_column($catalogo, 'jogo_id'), true);
 $jogosCatalogoPesquisa = $catalogo;
@@ -63,22 +60,12 @@ foreach ($jogosVitrine as $jogoVitrine) {
     }
 }
 
-$jogosPorCategoria = [];
-foreach ($jogosVitrine as $jogoVitrine) {
-    $jogosPorCategoria[$jogoVitrine['categoria']][] = $jogoVitrine;
-}
-
 $ofertasVitrine = $jogosVitrine;
 usort($ofertasVitrine, function ($jogoA, $jogoB) {
     return (float) $jogoA['preco'] <=> (float) $jogoB['preco'];
 });
 
 $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
-foreach ($categoriasVitrine as $categoriaVitrine) {
-    if (!empty($jogosPorCategoria[$categoriaVitrine])) {
-        $secoesVitrine[$categoriaVitrine] = $jogosPorCategoria[$categoriaVitrine];
-    }
-}
 
 ?>
 <!DOCTYPE html>

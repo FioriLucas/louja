@@ -12,9 +12,20 @@ $pdo = $conexao->conectar();
 
 $id = intval($_GET['id'] ?? 0);
 
-$stmt = $pdo->prepare("SELECT jogos.*, categorias.nome AS categoria
+$stmt = $pdo->prepare("SELECT jogos.*,
+                              COALESCE((
+                                  SELECT GROUP_CONCAT(DISTINCT jc.nome SEPARATOR ', ')
+                                  FROM jogo_categorias AS jcat
+                                  JOIN categorias AS jc ON jc.categoria_id = jcat.categoria_id
+                                  WHERE jcat.jogo_id = jogos.jogo_id
+                              ), categorias.nome, 'Sem categoria') AS categorias,
+                              COALESCE((
+                                  SELECT GROUP_CONCAT(DISTINCT jp.plataforma SEPARATOR ', ')
+                                  FROM jogo_plataformas AS jp
+                                  WHERE jp.jogo_id = jogos.jogo_id
+                              ), jogos.plataforma, '') AS plataformas
                        FROM jogos
-                       JOIN categorias ON jogos.categoria_id = categorias.categoria_id
+                       LEFT JOIN categorias ON categorias.categoria_id = jogos.categoria_id
                        WHERE jogos.jogo_id = ? AND jogos.ativo = 1
                        LIMIT 1");
 $stmt->execute([$id]);
@@ -58,12 +69,12 @@ if (!$produto) {
         </div>
 
         <div class="jogo-detalhe-info">
-            <span class="categoria"><?= htmlspecialchars($produto['categoria']) ?></span>
+            <span class="categoria"><?= htmlspecialchars($produto['categorias']) ?></span>
 
             <h1><?= htmlspecialchars($produto['titulo']) ?></h1>
 
             <div class="jogo-detalhe-meta">
-                <span>Plataforma: <?= htmlspecialchars($produto['plataforma']) ?></span>
+                <span>Plataformas: <?= htmlspecialchars($produto['plataformas']) ?></span>
             </div>
 
             <p class="jogo-detalhe-descricao">
