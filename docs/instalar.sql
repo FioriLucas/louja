@@ -72,6 +72,10 @@ CREATE TABLE pedidos (
     usr_id INT NOT NULL,
     data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
     status ENUM('pendente', 'pago', 'enviado', 'cancelado') DEFAULT 'pendente',
+    forma_pagamento ENUM('cartao', 'pix', 'boleto') NOT NULL DEFAULT 'pix',
+    dados_cliente_verificados TINYINT(1) NOT NULL DEFAULT 0,
+    dados_verificados_por INT DEFAULT NULL,
+    dados_verificados_em DATETIME DEFAULT NULL,
     valor_total DECIMAL(10,2) DEFAULT 0.00,
 
     FOREIGN KEY (usr_id)

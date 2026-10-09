@@ -910,6 +910,166 @@ textarea {
     color: #b00;
 }
 
+.checkout-aviso {
+    margin: 18px 0;
+    padding: 14px 16px;
+    border-left: 4px solid #9b4dff;
+    background: #fff;
+    color: #444;
+}
+
+.checkout-resumo,
+.checkout-pagamento {
+    margin: 15px 0;
+    padding: 20px;
+    background: #fff;
+}
+
+.checkout-resumo h2,
+.checkout-pagamento h2 {
+    margin-bottom: 16px;
+}
+
+.checkout-linha {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.checkout-total {
+    margin-top: 14px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.checkout-opcoes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    min-width: 0;
+    margin: 0 0 20px;
+    padding: 0;
+    border: 0;
+}
+
+.checkout-opcoes legend {
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.checkout-opcoes label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 52px;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color .2s ease, background .2s ease;
+}
+
+.checkout-opcoes label:hover,
+.checkout-opcoes label:focus-within {
+    border-color: #9b4dff;
+    background: #faf7ff;
+}
+
+.checkout-opcoes label:has(input:checked) {
+    border-color: #9b4dff;
+    background: #f5edff;
+}
+
+.checkout-opcoes label:has(input[value="pix"]:checked) {
+    border-color: #7f32e6;
+    background: #f2eaff;
+}
+
+.checkout-opcoes label:has(input[value="boleto"]:checked) {
+    border-color: #ad74d6;
+    background: #faf5ff;
+}
+
+.checkout-opcoes input {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    accent-color: #9b4dff;
+}
+
+.checkout-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.checkout-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.checkout-campo-largo {
+    grid-column: 1 / -1;
+}
+
+.checkout-campo label {
+    font-weight: 600;
+}
+
+.checkout-campo input:focus {
+    border-color: #9b4dff;
+    outline: 2px solid rgba(155, 77, 255, .18);
+}
+
+.checkout-campo small {
+    color: #666;
+    line-height: 1.5;
+}
+
+.checkout-acoes {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 22px;
+}
+
+.checkout-acoes .botao {
+    border: 0;
+    cursor: pointer;
+}
+
+.checkout-acoes > a {
+    color: #666;
+}
+
+.checkout-acoes > a:hover {
+    color: #7f32e6;
+    text-decoration: underline;
+}
+
+.checkout-sucesso {
+    margin: 20px 0;
+    padding: 20px;
+    border-left: 4px solid #9b4dff;
+    background: #fff;
+}
+
+@media (max-width: 600px) {
+    .checkout-opcoes,
+    .checkout-campos {
+        grid-template-columns: 1fr;
+    }
+
+    .checkout-resumo,
+    .checkout-pagamento {
+        padding: 20px;
+    }
+}
+
 .tabela {
     margin-top: 30px;
 }
@@ -979,6 +1139,286 @@ textarea {
     margin: 0 0 12px;
     color: #666;
     font-size: 13px;
+}
+
+.vendas-filtros {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0 0 20px;
+}
+
+.vendas-filtros label {
+    display: grid;
+    gap: 6px;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.vendas-filtros input,
+.vendas-filtros select,
+.vendas-status-form select {
+    min-width: 150px;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #d2d2d2;
+    font-size: 14px;
+}
+
+.vendas-filtros .botao,
+.vendas-status-form .botao {
+    min-height: 44px;
+    padding: 0 16px;
+    cursor: pointer;
+}
+
+.vendas-filtros > a {
+    padding: 13px 4px;
+    color: #666;
+    font-size: 13px;
+}
+
+.vendas-filtros > a:hover,
+.vendas-paginacao a:hover {
+    color: #7f32e6;
+    text-decoration: underline;
+}
+
+.vendas-resumo {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.vendas-resumo article {
+    display: grid;
+    gap: 8px;
+    padding: 18px 20px;
+    border-left: 3px solid #9b4dff;
+    background: #fff;
+}
+
+.vendas-resumo article span {
+    color: #666;
+    font-size: 13px;
+}
+
+.vendas-resumo article strong {
+    font-size: 24px;
+}
+
+.vendas-tabela-wrap {
+    overflow-x: auto;
+    background: #fff;
+}
+
+.vendas-tabela {
+    width: 100%;
+    min-width: 980px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.vendas-tabela th,
+.vendas-tabela td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #e5e5e5;
+    vertical-align: top;
+}
+
+.vendas-tabela th {
+    background: #f2f2f2;
+    color: #444;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.vendas-tabela td {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.vendas-tabela td small {
+    color: #666;
+}
+
+.vendas-status {
+    display: inline-block;
+    padding: 4px 8px;
+    background: #f1e8ff;
+    color: #6327b5;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.vendas-status-pago,
+.vendas-status-enviado {
+    background: #eaf4ed;
+    color: #28663a;
+}
+
+.vendas-status-cancelado {
+    background: #eee;
+    color: #555;
+}
+
+.vendas-status-form {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.vendas-status-form select {
+    min-width: 112px;
+}
+
+.vendas-status-form .botao {
+    padding: 0 11px;
+    font-size: 11px;
+}
+
+.vendas-vazio {
+    padding: 30px !important;
+    color: #666;
+    text-align: center;
+}
+
+.vendas-mensagem {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border-left: 4px solid #27834a;
+    background: #eaf4ed;
+}
+
+.vendas-mensagem-erro {
+    border-color: #b42d36;
+    background: #ffdede;
+}
+
+.vendas-paginacao {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-top: 18px;
+    color: #666;
+    font-size: 13px;
+}
+
+.venda-detalhe-link {
+    color: #7f32e6;
+    font-weight: 700;
+}
+
+.venda-detalhe-link:hover {
+    text-decoration: underline;
+}
+
+.venda-detalhe-colunas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.venda-bloco {
+    margin: 16px 0;
+    padding: 20px;
+    background: #fff;
+}
+
+.venda-bloco h2 {
+    margin: 0 0 16px;
+    font-size: 20px;
+}
+
+.venda-dados {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.venda-dados div {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+
+.venda-dados span {
+    color: #666;
+    font-size: 12px;
+}
+
+.venda-dados strong {
+    overflow-wrap: anywhere;
+    font-size: 14px;
+}
+
+.venda-nota,
+.venda-validacao > p {
+    margin: 16px 0 0;
+    color: #666;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.venda-auditoria {
+    margin: 18px 0 0;
+    padding: 12px;
+    border-left: 3px solid #9b4dff;
+    background: #f5edff;
+    font-size: 13px;
+}
+
+.venda-form-acao {
+    display: inline-flex;
+    margin-top: 18px;
+}
+
+.venda-form-acao .botao {
+    cursor: pointer;
+}
+
+.venda-form-acao .botao:disabled {
+    background: #999;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.venda-total {
+    margin-top: 18px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.venda-validacao {
+    border-left: 4px solid #9b4dff;
+}
+
+.venda-acoes {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.venda-acoes .venda-form-acao {
+    margin-top: 18px;
+}
+
+.venda-form-acao .venda-recusar {
+    background: #b42d36;
+}
+
+.venda-form-acao .venda-recusar:hover {
+    background: #901f27;
+}
+
+.venda-estado-final {
+    margin-top: 18px;
+    font-weight: 700;
 }
 
 .admin-catalogo {
@@ -1263,6 +1703,22 @@ button {
         padding: 15px;
     }
 
+
+    .vendas-resumo {
+        grid-template-columns: 1fr;
+    }
+
+    .venda-detalhe-colunas,
+    .venda-dados {
+        grid-template-columns: 1fr;
+    }
+
+    .vendas-filtros,
+    .vendas-filtros label,
+    .vendas-filtros input,
+    .vendas-filtros select {
+        width: 100%;
+    }
     .selecao-opcoes-cabecalho {
         align-items: flex-start;
         flex-direction: column;

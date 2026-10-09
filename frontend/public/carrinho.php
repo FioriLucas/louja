@@ -68,6 +68,7 @@ foreach ($carrinho as $id => $quantidade) {
         <?php endforeach; ?>
 
         <h2>Total: R$ <?= number_format($total, 2, ',', '.') ?></h2>
+        <a class="botao" href="checkout.php">Finalizar compra</a>
     <?php endif; ?>
 
     <a class="botao" href="index.php">Continuar comprando</a>
