@@ -13,11 +13,12 @@ if (isset($_SESSION['usr_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Louja</title>
     <link rel="stylesheet" href="css/login.css">
+    <?php require __DIR__ . '/tema-head.php'; ?>
 </head>
 <body class="login-page">
 
 <div class="login-box">
-    <a href="index.php" class="logo">LOUJA</a>
+    <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <h1>Entrar</h1>
     <p>Entre na sua conta para continuar.</p>
 

@@ -2,6 +2,11 @@
 
 function garantirTabelasPedidos(PDO $pdo): void
 {
+    $colunaPagamentoPreferido = $pdo->query("SHOW COLUMNS FROM usuarios LIKE 'forma_pagamento_preferida'");
+    if (!$colunaPagamentoPreferido->fetch()) {
+        $pdo->exec("ALTER TABLE usuarios ADD forma_pagamento_preferida ENUM('cartao', 'pix', 'boleto') NOT NULL DEFAULT 'pix'");
+    }
+
     $pdo->exec("CREATE TABLE IF NOT EXISTS pedidos (
         pedido_id INT AUTO_INCREMENT PRIMARY KEY,
         usr_id INT NOT NULL,

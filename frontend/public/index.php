@@ -75,8 +75,9 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Louja - Game Store</title>
     <link rel="stylesheet" href="css/style.css">
+    <?php require __DIR__ . '/tema-head.php'; ?>
 </head>
-<body>
+<body class="home-page">
 
 <header>
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
@@ -96,6 +97,7 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
 
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
+            <a href="perfil.php">Meu perfil</a>
 
             <?php if ($_SESSION['usr_perfil'] === 'admin'): ?>
                 <a href="admin/index.php">Admin</a>

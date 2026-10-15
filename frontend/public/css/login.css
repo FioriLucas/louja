@@ -34,6 +34,19 @@ header {
     letter-spacing: -1px;
 }
 
+.login-box .logo {
+    display: inline-flex;
+    margin-bottom: 8px;
+    padding: 5px 8px;
+    background: #111;
+}
+
+.login-box .logo img {
+    display: block;
+    width: 125px;
+    height: auto;
+}
+
 nav {
     display: flex;
     gap: 22px;

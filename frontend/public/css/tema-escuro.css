@@ -1,0 +1,172 @@
+html[data-tema="escuro"] {
+    color-scheme: dark;
+    background: #0d0913;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] body {
+    background: #100b17;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] header {
+    background: #0b0810;
+    color: #fff;
+}
+
+html[data-tema="escuro"] body.home-page header {
+    background: transparent;
+}
+
+html[data-tema="escuro"] :is(h1, h2, h3, h4, p, label, legend, small, li, td, th) {
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] :is(input:not([type="radio"]):not([type="checkbox"]), textarea, select) {
+    border-color: #51445d;
+    background: #1a1422;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] :is(input, textarea, select)::placeholder {
+    color: #b8aabe;
+}
+
+html[data-tema="escuro"] :is(input, textarea, select):focus {
+    border-color: #b36aff;
+    outline-color: rgba(179, 106, 255, .3);
+}
+
+html[data-tema="escuro"] :is(.jogo-card, .catalogo-vazio, .catalogo-completo-limpar, .jogo-detalhe-box, .item-carrinho, .checkout-resumo, .checkout-pagamento, .checkout-sucesso, .checkout-aviso, .vendas-resumo article, .vendas-tabela-wrap, .venda-bloco, .selecao-opcoes, .dialogo-opcoes, .opcao-check, .perfil-painel, .perfil-historico) {
+    border-color: #35283f;
+    background-color: #191320;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] :is(.jogo-card-info h3, .jogo-card-info strong, .catalogo-completo-cabecalho p, .catalogo-completo-busca, .catalogo-completo-filtro, .catalogo-completo-resultado, .jogo-detalhe-descricao, .jogo-detalhe-meta, .voltar-loja, .login-box p, .admin-cabecalho p, .admin-card-meta, .admin-busca, .admin-filtro, .admin-resultado, .vendas-filtros label, .vendas-paginacao, .vendas-resumo article span, .vendas-tabela td small, .venda-dados span, .venda-nota, .venda-validacao > p, .opcoes-ajuda, .perfil-painel-cabecalho p, .perfil-nota, .perfil-pedido-resumo p, .perfil-pagamento-resumo, .perfil-sem-pedidos) {
+    color: #c7bbd1;
+}
+
+html[data-tema="escuro"] :is(.jogo-detalhe, .catalogo-completo-pagina) {
+    background: #100b17;
+}
+
+html[data-tema="escuro"] :is(.jogo-card, .catalogo-completo-limpar, .catalogo-seta, .checkout-opcoes label, .perfil-pagamentos label, .opcao-check) {
+    border-color: #44354f;
+    background-color: #21192a;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] :is(.catalogo-completo-limpar:hover, .checkout-opcoes label:hover, .checkout-opcoes label:focus-within, .perfil-pagamentos label:has(input:checked), .opcao-check:has(input:checked)) {
+    border-color: #9b4dff;
+    background-color: #30203d;
+}
+
+html[data-tema="escuro"] :is(.checkout-linha, .vendas-tabela th, .vendas-tabela td, .perfil-historico .perfil-painel-cabecalho) {
+    border-color: #3b3044;
+}
+
+html[data-tema="escuro"] .vendas-tabela th {
+    background: #241c2d;
+    color: #e8def0;
+}
+
+html[data-tema="escuro"] :is(.vendas-status, .perfil-status) {
+    background: #30203d;
+    color: #dfc3ff;
+}
+
+html[data-tema="escuro"] :is(.vendas-status-pago, .vendas-status-enviado, .status-pago, .status-enviado, .vendas-mensagem) {
+    border-color: #397c50;
+    background: #183324;
+    color: #b8edc8;
+}
+
+html[data-tema="escuro"] :is(.vendas-status-cancelado, .status-cancelado, .vendas-mensagem-erro, .perfil-erro, .erro, .mensagem.erro) {
+    border-color: #8f3d46;
+    background: #3a1c24;
+    color: #ffc4c8;
+}
+
+html[data-tema="escuro"] :is(.perfil-sucesso, .mensagem.sucesso) {
+    border-color: #397c50;
+    background: #183324;
+    color: #b8edc8;
+}
+
+html[data-tema="escuro"] :is(.venda-auditoria, .perfil-pagamentos label:has(input:checked), .perfil-status) {
+    background-color: #30203d;
+    color: #dfc3ff;
+}
+
+html[data-tema="escuro"] :is(.selecao-opcoes-cabecalho h2, .dialogo-opcoes-cabecalho h2, .opcao-check) {
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] :is(.selecao-opcoes-cabecalho p, .dialogo-opcoes-cabecalho p) {
+    color: #c7bbd1;
+}
+
+html[data-tema="escuro"] .abrir-seletor {
+    border-color: #5c4176;
+    background: #30203d;
+    color: #dfc3ff;
+}
+
+html[data-tema="escuro"] .dialogo-opcoes-acoes {
+    border-color: #3b3044;
+}
+
+html[data-tema="escuro"] .fechar-dialogo {
+    background: #30283a;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] :is(.btn-cadastro, .login-box button) {
+    background: #7f32e6;
+    color: #fff;
+}
+
+html[data-tema="escuro"] :is(.btn-cadastro:hover, .login-box button:hover) {
+    background: #9b4dff;
+}
+
+.perfil-cabecalho-acoes {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.perfil-tema-botao {
+    min-height: 42px;
+    padding: 0 14px;
+    border: 1px solid #9b4dff;
+    background: transparent;
+    color: #7f32e6;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.perfil-tema-botao:hover {
+    background: #f5edff;
+}
+
+html[data-tema="escuro"] .perfil-tema-botao {
+    border-color: #b36aff;
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] .perfil-tema-botao:hover {
+    background: #30203d;
+}
+
+@media (max-width: 560px) {
+    .perfil-cabecalho-acoes {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+}

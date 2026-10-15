@@ -65,12 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/cadastro.css">
+    <?php require __DIR__ . '/tema-head.php'; ?>
 </head>
 
 <body class="login-page">
 
 <div class="login-box">
-    <a href="index.php" class="logo">LOUJA</a>
+    <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <h1>Criar conta</h1>
     <p>Crie sua conta para continuar.</p>
 

@@ -1,0 +1,313 @@
+.perfil-page header {
+    background: #171717;
+}
+
+.perfil-wrap {
+    width: min(1080px, 92%);
+    margin: 112px auto 64px;
+}
+
+.perfil-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.perfil-sobretitulo {
+    margin-bottom: 8px;
+    color: #7f32e6;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.perfil-cabecalho h1 {
+    margin-bottom: 8px;
+    font-size: 38px;
+}
+
+.perfil-cabecalho > div > p:last-child,
+.perfil-painel-cabecalho p {
+    color: #626262;
+}
+
+.perfil-voltar {
+    padding-bottom: 4px;
+    color: #7f32e6;
+    font-weight: 700;
+}
+
+.perfil-voltar:hover,
+.perfil-sem-pedidos a:hover {
+    text-decoration: underline;
+}
+
+.perfil-grade {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.perfil-painel,
+.perfil-historico {
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid #e0e0dc;
+    background: #fff;
+}
+
+.perfil-painel-senha {
+    align-self: start;
+}
+
+.perfil-painel-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.perfil-painel-cabecalho h2 {
+    margin-bottom: 6px;
+    font-size: 21px;
+}
+
+.perfil-painel-cabecalho p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.perfil-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.perfil-form > label {
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.perfil-form input[type="text"],
+.perfil-form input[type="email"],
+.perfil-form input[type="password"] {
+    min-width: 0;
+    border-color: #c9c9c5;
+    border-radius: 3px;
+}
+
+.perfil-form input:focus {
+    border-color: #9b4dff;
+    outline: 2px solid rgba(155, 77, 255, .18);
+}
+
+.perfil-pagamentos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 9px 0 5px;
+    padding: 0;
+    border: 0;
+}
+
+.perfil-pagamentos legend {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.perfil-pagamentos label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 8px;
+    border: 1px solid #d6d6d2;
+    border-radius: 3px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.perfil-pagamentos label:has(input:checked) {
+    border-color: #9b4dff;
+    background: #f5edff;
+}
+
+.perfil-pagamentos input {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    accent-color: #9b4dff;
+}
+
+.perfil-form .botao {
+    align-self: flex-start;
+    margin-top: 9px;
+    border: 0;
+    cursor: pointer;
+}
+
+.perfil-senha-campos:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.perfil-form-senha {
+    align-items: flex-start;
+}
+
+.perfil-nota {
+    margin-top: 16px;
+    color: #666;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.perfil-mensagem {
+    margin: 0 0 18px;
+    padding: 12px 15px;
+    border-left: 4px solid;
+}
+
+.perfil-erro {
+    border-color: #a43a35;
+    background: #fff0ef;
+    color: #742822;
+}
+
+.perfil-sucesso {
+    border-color: #35764d;
+    background: #edf7ef;
+    color: #245739;
+}
+
+.perfil-historico {
+    margin-top: 18px;
+}
+
+.perfil-historico .perfil-painel-cabecalho {
+    align-items: center;
+    border-bottom: 1px solid #e5e5e1;
+    padding-bottom: 17px;
+}
+
+.perfil-sem-pedidos {
+    padding: 10px 0 2px;
+    color: #555;
+}
+
+.perfil-sem-pedidos a {
+    color: #7f32e6;
+    font-weight: 700;
+}
+
+.perfil-pedido {
+    padding: 18px 0;
+    border-bottom: 1px solid #e5e5e1;
+}
+
+.perfil-pedido:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.perfil-pedido-resumo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.perfil-pedido-resumo h3 {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.perfil-pedido-resumo p,
+.perfil-pagamento-resumo {
+    color: #686868;
+    font-size: 13px;
+}
+
+.perfil-pedido-total {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.perfil-status {
+    padding: 4px 8px;
+    border-radius: 3px;
+    background: #f0f0ed;
+    color: #444;
+    font-size: 12px;
+}
+
+.status-pago,
+.status-enviado {
+    background: #edf7ef;
+    color: #245739;
+}
+
+.status-cancelado {
+    background: #fff0ef;
+    color: #742822;
+}
+
+.perfil-pedido ul {
+    margin: 13px 0 10px;
+    list-style: none;
+}
+
+.perfil-pedido li {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 6px 0;
+    color: #333;
+    font-size: 14px;
+}
+
+.perfil-pedido li small {
+    color: #666;
+}
+
+.perfil-pagamento-resumo {
+    margin-top: 10px;
+}
+
+@media (max-width: 760px) {
+    .perfil-grade {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .perfil-wrap {
+        margin-top: 105px;
+    }
+
+    .perfil-cabecalho {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .perfil-cabecalho h1 {
+        font-size: 32px;
+    }
+
+    .perfil-painel,
+    .perfil-historico {
+        padding: 18px;
+    }
+
+    .perfil-pagamentos {
+        grid-template-columns: 1fr;
+    }
+}

@@ -33,15 +33,17 @@ foreach ($carrinho as $id => $quantidade) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho - Louja</title>
     <link rel="stylesheet" href="css/style.css">
+    <?php require __DIR__ . '/tema-head.php'; ?>
 </head>
 <body>
 
 <header>
-    <a href="index.php" class="logo">LOUJA</a>
+    <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
         <a href="carrinho.php">Carrinho</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
+            <a href="perfil.php">Meu perfil</a>
             <a href="logout.php">Sair</a>
         <?php else: ?>
             <a href="login.php">Entrar</a>

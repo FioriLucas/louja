@@ -54,6 +54,7 @@ natcasesort($plataformas);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogos - Louja</title>
     <link rel="stylesheet" href="css/style.css">
+    <?php require __DIR__ . '/tema-head.php'; ?>
 </head>
 <body>
 
@@ -64,6 +65,7 @@ natcasesort($plataformas);
         <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
+            <a href="perfil.php">Meu perfil</a>
             <?php if ($_SESSION['usr_perfil'] === 'admin'): ?>
                 <a href="admin/index.php">Admin</a>
             <?php endif; ?>

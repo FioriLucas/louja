@@ -19,6 +19,7 @@ CREATE TABLE usuarios (
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
+    forma_pagamento_preferida ENUM('cartao', 'pix', 'boleto') NOT NULL DEFAULT 'pix',
     perfil ENUM('cliente', 'admin') DEFAULT 'cliente'
 );
 

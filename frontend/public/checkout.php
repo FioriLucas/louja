@@ -15,6 +15,9 @@ require_once __DIR__ . '/../../backend/config/pedidos.php';
 $conexao = new Conexao();
 $pdo = $conexao->conectar();
 garantirTabelasPedidos($pdo);
+$stmtUsuario = $pdo->prepare('SELECT forma_pagamento_preferida FROM usuarios WHERE usr_id = ?');
+$stmtUsuario->execute([(int) $_SESSION['usr_id']]);
+$formaPagamentoPreferida = $stmtUsuario->fetchColumn() ?: 'pix';
 
 $metodos = [
     'cartao' => 'Cartão de crédito',
@@ -124,13 +127,15 @@ if (!$pedidoConcluido) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar compra - Louja</title>
     <link rel="stylesheet" href="css/style.css">
+    <?php require __DIR__ . '/tema-head.php'; ?>
 </head>
 <body>
 <header>
-    <a href="index.php" class="logo">LOUJA</a>
+    <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
         <a href="carrinho.php">Carrinho</a>
+        <a href="perfil.php">Meu perfil</a>
         <a href="logout.php">Sair</a>
     </nav>
 </header>
@@ -173,9 +178,9 @@ if (!$pedidoConcluido) {
 
             <fieldset class="checkout-opcoes">
                 <legend>Escolha uma opção</legend>
-                <label><input type="radio" name="forma_pagamento" value="cartao" required> Cartão de crédito</label>
-                <label><input type="radio" name="forma_pagamento" value="pix" required> Pix</label>
-                <label><input type="radio" name="forma_pagamento" value="boleto" required> Boleto</label>
+                <label><input type="radio" name="forma_pagamento" value="cartao" required <?= $formaPagamentoPreferida === 'cartao' ? 'checked' : '' ?>> Cartão de crédito</label>
+                <label><input type="radio" name="forma_pagamento" value="pix" required <?= $formaPagamentoPreferida === 'pix' ? 'checked' : '' ?>> Pix</label>
+                <label><input type="radio" name="forma_pagamento" value="boleto" required <?= $formaPagamentoPreferida === 'boleto' ? 'checked' : '' ?>> Boleto</label>
             </fieldset>
 
             <div class="checkout-painel" data-payment-panel="cartao" hidden>

@@ -105,6 +105,7 @@ $urlPagina = static function (int $numero) use ($statusFiltro, $dataInicio, $dat
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendas - Admin Louja</title>
     <link rel="stylesheet" href="../css/style.css">
+    <?php require __DIR__ . '/../tema-head.php'; ?>
 </head>
 <body>
 <header>
