@@ -125,6 +125,46 @@ html[data-tema="escuro"] :is(.jogo-card, .catalogo-completo-limpar, .catalogo-se
     color: #f2edf8;
 }
 
+html[data-tema="escuro"] .sobre-nos {
+    border-color: #44354f;
+    background: linear-gradient(135deg, #191320 0%, #21192a 100%);
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] .sobre-nos :is(h2, h3, h4, strong) {
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] .sobre-nos :is(p, li) {
+    color: #d0c4d9;
+}
+
+html[data-tema="escuro"] .sobre-nos-equipe {
+    border-color: #44354f;
+    background: #191320;
+}
+
+html[data-tema="escuro"] .rodape-loja {
+    background: #0b0810;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] .rodape-loja :is(h2, .rodape-logo) {
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] .rodape-loja :is(p, small, .rodape-final) {
+    color: #c7bbd1;
+}
+
+html[data-tema="escuro"] .rodape-loja a {
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] .rodape-loja a:hover {
+    color: #fff;
+}
+
 html[data-tema="escuro"] :is(.catalogo-completo-limpar:hover, .checkout-opcoes label:hover, .checkout-opcoes label:focus-within, .perfil-pagamentos label:has(input:checked), .opcao-check:has(input:checked)) {
     border-color: #9b4dff;
     background-color: #30203d;

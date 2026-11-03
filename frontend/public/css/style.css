@@ -725,6 +725,168 @@ nav a:hover {
     scroll-snap-align: start;
 }
 
+.vitrine-ofertas .vitrine-viewport {
+    overflow: visible;
+    scroll-snap-type: none;
+}
+
+.vitrine-ofertas .vitrine-track {
+    grid-auto-flow: row;
+    grid-auto-columns: unset;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 165px), 1fr));
+    width: 100%;
+}
+
+.sobre-nos {
+    width: min(1120px, 92%);
+    margin: 64px auto;
+    padding: clamp(28px, 5vw, 56px);
+    border: 1px solid #e8d9f7;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #fff 0%, #f7efff 100%);
+    color: #211b2a;
+}
+
+.sobre-nos-sobretitulo {
+    margin-bottom: 8px;
+    color: #7f32e6;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.sobre-nos-conteudo h2 {
+    margin-bottom: 18px;
+    color: #32174f;
+    font-size: clamp(28px, 4vw, 38px);
+}
+
+.sobre-nos-conteudo > p:not(.sobre-nos-sobretitulo) {
+    max-width: 860px;
+    margin-top: 12px;
+    color: #51485d;
+    line-height: 1.75;
+}
+
+.sobre-nos-fundadores {
+    margin-top: 38px;
+}
+
+.sobre-nos-fundadores > h3 {
+    margin-bottom: 16px;
+    color: #32174f;
+    font-size: 22px;
+}
+
+.sobre-nos-equipes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 14px;
+}
+
+.sobre-nos-equipe {
+    padding: 20px;
+    border: 1px solid #e8d9f7;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .8);
+}
+
+.sobre-nos-equipe h4 {
+    margin-bottom: 12px;
+    color: #7f32e6;
+    font-size: 16px;
+}
+
+.sobre-nos-equipe p,
+.sobre-nos-equipe li {
+    color: #51485d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.sobre-nos-equipe ul {
+    display: grid;
+    gap: 10px;
+    padding-left: 18px;
+}
+
+.sobre-nos-equipe strong {
+    color: #32174f;
+}
+
+.sobre-nos-slogan {
+    margin-top: 32px;
+    color: #7f32e6;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.rodape-loja {
+    padding: 42px max(4%, calc((100% - 1120px) / 2)) 18px;
+    background: #21142c;
+    color: #f2edf8;
+}
+
+.rodape-conteudo {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 36px;
+    padding-bottom: 32px;
+}
+
+.rodape-logo {
+    color: #d7b5ff;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.rodape-marca p,
+.rodape-contato small {
+    display: block;
+    margin-top: 8px;
+    color: #c7bbd1;
+    font-size: 13px;
+}
+
+.rodape-redes h2,
+.rodape-contato h2 {
+    margin-bottom: 12px;
+    color: #fff;
+    font-size: 15px;
+}
+
+.rodape-redes ul {
+    display: grid;
+    gap: 8px;
+    list-style: none;
+}
+
+.rodape-redes a,
+.rodape-contato > a,
+.rodape-final a {
+    color: #e4caff;
+    font-size: 14px;
+}
+
+.rodape-redes a:hover,
+.rodape-contato > a:hover,
+.rodape-final a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.rodape-final {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #493b54;
+    color: #c7bbd1;
+    font-size: 12px;
+}
+
 @media (max-width: 600px) {
     .vitrine-jogos {
         width: 92%;
@@ -741,6 +903,17 @@ nav a:hover {
 
     .catalogo-completo-limpar {
         width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .rodape-conteudo {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px 18px;
+    }
+
+    .rodape-marca {
+        grid-column: 1 / -1;
     }
 }
 
