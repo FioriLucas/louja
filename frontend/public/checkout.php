@@ -134,7 +134,9 @@ if (!$pedidoConcluido) {
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
-        <a href="carrinho.php">Carrinho</a>
+        <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
+            <a href="carrinho.php">Carrinho</a>
+        <?php endif; ?>
         <a href="perfil.php">Meu perfil</a>
         <a href="logout.php">Sair</a>
     </nav>
@@ -227,7 +229,9 @@ if (!$pedidoConcluido) {
 
             <div class="checkout-acoes">
                 <button class="botao" type="submit">Confirmar pedido</button>
-                <a href="carrinho.php">Voltar ao carrinho</a>
+                <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
+                    <a href="carrinho.php">Voltar ao carrinho</a>
+                <?php endif; ?>
             </div>
         </form>
     <?php endif; ?>

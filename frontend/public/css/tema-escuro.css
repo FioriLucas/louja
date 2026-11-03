@@ -9,6 +9,70 @@ html[data-tema="escuro"] body {
     color: #f2edf8;
 }
 
+.tema-flutuante {
+    position: fixed;
+    right: 24px;
+    bottom: max(24px, env(safe-area-inset-bottom));
+    z-index: 120;
+    display: grid;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid #9b4dff;
+    border-radius: 999px;
+    background: #fff;
+    color: #6f26c7;
+    box-shadow: 0 6px 24px rgba(20, 10, 30, .2);
+    cursor: pointer;
+}
+
+.tema-flutuante svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.tema-flutuante .tema-icone-sol {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2;
+}
+
+.tema-flutuante:hover {
+    background: #f5edff;
+}
+
+.tema-flutuante:focus-visible {
+    outline: 3px solid #7f32e6;
+    outline-offset: 3px;
+}
+
+html[data-tema="escuro"] .tema-flutuante {
+    border-color: #b36aff;
+    background: #21192a;
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] .tema-flutuante:hover {
+    background: #30203d;
+}
+
+html.tema-transicao,
+html.tema-transicao body,
+html.tema-transicao body * {
+    transition: color .45s ease, background-color .45s ease, border-color .45s ease, box-shadow .45s ease, fill .45s ease, stroke .45s ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.tema-transicao,
+    html.tema-transicao body,
+    html.tema-transicao body * {
+        transition: none !important;
+    }
+}
+
 html[data-tema="escuro"] header {
     background: #0b0810;
     color: #fff;
@@ -136,31 +200,6 @@ html[data-tema="escuro"] :is(.btn-cadastro:hover, .login-box button:hover) {
     align-items: center;
     flex-wrap: wrap;
     gap: 18px;
-}
-
-.perfil-tema-botao {
-    min-height: 42px;
-    padding: 0 14px;
-    border: 1px solid #9b4dff;
-    background: transparent;
-    color: #7f32e6;
-    font: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.perfil-tema-botao:hover {
-    background: #f5edff;
-}
-
-html[data-tema="escuro"] .perfil-tema-botao {
-    border-color: #b36aff;
-    color: #e4caff;
-}
-
-html[data-tema="escuro"] .perfil-tema-botao:hover {
-    background: #30203d;
 }
 
 @media (max-width: 560px) {

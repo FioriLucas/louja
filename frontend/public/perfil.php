@@ -154,7 +154,9 @@ $statusPedidos = [
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
-        <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
+        <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
+            <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
+        <?php endif; ?>
         <a href="perfil.php" aria-current="page">Meu perfil</a>
         <?php if (($_SESSION['usr_perfil'] ?? '') === 'admin'): ?>
             <a href="admin/index.php">Admin</a>
@@ -171,7 +173,6 @@ $statusPedidos = [
             <p>Gerencie seus dados e acompanhe seus pedidos.</p>
         </div>
         <div class="perfil-cabecalho-acoes">
-            <button class="perfil-tema-botao" type="button" data-alternar-tema aria-pressed="false">Ativar tema escuro</button>
             <a class="perfil-voltar" href="jogos.php">Voltar à loja</a>
         </div>
     </div>

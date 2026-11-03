@@ -41,7 +41,9 @@ foreach ($carrinho as $id => $quantidade) {
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
-        <a href="carrinho.php">Carrinho</a>
+        <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
+            <a href="carrinho.php">Carrinho</a>
+        <?php endif; ?>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <a href="perfil.php">Meu perfil</a>
             <a href="logout.php">Sair</a>
