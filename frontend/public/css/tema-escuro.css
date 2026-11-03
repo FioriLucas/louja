@@ -111,6 +111,10 @@ html[data-tema="escuro"] :is(.jogo-card-info h3, .jogo-card-info strong, .catalo
     color: #c7bbd1;
 }
 
+html[data-tema="escuro"] .jogo-card-info :is(h2, h3, strong, p, span) {
+    color: #f2edf8;
+}
+
 html[data-tema="escuro"] :is(.jogo-detalhe, .catalogo-completo-pagina) {
     background: #100b17;
 }
