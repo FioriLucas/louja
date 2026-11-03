@@ -10,32 +10,39 @@ require_once __DIR__ . '/../../backend/config/conexao.php';
 $conexao = new Conexao();
 $pdo = $conexao->conectar();
 
+$sqlCatalogoBase = "SELECT jogos.*,
+        COALESCE((
+            SELECT GROUP_CONCAT(DISTINCT jc.nome SEPARATOR ', ')
+            FROM jogo_categorias AS jcat
+            JOIN categorias AS jc ON jc.categoria_id = jcat.categoria_id
+            WHERE jcat.jogo_id = jogos.jogo_id
+        ), categorias.nome, 'Sem categoria') AS categoria,
+        COALESCE((
+            SELECT GROUP_CONCAT(DISTINCT jp.plataforma SEPARATOR ', ')
+            FROM jogo_plataformas AS jp
+            WHERE jp.jogo_id = jogos.jogo_id
+        ), jogos.plataforma) AS plataformas
+        FROM jogos
+        LEFT JOIN categorias ON jogos.categoria_id = categorias.categoria_id
+        WHERE jogos.ativo = 1";
+
 $colunaDestaqueExiste = (bool) $pdo->query("SHOW COLUMNS FROM jogos LIKE 'destaque_carrossel'")->fetch();
 
 if ($colunaDestaqueExiste) {
-    $sqlDestaques = "SELECT jogos.*, categorias.nome AS categoria
-            FROM jogos
-            JOIN categorias ON jogos.categoria_id = categorias.categoria_id
-            WHERE jogos.ativo = 1
-              AND jogos.destaque_carrossel = 1
+    $sqlDestaques = $sqlCatalogoBase . "
+            AND jogos.destaque_carrossel = 1
             ORDER BY jogos.jogo_id DESC";
 
     $produtos = $pdo->query($sqlDestaques)->fetchAll();
 
-    $sqlCatalogo = "SELECT jogos.*, categorias.nome AS categoria
-            FROM jogos
-            JOIN categorias ON jogos.categoria_id = categorias.categoria_id
-            WHERE jogos.ativo = 1
-              AND jogos.destaque_carrossel = 0
+    $sqlCatalogo = $sqlCatalogoBase . "
+            AND jogos.destaque_carrossel = 0
             ORDER BY RAND()
             LIMIT 27";
 
     $catalogo = $pdo->query($sqlCatalogo)->fetchAll();
 } else {
-    $sqlBase = "SELECT jogos.*, categorias.nome AS categoria
-            FROM jogos
-            JOIN categorias ON jogos.categoria_id = categorias.categoria_id
-            WHERE jogos.ativo = 1
+    $sqlBase = $sqlCatalogoBase . "
             ORDER BY jogos.jogo_id DESC";
 
     $todosJogos = $pdo->query($sqlBase)->fetchAll();
@@ -45,10 +52,7 @@ if ($colunaDestaqueExiste) {
     shuffle($catalogo);
 }
 
-$sqlVitrine = "SELECT jogos.*, categorias.nome AS categoria
-        FROM jogos
-        JOIN categorias ON jogos.categoria_id = categorias.categoria_id
-        WHERE jogos.ativo = 1
+$sqlVitrine = $sqlCatalogoBase . "
         ORDER BY jogos.titulo";
 $jogosVitrine = $pdo->query($sqlVitrine)->fetchAll();
 
@@ -125,7 +129,7 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
                     <div class="slide-content">
                         <p class="categoria"><?= htmlspecialchars($produto['categoria']) ?></p>
                         <h1><?= htmlspecialchars($produto['titulo']) ?></h1>
-                        <p class="plataforma"><?= htmlspecialchars($produto['plataforma']) ?></p>
+                        <p class="plataforma"><?= htmlspecialchars($produto['plataformas']) ?></p>
                         <p class="preco">R$ <?= number_format($produto['preco'], 2, ',', '.') ?></p>
                         <a class="botao" href="adicionar_carrinho.php?id=<?= $produto['jogo_id'] ?>">
                             Adicionar ao carrinho <span>&rsaquo;</span>
@@ -178,7 +182,7 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
                         </div>
                         <div class="jogo-card-info">
                             <h3><?= htmlspecialchars($produto['titulo']) ?></h3>
-                            <span class="jogo-plataforma"><?= htmlspecialchars($produto['plataforma']) ?></span>
+                            <span class="jogo-plataforma"><?= htmlspecialchars($produto['plataformas']) ?></span>
                             <strong>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></strong>
                         </div>
                     </a>

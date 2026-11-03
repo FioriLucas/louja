@@ -14,7 +14,17 @@ $categorias = $pdo->query(
      GROUP BY nome
      ORDER BY nome"
 )->fetchAll();
-$plataformas = ['PC', 'PlayStation 4', 'PlayStation 5', 'Xbox One', 'Xbox Series X|S', 'Nintendo Switch'];
+$plataformas = [
+    'PC',
+    'PlayStation 3',
+    'PlayStation 4',
+    'PlayStation 5',
+    'Xbox',
+    'Xbox 360',
+    'Xbox One',
+    'Xbox Series X|S',
+    'Nintendo Switch'
+];
 $categoriasPermitidas = array_map('intval', array_column($categorias, 'categoria_id'));
 $erro = null;
 
