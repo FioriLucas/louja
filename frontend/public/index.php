@@ -84,6 +84,9 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
 <body class="home-page">
 
 <header>
+
+    <h1>Olá Mundo</h1>
+
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
 
     <nav>
