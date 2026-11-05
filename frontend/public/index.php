@@ -85,8 +85,6 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
 
 <header>
 
-    <h1>Olá Mundo</h1>
-
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
 
     <nav>
@@ -199,17 +197,13 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
     </section>
 
     <?php foreach ($secoesVitrine as $nomeSecao => $jogosSecao): ?>
-        <section class="vitrine-jogos" data-vitrine>
+        <section class="vitrine-jogos vitrine-ofertas" data-vitrine>
             <div class="vitrine-cabecalho">
                 <div>
                     <h2><?= htmlspecialchars($nomeSecao) ?></h2>
                     <?php if ($nomeSecao === 'Ofertas'): ?>
                         <p>Uma sele&ccedil;&atilde;o dos menores pre&ccedil;os da loja.</p>
                     <?php endif; ?>
-                </div>
-                <div class="vitrine-controles">
-                    <button class="vitrine-seta" type="button" data-direcao="-1" aria-label="Jogos anteriores de <?= htmlspecialchars($nomeSecao) ?>">&lsaquo;</button>
-                    <button class="vitrine-seta" type="button" data-direcao="1" aria-label="Pr&oacute;ximos jogos de <?= htmlspecialchars($nomeSecao) ?>">&rsaquo;</button>
                 </div>
             </div>
             <div class="vitrine-viewport">
@@ -231,7 +225,79 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
             </div>
         </section>
     <?php endforeach; ?>
+
+    <section class="sobre-nos" id="sobre-nos">
+        <div class="sobre-nos-conteudo">
+            <p class="sobre-nos-sobretitulo">Conhe&ccedil;a a Louja</p>
+            <h2>Sobre N&oacute;s</h2>
+            <p>
+                A Louja foi oficialmente fundada em <strong>03 de novembro de 2026</strong> por seis
+                integrantes unidos pelo interesse no universo dos games e pela vontade de criar uma
+                loja virtual de jogos online.
+            </p>
+            <p>
+                Desde o in&iacute;cio, nosso objetivo &eacute; facilitar o acesso dos jogadores aos seus
+                t&iacute;tulos favoritos, reunindo praticidade, inova&ccedil;&atilde;o e uma experi&ecirc;ncia
+                de compra simples em um s&oacute; lugar. A equipe dividiu responsabilidades entre
+                organiza&ccedil;&atilde;o, desenvolvimento e an&aacute;lise para transformar essa ideia em
+                uma plataforma feita em conjunto.
+            </p>
+        </div>
+
+        <div class="sobre-nos-fundadores">
+            <h3>Nossos Fundadores</h3>
+            <div class="sobre-nos-equipes">
+                <article class="sobre-nos-equipe">
+                    <h4>Scrum Master</h4>
+                    <p><strong>Lucas Fiori</strong> — organiza&ccedil;&atilde;o da equipe e acompanhamento do projeto.</p>
+                </article>
+                <article class="sobre-nos-equipe">
+                    <h4>Desenvolvedores</h4>
+                    <ul>
+                        <li><strong>Artur Dionisio Silva</strong> — desenvolvimento e implementa&ccedil;&atilde;o das funcionalidades.</li>
+                        <li><strong>Erick Gabriel Schnorr Ries</strong> — programa&ccedil;&atilde;o e constru&ccedil;&atilde;o dos recursos da plataforma.</li>
+                        <li><strong>Jo&atilde;o Vitor Bortolaci da Silva</strong> — desenvolvimento e estrutura&ccedil;&atilde;o do sistema.</li>
+                    </ul>
+                </article>
+                <article class="sobre-nos-equipe">
+                    <h4>Analistas</h4>
+                    <ul>
+                        <li><strong>Luiza Szulczewski de Quadros</strong> — levantamento e an&aacute;lise de requisitos.</li>
+                        <li><strong>Vict&oacute;ria Cunha Foga&ccedil;a</strong> — documenta&ccedil;&atilde;o e an&aacute;lise das necessidades do sistema.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+
+        <p class="sobre-nos-slogan">Louja — Sua pr&oacute;xima aventura come&ccedil;a aqui!</p>
+    </section>
 </main>
+
+<footer class="rodape-loja">
+    <div class="rodape-conteudo">
+        <div class="rodape-marca">
+            <a href="index.php" class="rodape-logo">Louja</a>
+            <p>Sua pr&oacute;xima aventura come&ccedil;a aqui.</p>
+        </div>
+        <div class="rodape-redes">
+            <h2>Redes sociais</h2>
+            <ul>
+                <li><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                <li><a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+                <li><a href="https://discord.com/" target="_blank" rel="noopener noreferrer">Discord</a></li>
+            </ul>
+        </div>
+        <div class="rodape-contato">
+            <h2>Contato</h2>
+            <a href="tel:+5511999990000">(11) 99999-0000</a>
+            <small>N&uacute;mero ilustrativo</small>
+        </div>
+    </div>
+    <div class="rodape-final">
+        <span>&copy; 2026 Louja</span>
+        <a href="#sobre-nos">Sobre N&oacute;s</a>
+    </div>
+</footer>
 
 <script src="js/animacoes.js"></script>
 </body>
