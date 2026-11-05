@@ -219,6 +219,12 @@ if (!$pedidoConcluido) {
                         <p>Este código é apenas visual. Não pode ser escaneado e não realiza pagamentos.</p>
                         <strong>Valor: R$ <?= number_format($total, 2, ',', '.') ?></strong>
                     </div>
+                    <div class="pix-qr" role="img" aria-label="QR Code ilustrativo de demonstração, não válido para pagamento">
+                        <svg viewBox="0 0 41 41" aria-hidden="true" focusable="false" data-qr-demonstracao>
+                            <rect width="41" height="41" fill="#fff"></rect>
+                        </svg>
+                        <span>DEMO</span>
+                    </div>
                 </div>
             </div>
 
@@ -261,8 +267,75 @@ function atualizarCamposPagamento() {
     });
 }
 
+function desenharQrDemonstracao(svg) {
+    const tamanho = 33;
+    const reservado = new Set();
+    const modulosEscuros = new Set();
+
+    function marcar(x, y, escuro) {
+        if (x < 0 || y < 0 || x >= tamanho || y >= tamanho) {
+            return;
+        }
+
+        const chave = `${x},${y}`;
+        reservado.add(chave);
+        if (escuro) {
+            modulosEscuros.add(chave);
+        }
+    }
+
+    [[0, 0], [26, 0], [0, 26]].forEach(([inicioX, inicioY]) => {
+        for (let y = -1; y <= 7; y++) {
+            for (let x = -1; x <= 7; x++) {
+                const distancia = Math.max(Math.abs(x - 3), Math.abs(y - 3));
+                marcar(inicioX + x, inicioY + y, distancia === 3 || distancia <= 1);
+            }
+        }
+    });
+
+    for (let posicao = 8; posicao < 25; posicao++) {
+        marcar(posicao, 6, posicao % 2 === 0);
+        marcar(6, posicao, posicao % 2 === 0);
+    }
+
+    for (let y = -2; y <= 2; y++) {
+        for (let x = -2; x <= 2; x++) {
+            const distancia = Math.max(Math.abs(x), Math.abs(y));
+            marcar(26 + x, 26 + y, distancia === 2 || distancia === 0);
+        }
+    }
+
+    let semente = 2026;
+    function proximoBit() {
+        semente = (semente * 9301 + 49297) % 233280;
+        return semente / 233280 > .5;
+    }
+
+    for (let y = 0; y < tamanho; y++) {
+        for (let x = 0; x < tamanho; x++) {
+            if (!reservado.has(`${x},${y}`) && proximoBit()) {
+                modulosEscuros.add(`${x},${y}`);
+            }
+        }
+    }
+
+    const grupo = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    grupo.setAttribute('fill', '#17121d');
+    modulosEscuros.forEach((chave) => {
+        const [x, y] = chave.split(',').map(Number);
+        const modulo = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        modulo.setAttribute('x', String(x + 4));
+        modulo.setAttribute('y', String(y + 4));
+        modulo.setAttribute('width', '1');
+        modulo.setAttribute('height', '1');
+        grupo.appendChild(modulo);
+    });
+    svg.appendChild(grupo);
+}
+
 opcoesPagamento.forEach((opcao) => opcao.addEventListener('change', atualizarCamposPagamento));
 atualizarCamposPagamento();
+document.querySelectorAll('[data-qr-demonstracao]').forEach(desenharQrDemonstracao);
 </script>
 </body>
 </html>
