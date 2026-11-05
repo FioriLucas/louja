@@ -27,6 +27,62 @@ html[data-tema="escuro"] body {
     cursor: pointer;
 }
 
+.carrinho-flutuante {
+    position: fixed;
+    right: 24px;
+    bottom: max(88px, calc(env(safe-area-inset-bottom) + 88px));
+    z-index: 120;
+    display: grid;
+    width: 52px;
+    height: 52px;
+    place-items: center;
+    border: 1px solid #9b4dff;
+    border-radius: 999px;
+    background: #fff;
+    color: #6f26c7;
+    box-shadow: 0 6px 24px rgba(20, 10, 30, .2);
+    text-decoration: none;
+    transition: transform .2s ease, background-color .2s ease;
+}
+
+.carrinho-flutuante svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.carrinho-flutuante-contagem {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: grid;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    place-items: center;
+    border: 2px solid #fff;
+    border-radius: 999px;
+    background: #a855f7;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.carrinho-flutuante:hover {
+    background: #f5edff;
+    transform: translateY(-2px);
+}
+
+.carrinho-flutuante:focus-visible {
+    outline: 3px solid #7f32e6;
+    outline-offset: 3px;
+}
+
 .tema-flutuante svg {
     width: 24px;
     height: 24px;
@@ -55,8 +111,22 @@ html[data-tema="escuro"] .tema-flutuante {
     color: #e4caff;
 }
 
+html[data-tema="escuro"] .carrinho-flutuante {
+    border-color: #b36aff;
+    background: #21192a;
+    color: #e4caff;
+}
+
 html[data-tema="escuro"] .tema-flutuante:hover {
     background: #30203d;
+}
+
+html[data-tema="escuro"] .carrinho-flutuante:hover {
+    background: #30203d;
+}
+
+html[data-tema="escuro"] .carrinho-flutuante-contagem {
+    border-color: #21192a;
 }
 
 html.tema-transicao,
@@ -105,6 +175,83 @@ html[data-tema="escuro"] :is(.jogo-card, .catalogo-vazio, .catalogo-completo-lim
     border-color: #35283f;
     background-color: #191320;
     color: #f2edf8;
+}
+
+html[data-tema="escuro"] .pix-demonstracao {
+    border-color: #493958;
+    background: linear-gradient(135deg, #191320 0%, #21192a 100%);
+}
+
+html[data-tema="escuro"] .pix-demonstracao-etiqueta {
+    color: #d7b4ff;
+}
+
+html[data-tema="escuro"] .pix-demonstracao-info p {
+    color: #c7bbd1;
+}
+
+html[data-tema="escuro"] .pix-qr {
+    border-color: #493958;
+}
+
+html[data-tema="escuro"] .item-carrinho,
+html[data-tema="escuro"] .carrinho-resumo,
+html[data-tema="escuro"] .carrinho-vazio {
+    border-color: #35283f;
+    background: linear-gradient(135deg, #191320 0%, #21192a 100%);
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] .carrinho-sobretitulo {
+    color: #c99af1;
+}
+
+html[data-tema="escuro"] .carrinho-cabecalho p,
+html[data-tema="escuro"] .item-carrinho-preco,
+html[data-tema="escuro"] .carrinho-resumo-legenda,
+html[data-tema="escuro"] .carrinho-vazio p {
+    color: #c7bbd1;
+}
+
+html[data-tema="escuro"] .carrinho-vazio-icone {
+    background: #30203d;
+    color: #d7b4ff;
+}
+
+html[data-tema="escuro"] .carrinho-continuar {
+    color: #d7b4ff;
+}
+
+html[data-tema="escuro"] .carrinho-continuar:hover {
+    color: #fff;
+}
+
+html[data-tema="escuro"] .item-carrinho a.item-carrinho-acao {
+    border-color: #493958;
+    background: #21192a;
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] .item-carrinho a.item-carrinho-acao:hover {
+    border-color: #8d5cb5;
+    background: #30203d;
+    color: #fff;
+}
+
+html[data-tema="escuro"] .item-carrinho-remover-um > span:first-child {
+    background: #392b45;
+}
+
+html[data-tema="escuro"] .item-carrinho a.item-carrinho-remover-tudo {
+    border-color: #633d48;
+    background: #2b1920;
+    color: #ffb6bd;
+}
+
+html[data-tema="escuro"] .item-carrinho a.item-carrinho-remover-tudo:hover {
+    border-color: #a64e5b;
+    background: #402027;
+    color: #ffd9dc;
 }
 
 html[data-tema="escuro"] :is(.jogo-card-info h3, .jogo-card-info strong, .catalogo-completo-cabecalho p, .catalogo-completo-busca, .catalogo-completo-filtro, .catalogo-completo-resultado, .jogo-detalhe-descricao, .jogo-detalhe-meta, .voltar-loja, .login-box p, .admin-cabecalho p, .admin-card-meta, .admin-busca, .admin-filtro, .admin-resultado, .vendas-filtros label, .vendas-paginacao, .vendas-resumo article span, .vendas-tabela td small, .venda-dados span, .venda-nota, .venda-validacao > p, .opcoes-ajuda, .perfil-painel-cabecalho p, .perfil-nota, .perfil-pedido-resumo p, .perfil-pagamento-resumo, .perfil-sem-pedidos) {

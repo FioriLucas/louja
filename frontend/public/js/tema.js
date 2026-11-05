@@ -33,8 +33,27 @@
         atualizarBotao(botao);
     }
 
+    function configurarCarrinhoFlutuante() {
+        const configuracao = window.loujaCarrinho;
+        if (!configuracao || !configuracao.visivel || document.querySelector('[data-carrinho-flutuante]')) {
+            return;
+        }
+
+        const quantidade = Number(configuracao.quantidade) || 0;
+        const botao = document.createElement('a');
+        botao.className = 'carrinho-flutuante';
+        botao.href = configuracao.url;
+        botao.setAttribute('data-carrinho-flutuante', '');
+        botao.setAttribute('aria-label', `Abrir carrinho, ${quantidade} ${quantidade === 1 ? 'item' : 'itens'}`);
+        botao.title = 'Abrir carrinho';
+        botao.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 1.9-1.4L21 8H6"></path><circle cx="10" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle></svg><span class="carrinho-flutuante-contagem"></span>';
+        botao.querySelector('.carrinho-flutuante-contagem').textContent = String(quantidade);
+        document.body.appendChild(botao);
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         configurarBotaoFlutuante();
+        configurarCarrinhoFlutuante();
     });
     document.addEventListener('click', function (evento) {
         const botao = evento.target instanceof Element

@@ -154,9 +154,6 @@ $statusPedidos = [
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
-        <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
-            <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
-        <?php endif; ?>
         <a href="perfil.php" aria-current="page">Meu perfil</a>
         <?php if (($_SESSION['usr_perfil'] ?? '') === 'admin'): ?>
             <a href="admin/index.php">Admin</a>
@@ -265,7 +262,7 @@ $statusPedidos = [
                         <ul>
                             <?php foreach ($pedido['itens'] as $item): ?>
                                 <li>
-                                    <span><?= htmlspecialchars($item['titulo'], ENT_QUOTES, 'UTF-8') ?> <small>× <?= $item['quantidade'] ?></small></span>
+                                    <span><?= htmlspecialchars($item['titulo'], ENT_QUOTES, 'UTF-8') ?></span>
                                     <span>R$ <?= number_format($item['preco'] * $item['quantidade'], 2, ',', '.') ?></span>
                                 </li>
                             <?php endforeach; ?>

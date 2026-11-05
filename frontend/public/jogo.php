@@ -52,9 +52,6 @@ if (!$produto) {
 
     <nav>
         <a href="jogos.php">Jogos</a>
-        <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
-            <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
-        <?php endif; ?>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
             <a href="logout.php">Sair</a>

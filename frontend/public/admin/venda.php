@@ -189,20 +189,18 @@ if ($pedido) {
             <div class="vendas-tabela-wrap">
                 <table class="vendas-tabela venda-itens-tabela">
                     <thead>
-                        <tr><th>Produto</th><th>Plataforma</th><th>Quantidade</th><th>Preço unitário</th><th>Subtotal</th></tr>
+                        <tr><th>Produto</th><th>Plataforma</th><th>Preço</th></tr>
                     </thead>
                     <tbody>
                         <?php foreach ($itens as $item): ?>
                             <tr>
                                 <td><?= htmlspecialchars($item['titulo']) ?></td>
                                 <td><?= htmlspecialchars($item['plataforma']) ?></td>
-                                <td><?= (int) $item['quantidade'] ?></td>
-                                <td>R$ <?= number_format((float) $item['preco_unitario'], 2, ',', '.') ?></td>
                                 <td>R$ <?= number_format((float) $item['preco_unitario'] * (int) $item['quantidade'], 2, ',', '.') ?></td>
                             </tr>
                         <?php endforeach; ?>
                         <?php if (!$itens): ?>
-                            <tr><td colspan="5" class="vendas-vazio">Este pedido não possui itens disponíveis.</td></tr>
+                            <tr><td colspan="3" class="vendas-vazio">Este pedido não possui itens disponíveis.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>

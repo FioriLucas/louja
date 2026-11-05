@@ -93,10 +93,6 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
             <input id="catalogo-busca" type="search" placeholder="Buscar jogos..." aria-label="Buscar jogos pelo título">
         </form>
         <a href="jogos.php">Jogos</a>
-        <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
-            <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
-        <?php endif; ?>
-
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
             <a href="perfil.php">Meu perfil</a>

@@ -10,6 +10,15 @@ if (!isset($_SESSION['usr_id'])) {
     exit;
 }
 
+$carrinhoDigital = [];
+foreach (array_keys($_SESSION['carrinho'] ?? []) as $id) {
+    $id = (int) $id;
+    if ($id > 0) {
+        $carrinhoDigital[$id] = 1;
+    }
+}
+$_SESSION['carrinho'] = $carrinhoDigital;
+
 require_once __DIR__ . '/../../backend/config/conexao.php';
 require_once __DIR__ . '/../../backend/config/pedidos.php';
 $conexao = new Conexao();
@@ -49,14 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $itensPedido = [];
             $totalPedido = 0;
 
-            foreach ($_SESSION['carrinho'] as $id => $quantidade) {
+            foreach ($_SESSION['carrinho'] as $id => $_) {
                 $stmt = $pdo->prepare('SELECT jogo_id, titulo, preco, quantidade_estoque, ativo FROM jogos WHERE jogo_id = ? FOR UPDATE');
                 $stmt->execute([(int) $id]);
                 $produto = $stmt->fetch();
-                $quantidade = (int) $quantidade;
+                $quantidade = 1;
 
-                if (!$produto || !$produto['ativo'] || $quantidade < 1 || $produto['quantidade_estoque'] < $quantidade) {
-                    throw new RuntimeException('Um ou mais jogos estão indisponíveis ou sem estoque suficiente. Revise seu carrinho.');
+                if (!$produto || !$produto['ativo'] || $produto['quantidade_estoque'] < 1) {
+                    throw new RuntimeException('Um ou mais jogos estão indisponíveis ou sem chaves digitais. Revise seu carrinho.');
                 }
 
                 $produto['quantidade'] = $quantidade;
@@ -106,14 +115,13 @@ $produtos = [];
 $total = 0;
 
 if (!$pedidoConcluido) {
-    foreach ($_SESSION['carrinho'] ?? [] as $id => $quantidade) {
+    foreach ($_SESSION['carrinho'] ?? [] as $id => $_) {
         $stmt = $pdo->prepare('SELECT jogo_id, titulo, preco FROM jogos WHERE jogo_id = ? AND ativo = 1');
         $stmt->execute([(int) $id]);
         $produto = $stmt->fetch();
 
         if ($produto) {
-            $produto['quantidade'] = (int) $quantidade;
-            $produto['subtotal'] = (float) $produto['preco'] * $produto['quantidade'];
+            $produto['subtotal'] = (float) $produto['preco'];
             $total += $produto['subtotal'];
             $produtos[] = $produto;
         }
@@ -134,9 +142,6 @@ if (!$pedidoConcluido) {
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
-        <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
-            <a href="carrinho.php">Carrinho</a>
-        <?php endif; ?>
         <a href="perfil.php">Meu perfil</a>
         <a href="logout.php">Sair</a>
     </nav>
@@ -167,7 +172,7 @@ if (!$pedidoConcluido) {
             <h2 id="titulo-resumo">Resumo do pedido</h2>
             <?php foreach ($produtos as $produto): ?>
                 <div class="checkout-linha">
-                    <span><?= htmlspecialchars($produto['titulo']) ?> (<?= $produto['quantidade'] ?>x)</span>
+                    <span><?= htmlspecialchars($produto['titulo']) ?></span>
                     <span>R$ <?= number_format($produto['subtotal'], 2, ',', '.') ?></span>
                 </div>
             <?php endforeach; ?>
@@ -207,10 +212,13 @@ if (!$pedidoConcluido) {
             </div>
 
             <div class="checkout-painel" data-payment-panel="pix" hidden>
-                <div class="checkout-campo">
-                    <label for="cpf-pix">CPF do pagador</label>
-                    <input id="cpf-pix" type="text" inputmode="numeric" maxlength="11" pattern="[0-9]{11}" placeholder="Somente números" data-required="true">
-                    <small>Informe 11 números.</small>
+                <div class="pix-demonstracao">
+                    <div class="pix-demonstracao-info">
+                        <span class="pix-demonstracao-etiqueta">PIX • DEMONSTRAÇÃO</span>
+                        <h3>QR Code ilustrativo</h3>
+                        <p>Este código é apenas visual. Não pode ser escaneado e não realiza pagamentos.</p>
+                        <strong>Valor: R$ <?= number_format($total, 2, ',', '.') ?></strong>
+                    </div>
                 </div>
             </div>
 

@@ -12,11 +12,7 @@ if ($id > 0) {
         $_SESSION['carrinho'] = [];
     }
 
-    if (isset($_SESSION['carrinho'][$id])) {
-        $_SESSION['carrinho'][$id]++;
-    } else {
-        $_SESSION['carrinho'][$id] = 1;
-    }
+    $_SESSION['carrinho'][$id] = 1;
 }
 
 header('Location: carrinho.php');

@@ -78,7 +78,7 @@ $stmt = $pdo->prepare("SELECT p.pedido_id, p.data_pedido, p.status, p.valor_tota
                        JOIN usuarios AS u ON u.usr_id = p.usr_id
                        LEFT JOIN (
                            SELECT ip.pedido_id,
-                                  GROUP_CONCAT(CONCAT(ip.quantidade, 'x ', j.titulo) ORDER BY j.titulo SEPARATOR ', ') AS resumo
+                                  GROUP_CONCAT(j.titulo ORDER BY j.titulo SEPARATOR ', ') AS resumo
                            FROM itens_pedido AS ip
                            JOIN jogos AS j ON j.jogo_id = ip.jogo_id
                            GROUP BY ip.pedido_id

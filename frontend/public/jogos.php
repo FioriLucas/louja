@@ -62,9 +62,6 @@ natcasesort($plataformas);
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php" aria-current="page">Jogos</a>
-        <?php if (($_SESSION['usr_perfil'] ?? '') !== 'admin'): ?>
-            <a href="carrinho.php">Carrinho (<?= array_sum($_SESSION['carrinho'] ?? []) ?>)</a>
-        <?php endif; ?>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
             <a href="perfil.php">Meu perfil</a>
