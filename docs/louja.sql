@@ -1359,4 +1359,4 @@ WHERE jogo_id = 93;
 -- Shadow of the Tomb Raider
 UPDATE jogos
 SET img_url = 'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/750920/library_600x900_2x.jpg'
-WHERE jogo_id = 94;g
+WHERE jogo_id = 94;
