@@ -12,7 +12,7 @@ if (isset($_SESSION['usr_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Louja</title>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/login.css?v=20261105-2">
     <?php require __DIR__ . '/tema-head.php'; ?>
 </head>
 <body class="login-page">

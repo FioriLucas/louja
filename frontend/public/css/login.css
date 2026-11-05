@@ -37,14 +37,17 @@ header {
 .login-box .logo {
     display: inline-flex;
     margin-bottom: 8px;
-    padding: 5px 8px;
-    background: #111;
+    padding: 0;
+    background: none;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 .login-box .logo img {
     display: block;
-    width: 125px;
+    width: 210px;
     height: auto;
+    background: transparent;
 }
 
 nav {
