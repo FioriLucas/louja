@@ -5,6 +5,12 @@ session_set_cookie_params([
 ]);
 session_start();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['limpar_carrinho'])) {
+    $_SESSION['carrinho'] = [];
+    header('Location: carrinho.php');
+    exit;
+}
+
 require_once __DIR__ . '/../../backend/config/conexao.php';
 $conexao = new Conexao();
 $pdo = $conexao->conectar();
@@ -63,6 +69,13 @@ foreach ($carrinho as $id => $_) {
             <h1>Meu carrinho</h1>
             <p>Seus jogos digitais, reunidos em um só lugar.</p>
         </div>
+        <?php if (!empty($produtos)): ?>
+            <form action="carrinho.php" method="post">
+                <button class="carrinho-botao-limpar" type="submit" name="limpar_carrinho" value="1">
+                    Limpar carrinho <span aria-hidden="true">❌</span> 
+                </button>
+            </form>
+        <?php endif; ?>
     </div>
 
     <?php if (empty($produtos)): ?>

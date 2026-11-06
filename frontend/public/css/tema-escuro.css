@@ -206,6 +206,19 @@ html[data-tema="escuro"] .carrinho-sobretitulo {
     color: #c99af1;
 }
 
+html[data-tema="escuro"] .carrinho-botao-limpar {
+    border-color: #633d48;
+    background: #2b1920;
+    color: #ffb6bd;
+}
+
+html[data-tema="escuro"] .carrinho-botao-limpar:hover,
+html[data-tema="escuro"] .carrinho-botao-limpar:focus-visible {
+    border-color: #a64e5b;
+    background: #402027;
+    color: #ffd9dc;
+}
+
 html[data-tema="escuro"] .carrinho-cabecalho p,
 html[data-tema="escuro"] .item-carrinho-preco,
 html[data-tema="escuro"] .carrinho-resumo-legenda,
