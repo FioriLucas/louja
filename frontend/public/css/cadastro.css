@@ -1,3 +1,8 @@
+.login-box > a.logo,
+.login-box > a.logo img {
+    background: transparent;
+}
+
 .form-cadastro {
     display: flex;
     flex-direction: column;

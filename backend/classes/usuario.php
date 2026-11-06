@@ -6,13 +6,15 @@ class Usuario {
     private string $email;
     private string $senha;
     private string $perfil;
+    private ?string $fotoPerfil;
 
-    public function __construct(?int $id = null, string $nome = '', string $email = '', string $senha = '', string $perfil = 'cliente') {
+    public function __construct(?int $id = null, string $nome = '', string $email = '', string $senha = '', string $perfil = 'cliente', ?string $fotoPerfil = null) {
         $this->id = $id;
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
         $this->perfil = $perfil;
+        $this->fotoPerfil = $fotoPerfil;
     }
 
     public function getId(): ?int {
@@ -53,5 +55,9 @@ class Usuario {
 
     public function setPerfil(string $perfil): void {
         $this->perfil = $perfil;
+    }
+
+    public function getFotoPerfil(): ?string {
+        return $this->fotoPerfil;
     }
 }

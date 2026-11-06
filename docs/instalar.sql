@@ -20,7 +20,8 @@ CREATE TABLE usuarios (
     email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
     forma_pagamento_preferida ENUM('cartao', 'pix', 'boleto') NOT NULL DEFAULT 'pix',
-    perfil ENUM('cliente', 'admin') DEFAULT 'cliente'
+    perfil ENUM('cliente', 'admin') DEFAULT 'cliente',
+    foto_perfil VARCHAR(255) DEFAULT NULL
 );
 
 INSERT INTO usuarios (nome, email, senha, perfil)

@@ -54,8 +54,7 @@ foreach ($carrinho as $id => $_) {
     <nav>
         <a href="jogos.php">Jogos</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
-            <a href="perfil.php">Meu perfil</a>
-            <a href="logout.php">Sair</a>
+            <?php require __DIR__ . '/perfil-avatar.php'; ?>
         <?php else: ?>
             <a href="login.php">Entrar</a>
         <?php endif; ?>

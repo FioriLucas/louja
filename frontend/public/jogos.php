@@ -64,11 +64,10 @@ natcasesort($plataformas);
         <a href="jogos.php" aria-current="page">Jogos</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
-            <a href="perfil.php">Meu perfil</a>
+            <?php require __DIR__ . '/perfil-avatar.php'; ?>
             <?php if ($_SESSION['usr_perfil'] === 'admin'): ?>
                 <a href="admin/index.php">Admin</a>
             <?php endif; ?>
-            <a href="logout.php">Sair</a>
         <?php else: ?>
             <a href="login.php">Entrar</a>
         <?php endif; ?>

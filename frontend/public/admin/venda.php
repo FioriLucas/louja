@@ -126,7 +126,6 @@ if ($pedido) {
         <a href="vendas.php" aria-current="page">Vendas</a>
         <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome'] ?? 'Admin') ?></span>
         <a href="../index.php">Voltar para a loja</a>
-        <a href="../logout.php">Sair</a>
     </nav>
 </header>
 

@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['usr_id'] = $usuario->getId();
         $_SESSION['usr_nome'] = $usuario->getNome();
         $_SESSION['usr_perfil'] = $usuario->getPerfil();
+        $_SESSION['usr_foto_perfil'] = $usuario->getFotoPerfil();
 
         if ($_SESSION['usr_perfil'] === 'admin') {
             header('Location: ../../frontend/public/admin/index.php');

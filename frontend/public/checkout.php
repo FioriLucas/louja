@@ -142,8 +142,7 @@ if (!$pedidoConcluido) {
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
-        <a href="perfil.php">Meu perfil</a>
-        <a href="logout.php">Sair</a>
+        <?php require __DIR__ . '/perfil-avatar.php'; ?>
     </nav>
 </header>
 

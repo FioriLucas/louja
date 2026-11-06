@@ -13,7 +13,7 @@ class UsuarioDAO {
 
     public function autenticar(string $email, string $senha): ?Usuario {
         $stmt = $this->pdo->prepare(
-            'SELECT usr_id, nome, email, senha, perfil FROM usuarios WHERE email = :email'
+            'SELECT usr_id, nome, email, senha, perfil, foto_perfil FROM usuarios WHERE email = :email'
         );
         $stmt->execute([':email' => $email]);
         $dados = $stmt->fetch();
@@ -27,7 +27,8 @@ class UsuarioDAO {
             $dados['nome'],
             $dados['email'],
             $dados['senha'],
-            $dados['perfil']
+            $dados['perfil'],
+            $dados['foto_perfil']
         );
     }
 }

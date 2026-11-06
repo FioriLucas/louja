@@ -206,6 +206,50 @@ html[data-tema="escuro"] .carrinho-sobretitulo {
     color: #c99af1;
 }
 
+html[data-tema="escuro"] .perfil-foto-avatar {
+    border-color: #493958;
+    background: #30203d;
+}
+
+html[data-tema="escuro"] .perfil-sair {
+    border-color: #633d48;
+    background: #2b1920;
+    color: #ffb6bd;
+}
+
+html[data-tema="escuro"] .perfil-sair:hover,
+html[data-tema="escuro"] .perfil-sair:focus-visible {
+    border-color: #a64e5b;
+    background: #402027;
+    color: #ffd9dc;
+}
+
+html[data-tema="escuro"] .perfil-foto-padrao .perfil-foto-fundo {
+    fill: #30203d;
+}
+
+html[data-tema="escuro"] .perfil-foto-form input[type="file"] {
+    border-color: #493958;
+    background: #21192a;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] .perfil-foto-form input[type="file"]::file-selector-button {
+    background: #392b45;
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] .perfil-foto-form input[type="file"]::file-selector-button:hover {
+    background: #493958;
+    color: #fff;
+}
+
+html[data-tema="escuro"] nav .perfil-avatar-link {
+    border-color: #b36aff;
+    background: #30203d;
+    color: #e4caff;
+}
+
 html[data-tema="escuro"] .carrinho-botao-limpar {
     border-color: #633d48;
     background: #2b1920;

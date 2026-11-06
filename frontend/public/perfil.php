@@ -27,7 +27,7 @@ if (empty($_SESSION['csrf_perfil'])) {
     $_SESSION['csrf_perfil'] = bin2hex(random_bytes(32));
 }
 
-$stmtUsuario = $pdo->prepare('SELECT usr_id, nome, email, senha, forma_pagamento_preferida FROM usuarios WHERE usr_id = ?');
+$stmtUsuario = $pdo->prepare('SELECT usr_id, nome, email, senha, forma_pagamento_preferida, foto_perfil FROM usuarios WHERE usr_id = ?');
 $stmtUsuario->execute([$usuarioId]);
 $usuario = $stmtUsuario->fetch();
 
@@ -45,6 +45,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!hash_equals($_SESSION['csrf_perfil'], $token)) {
         $erro = 'Sua sessão expirou. Atualize a página e tente novamente.';
+    } elseif ($acao === 'atualizar_foto') {
+        $arquivo = $_FILES['foto_perfil'] ?? null;
+
+        if (!is_array($arquivo) || ($arquivo['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+            $erro = 'Selecione uma imagem para enviar.';
+        } elseif (($arquivo['size'] ?? 0) > 3 * 1024 * 1024) {
+            $erro = 'A imagem deve ter no máximo 3 MB.';
+        } elseif (!is_uploaded_file($arquivo['tmp_name'] ?? '')) {
+            $erro = 'Não foi possível validar o arquivo enviado.';
+        } else {
+            $tiposImagem = [
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'image/webp' => 'webp'
+            ];
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $tipoImagem = $finfo->file($arquivo['tmp_name']);
+            $dadosImagem = getimagesize($arquivo['tmp_name']);
+
+            if (!isset($tiposImagem[$tipoImagem]) || $dadosImagem === false) {
+                $erro = 'Escolha uma imagem válida nos formatos JPG, PNG ou WebP.';
+            } else {
+                $nomeArquivo = bin2hex(random_bytes(24)) . '.' . $tiposImagem[$tipoImagem];
+                $diretorioFotos = __DIR__ . '/uploads/perfil';
+                $caminhoDestino = $diretorioFotos . DIRECTORY_SEPARATOR . $nomeArquivo;
+
+                if (!is_dir($diretorioFotos) && !mkdir($diretorioFotos, 0755, true)) {
+                    $erro = 'Não foi possível preparar o armazenamento da imagem.';
+                } elseif (!move_uploaded_file($arquivo['tmp_name'], $caminhoDestino)) {
+                    $erro = 'Não foi possível salvar a imagem enviada.';
+                } else {
+                    $fotoPerfilAnterior = $usuario['foto_perfil'];
+                    $caminhoRelativo = 'uploads/perfil/' . $nomeArquivo;
+                    $stmtFoto = $pdo->prepare('UPDATE usuarios SET foto_perfil = ? WHERE usr_id = ?');
+                    $stmtFoto->execute([$caminhoRelativo, $usuarioId]);
+                    $_SESSION['usr_foto_perfil'] = $caminhoRelativo;
+                    $sucesso = 'Foto de perfil atualizada.';
+
+                    if (is_string($fotoPerfilAnterior) && preg_match('~^uploads/perfil/[a-f0-9]{48}\.(?:jpg|png|webp)$~', $fotoPerfilAnterior)) {
+                        $caminhoAnterior = __DIR__ . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $fotoPerfilAnterior);
+                        if (is_file($caminhoAnterior)) {
+                            unlink($caminhoAnterior);
+                        }
+                    }
+                }
+            }
+        }
     } elseif ($acao === 'atualizar_dados') {
         $nome = trim($_POST['nome'] ?? '');
         $email = trim($_POST['email'] ?? '');
@@ -146,7 +193,7 @@ $statusPedidos = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu perfil | Louja</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/perfil.css">
+    <link rel="stylesheet" href="css/perfil.css?v=20261106-1">
     <?php require __DIR__ . '/tema-head.php'; ?>
 </head>
 <body class="perfil-page">
@@ -154,11 +201,10 @@ $statusPedidos = [
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
         <a href="jogos.php">Jogos</a>
-        <a href="perfil.php" aria-current="page">Meu perfil</a>
+        <?php require __DIR__ . '/perfil-avatar.php'; ?>
         <?php if (($_SESSION['usr_perfil'] ?? '') === 'admin'): ?>
             <a href="admin/index.php">Admin</a>
         <?php endif; ?>
-        <a href="logout.php">Sair</a>
     </nav>
 </header>
 
@@ -171,6 +217,7 @@ $statusPedidos = [
         </div>
         <div class="perfil-cabecalho-acoes">
             <a class="perfil-voltar" href="jogos.php">Voltar à loja</a>
+            <a class="perfil-sair" href="logout.php">Sair da conta</a>
         </div>
     </div>
 
@@ -187,6 +234,27 @@ $statusPedidos = [
                     <h2 id="titulo-dados">Dados da conta</h2>
                     <p>Atualize seu nome, e-mail e forma de pagamento preferida.</p>
                 </div>
+            </div>
+            <div class="perfil-foto">
+                <div class="perfil-foto-avatar">
+                    <?php if (!empty($usuario['foto_perfil'])): ?>
+                        <img src="<?= htmlspecialchars($usuario['foto_perfil'], ENT_QUOTES, 'UTF-8') ?>" alt="Foto de perfil atual">
+                    <?php else: ?>
+                        <svg class="perfil-foto-padrao" viewBox="0 0 48 48" role="img" aria-label="Avatar padrão">
+                            <circle class="perfil-foto-fundo" cx="24" cy="24" r="24"></circle>
+                            <circle class="perfil-foto-cabeca" cx="24" cy="17" r="8"></circle>
+                            <path class="perfil-foto-corpo" d="M8 43c1.8-9 7.7-13.5 16-13.5S38.2 34 40 43"></path>
+                        </svg>
+                    <?php endif; ?>
+                </div>
+                <form method="post" class="perfil-foto-form" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_perfil'], ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="hidden" name="acao" value="atualizar_foto">
+                    <label for="foto-perfil">Foto de perfil</label>
+                    <input id="foto-perfil" name="foto_perfil" type="file" accept="image/jpeg,image/png,image/webp" required>
+                    <small>JPG, PNG ou WebP; até 3 MB.</small>
+                    <button class="botao" type="submit">Salvar foto</button>
+                </form>
             </div>
             <form method="post" class="perfil-form">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_perfil'], ENT_QUOTES, 'UTF-8') ?>">

@@ -54,7 +54,7 @@ if (!$produto) {
         <a href="jogos.php">Jogos</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
-            <a href="logout.php">Sair</a>
+            <?php require __DIR__ . '/perfil-avatar.php'; ?>
         <?php else: ?>
             <a href="login.php">Entrar</a>
         <?php endif; ?>

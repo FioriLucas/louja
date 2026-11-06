@@ -64,7 +64,6 @@ natcasesort($plataformasFiltro);
         <a href="vendas.php">Vendas</a>
         <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
         <a href="../index.php">Voltar para a loja</a>
-        <a href="../logout.php">Sair</a>
     </nav>
 </header>
 
