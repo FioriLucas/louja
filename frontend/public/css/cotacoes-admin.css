@@ -242,6 +242,65 @@
     background: radial-gradient(circle at 50% 40%, #fff 0%, #efe8f5 100%);
 }
 
+.cotacoes-admin-chuva {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.cotacoes-admin-chuva-emoji {
+    position: absolute;
+    top: 0;
+    font-size: clamp(24px, 4vw, 38px);
+    line-height: 1;
+    animation: cotacoes-admin-chuva-caindo linear forwards;
+    pointer-events: none;
+}
+
+.cotacoes-admin-chuva-emoji-pousado {
+    top: auto;
+    bottom: var(--chuva-altura-pilha);
+    animation: none;
+    transform: none;
+}
+
+.cotacoes-admin-chuva-botao {
+    position: absolute;
+    z-index: 2;
+    right: 14px;
+    bottom: 14px;
+    padding: 10px 16px;
+    border: 1px solid rgba(111, 38, 199, .3);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .94);
+    box-shadow: 0 3px 12px rgba(34, 18, 48, .2);
+    color: #6f26c7;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.cotacoes-admin-chuva-botao:hover {
+    background: #f5edff;
+}
+
+.cotacoes-admin-chuva-botao:focus-visible {
+    outline: 3px solid #7f32e6;
+    outline-offset: 3px;
+}
+
+@keyframes cotacoes-admin-chuva-caindo {
+    from {
+        transform: translate3d(0, -50px, 0);
+    }
+
+    to {
+        transform: translate3d(var(--chuva-desvio), var(--chuva-fim), 0);
+    }
+}
+
 .cotacoes-admin-dialog .cotacoes-admin-dolar-foto {
     display: block;
     width: 100%;

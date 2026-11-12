@@ -102,9 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../css/cotacoes-admin.css">
     <?php require __DIR__ . '/../tema-head.php'; ?>
 </head>
-<body>
-<div class="admin">
-    <a href="../index.php" class="logo admin-logo"><img src="../../../docs/logolouja.png" alt="Louja"></a>
+<body class="admin-formulario-page">
+<div class="admin admin-formulario">
+    <a href="../index.php" class="logo"><img src="../../../docs/logolouja.png" alt="Louja"></a>
     <div class="admin-form-layout">
         <div class="admin-form-conteudo">
             <h1>Adicionar produto</h1>

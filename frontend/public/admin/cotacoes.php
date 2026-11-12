@@ -45,10 +45,14 @@
     <div class="cotacoes-admin-cena cotacoes-admin-cena-dolar">
         <div class="cotacoes-admin-dolar-arena">
             <img class="cotacoes-admin-dolar-foto" src="../images/easter-egg-dollar.jpeg" alt="Ítalo Dombrowski Machado">
+            <div class="cotacoes-admin-chuva" aria-hidden="true"></div>
+            <button class="cotacoes-admin-chuva-botao" id="cotacoes-admin-chuva-botao" type="button">
+                😍
+            </button>
         </div>
         <section class="cotacoes-admin-dolar-descricao" aria-label="Descrição">
             <h2>Ítalo Dombrowski Machado</h2>
-            <p><strong>Idade:</strong> Desconhecida <span aria-hidden="true">·</span> <strong>Sexo:</strong> Épico</p>
+            <p><strong>Idade:</strong> Exponencial <span aria-hidden="true">·</span> <strong>Sexo:</strong> Épico</p>
             <p><strong>Estado civil:</strong> Farmando a Aura</p>
         </section>
     </div>
@@ -61,6 +65,10 @@
     const abrirDialogo = document.querySelector('#cotacoes-admin-abrir-yuan');
     const dialogDolar = document.querySelector('#cotacoes-admin-dialog-dolar');
     const abrirDialogoDolar = document.querySelector('#cotacoes-admin-abrir-dolar');
+    const botaoChuva = document.querySelector('#cotacoes-admin-chuva-botao');
+    const arenaDolar = document.querySelector('.cotacoes-admin-dolar-arena');
+    const camadaChuva = document.querySelector('.cotacoes-admin-chuva');
+    let alturasChuva = [];
     const cena = document.querySelector('.cotacoes-admin-cena');
     const tigre = document.querySelector('.cotacoes-admin-tigre');
     let cliques = 0;
@@ -187,6 +195,52 @@
     });
     dialogDolar.addEventListener('close', () => {
         cliquesDolar = 0;
+    });
+
+    botaoChuva.addEventListener('click', () => {
+        const larguraArena = arenaDolar.clientWidth;
+        const espacoColuna = 34;
+        const totalColunas = Math.max(1, Math.floor(larguraArena / espacoColuna));
+        alturasChuva.length = totalColunas;
+        for (let indice = 0; indice < totalColunas; indice += 1) {
+            alturasChuva[indice] = alturasChuva[indice] || 0;
+        }
+
+        for (let indice = 0; indice < 16; indice += 1) {
+            const menorAltura = Math.min(...alturasChuva);
+            const colunasDisponiveis = alturasChuva
+                .map((altura, coluna) => ({ altura, coluna }))
+                .filter(({ altura }) => altura === menorAltura);
+            const { coluna } = colunasDisponiveis[Math.floor(Math.random() * colunasDisponiveis.length)];
+            const alturaPilha = alturasChuva[coluna];
+            const tamanhoEmoji = 34;
+            const posicaoX = Math.min(
+                larguraArena - tamanhoEmoji,
+                coluna * espacoColuna + Math.random() * Math.max(0, espacoColuna - tamanhoEmoji)
+            );
+            const desvioX = Math.random() * 70 - 35;
+            alturasChuva[coluna] += 27;
+
+            const emoji = document.createElement('span');
+            emoji.className = 'cotacoes-admin-chuva-emoji';
+            emoji.textContent = '😍';
+            emoji.style.left = `${posicaoX}px`;
+            emoji.style.setProperty('--chuva-desvio', `${desvioX}px`);
+            emoji.style.setProperty('--chuva-fim', `${Math.max(0, arenaDolar.clientHeight - tamanhoEmoji - alturaPilha)}px`);
+            emoji.style.setProperty('--chuva-altura-pilha', `${alturaPilha}px`);
+            emoji.style.animationDuration = `${1.4 + Math.random() * 0.8}s`;
+            emoji.style.animationDelay = `${Math.random() * 0.3}s`;
+            emoji.addEventListener('animationend', () => {
+                emoji.style.left = `${posicaoX + desvioX}px`;
+                emoji.classList.add('cotacoes-admin-chuva-emoji-pousado');
+            }, { once: true });
+            camadaChuva.append(emoji);
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                emoji.style.left = `${posicaoX}px`;
+                emoji.classList.add('cotacoes-admin-chuva-emoji-pousado');
+            }
+        }
     });
 })();
 </script>
