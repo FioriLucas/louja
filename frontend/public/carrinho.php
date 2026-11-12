@@ -5,6 +5,9 @@ session_set_cookie_params([
 ]);
 session_start();
 
+$mensagemCarrinho = $_SESSION['mensagem_carrinho'] ?? '';
+unset($_SESSION['mensagem_carrinho']);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['limpar_carrinho'])) {
     $_SESSION['carrinho'] = [];
     header('Location: carrinho.php');
@@ -62,6 +65,10 @@ foreach ($carrinho as $id => $_) {
 </header>
 
 <main class="pagina pagina-carrinho-conteudo">
+    <?php if ($mensagemCarrinho !== ''): ?>
+        <p class="erro" role="alert"><?= htmlspecialchars($mensagemCarrinho, ENT_QUOTES, 'UTF-8') ?></p>
+    <?php endif; ?>
+
     <div class="carrinho-cabecalho">
         <div>
             <span class="carrinho-sobretitulo">SUA SELEÇÃO</span>
@@ -119,10 +126,14 @@ foreach ($carrinho as $id => $_) {
             </div>
             <div class="carrinho-resumo-acoes">
                 <a class="carrinho-continuar" href="jogos.php">Continuar comprando</a>
-                <a class="botao carrinho-botao-principal" href="checkout.php">
-                    Finalizar compra
-                    <span aria-hidden="true">&rsaquo;</span>
-                </a>
+                <?php if (($_SESSION['usr_perfil'] ?? '') === 'admin'): ?>
+                    <p role="status">Administradores não podem finalizar compras. Entre com uma conta de usuário para adquirir jogos.</p>
+                <?php else: ?>
+                    <a class="botao carrinho-botao-principal" href="checkout.php">
+                        Finalizar compra
+                        <span aria-hidden="true">&rsaquo;</span>
+                    </a>
+                <?php endif; ?>
             </div>
         </section>
     <?php endif; ?>

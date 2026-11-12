@@ -10,6 +10,12 @@ if (!isset($_SESSION['usr_id'])) {
     exit;
 }
 
+if (($_SESSION['usr_perfil'] ?? '') === 'admin') {
+    $_SESSION['mensagem_carrinho'] = 'Administradores não podem comprar jogos. Entre com uma conta de usuário para realizar uma compra.';
+    header('Location: carrinho.php');
+    exit;
+}
+
 $carrinhoDigital = [];
 foreach (array_keys($_SESSION['carrinho'] ?? []) as $id) {
     $id = (int) $id;
