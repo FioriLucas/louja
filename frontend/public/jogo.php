@@ -51,7 +51,7 @@ if (!$produto) {
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
 
     <nav>
-        <a href="jogos.php">Jogos</a>
+        <a href="<?= ($_SESSION['usr_perfil'] ?? '') === 'admin' ? 'admin/index.php' : 'jogos.php' ?>">Jogos</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Olá, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
             <?php require __DIR__ . '/perfil-avatar.php'; ?>

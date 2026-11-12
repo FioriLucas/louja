@@ -200,7 +200,7 @@ $statusPedidos = [
 <header>
     <a href="index.php" class="logo"><img src="../../docs/logolouja.png" alt="Louja"></a>
     <nav>
-        <a href="jogos.php">Jogos</a>
+        <a href="<?= ($_SESSION['usr_perfil'] ?? '') === 'admin' ? 'admin/index.php' : 'jogos.php' ?>">Jogos</a>
         <?php require __DIR__ . '/perfil-avatar.php'; ?>
         <?php if (($_SESSION['usr_perfil'] ?? '') === 'admin'): ?>
             <a href="admin/index.php">Admin</a>

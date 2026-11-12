@@ -97,7 +97,7 @@ $secoesVitrine = ['Ofertas' => array_slice($ofertasVitrine, 0, 8)];
             </button>
             <input id="catalogo-busca" type="search" placeholder="Buscar jogos..." aria-label="Buscar jogos pelo título">
         </form>
-        <a href="jogos.php">Jogos</a>
+        <a href="<?= ($_SESSION['usr_perfil'] ?? '') === 'admin' ? 'admin/index.php' : 'jogos.php' ?>">Jogos</a>
         <?php if (isset($_SESSION['usr_id'])): ?>
             <span>Ol&aacute;, <?= htmlspecialchars($_SESSION['usr_nome']) ?></span>
             <?php require __DIR__ . '/perfil-avatar.php'; ?>
