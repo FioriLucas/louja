@@ -147,14 +147,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Editar - Louja</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/cotacoes-admin.css">
     <?php require __DIR__ . '/../tema-head.php'; ?>
 </head>
 <body>
 <div class="admin">
     <a href="../index.php" class="logo admin-logo"><img src="../../../docs/logolouja.png" alt="Louja"></a>
-    <h1>Editar produto</h1>
+    <div class="admin-form-layout">
+        <div class="admin-form-conteudo">
+            <h1>Editar produto</h1>
 
-    <form method="POST" class="form-admin">
+            <form method="POST" class="form-admin">
         <?php if ($erro): ?>
             <p role="alert"><?= htmlspecialchars($erro) ?></p>
         <?php endif; ?>
@@ -235,10 +238,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </section>
 
-        <button class="botao" type="submit">Salvar alterações</button>
-    </form>
+                <button class="botao" type="submit">Salvar alterações</button>
+            </form>
 
-    <a href="index.php">Voltar</a>
+            <a href="index.php">Voltar</a>
+        </div>
+        <?php require __DIR__ . '/cotacoes.php'; ?>
+    </div>
 </div>
 </body>
 </html>

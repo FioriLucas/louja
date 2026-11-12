@@ -1,0 +1,405 @@
+.admin-form-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    align-items: start;
+    gap: 28px;
+}
+
+.admin-form-conteudo {
+    min-width: 0;
+}
+
+.admin-form-conteudo h1 {
+    margin-top: 20px;
+}
+
+.cotacoes-admin {
+    position: sticky;
+    top: 24px;
+    display: grid;
+    gap: 16px;
+    margin-top: 20px;
+    padding: 24px;
+    border: 1px solid #e3d8ed;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(34, 18, 48, .1);
+}
+
+.cotacoes-admin h2 {
+    font-size: 21px;
+}
+
+.cotacoes-admin-status {
+    min-height: 1em;
+    color: #777;
+    font-size: 12px;
+}
+
+.cotacoes-admin-item {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid #eee6f4;
+    border-radius: 10px;
+    background: #faf7fc;
+    color: #17121c;
+    text-align: left;
+}
+
+.cotacoes-admin-yuan,
+.cotacoes-admin-dolar {
+    cursor: pointer;
+    font: inherit;
+}
+
+.cotacoes-admin-yuan:hover,
+.cotacoes-admin-dolar:hover {
+    border-color: #9b4dff;
+    background: #f5edff;
+}
+
+.cotacoes-admin-yuan:focus-visible,
+.cotacoes-admin-dolar:focus-visible,
+.cotacoes-admin-fechar:focus-visible {
+    outline: 3px solid #7f32e6;
+    outline-offset: 3px;
+}
+
+.cotacoes-admin-simbolo {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    place-items: center;
+    border-radius: 50%;
+    background: #eee2fa;
+    color: #6f26c7;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.cotacoes-admin-detalhes {
+    display: grid;
+    min-width: 0;
+    gap: 3px;
+}
+
+.cotacoes-admin-nome {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.cotacoes-admin-codigo,
+.cotacoes-admin-variacao {
+    color: #777;
+    font-size: 12px;
+}
+
+.cotacoes-admin-detalhes strong {
+    margin-top: 3px;
+    font-size: 20px;
+}
+
+.cotacoes-admin-cena {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.cotacoes-admin-fortune {
+    display: block;
+    width: 100%;
+    max-height: calc(100vh - 32px);
+    object-fit: contain;
+}
+
+.cotacoes-admin-dialog[open] .cotacoes-admin-tigre {
+    will-change: transform;
+}
+
+.cotacoes-admin-positiva {
+    color: #218548;
+}
+
+.cotacoes-admin-variacao.cotacoes-admin-negativa {
+    color: #b42d36;
+}
+
+.cotacoes-admin-dialog {
+    position: fixed;
+    width: min(420px, calc(100vw - 32px));
+    max-width: none;
+    max-height: calc(100vh - 32px);
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 14px;
+    background: #17121c;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, .45);
+}
+
+.cotacoes-admin-dialog[open] {
+    margin: auto;
+    animation: cotacoes-admin-entrada .48s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.cotacoes-admin-dialog::backdrop {
+    background: rgba(13, 8, 18, .78);
+    backdrop-filter: blur(4px);
+}
+
+.cotacoes-admin-dialog[open]::backdrop {
+    animation: cotacoes-admin-fundo .3s ease-out both;
+}
+
+@keyframes cotacoes-admin-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(28px) scale(.86) rotate(-2deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0);
+    }
+}
+
+@keyframes cotacoes-admin-fundo {
+    from {
+        background: rgba(13, 8, 18, 0);
+        backdrop-filter: blur(0);
+    }
+
+    to {
+        background: rgba(13, 8, 18, .78);
+        backdrop-filter: blur(4px);
+    }
+}
+
+.cotacoes-admin-dialog form {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.cotacoes-admin-fechar {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .7);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .65);
+    color: #fff;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.cotacoes-admin-dialog .cotacoes-admin-fortune {
+    display: block;
+    width: 100%;
+    max-height: calc(100vh - 32px);
+    object-fit: contain;
+}
+
+.cotacoes-admin-dialog .cotacoes-admin-tigre {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: clamp(88px, 29%, 128px);
+    height: auto;
+    max-height: none;
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 8px 8px rgba(0, 0, 0, .22));
+    will-change: transform;
+}
+
+.cotacoes-admin-cena-dolar {
+    display: grid;
+    width: min(760px, calc(100vw - 32px));
+    height: min(720px, calc(100vh - 32px));
+    max-height: calc(100vh - 32px);
+    grid-template-rows: minmax(0, 1fr) auto;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #f8f6fa;
+}
+
+.cotacoes-admin-dialog-dolar {
+    width: min(760px, calc(100vw - 32px));
+    background: #f5f0f8;
+}
+
+.cotacoes-admin-dolar-arena {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 40%, #fff 0%, #efe8f5 100%);
+}
+
+.cotacoes-admin-dialog .cotacoes-admin-dolar-foto {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cotacoes-admin-dolar-descricao {
+    display: grid;
+    gap: 7px;
+    padding: 18px 24px 22px;
+    border-top: 1px solid #e8dfef;
+    background: #fff;
+    color: #281d32;
+}
+
+.cotacoes-admin-dolar-descricao h2 {
+    margin: 0 0 2px;
+    color: #6f26c7;
+    font-size: clamp(18px, 2.5vw, 24px);
+}
+
+.cotacoes-admin-dolar-descricao p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+}
+
+.cotacoes-admin-dolar-descricao strong {
+    color: #4d3a5b;
+}
+
+html[data-tema="escuro"] .cotacoes-admin-dolar-descricao {
+    border-color: #44354f;
+    background: #191320;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] .cotacoes-admin-dolar-descricao strong {
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] .cotacoes-admin-dolar {
+    border-color: #44354f;
+    background: #21192a;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] .cotacoes-admin {
+    border-color: #44354f;
+    background: #191320;
+}
+
+html[data-tema="escuro"] .cotacoes-admin-item {
+    border-color: #44354f;
+    background: #21192a;
+    color: #f2edf8;
+}
+
+html[data-tema="escuro"] .cotacoes-admin-yuan:hover,
+html[data-tema="escuro"] .cotacoes-admin-dolar:hover {
+    border-color: #9b4dff;
+    background: #30203d;
+}
+
+html[data-tema="escuro"] .cotacoes-admin-simbolo {
+    background: #30203d;
+    color: #e4caff;
+}
+
+html[data-tema="escuro"] :is(.cotacoes-admin-status, .cotacoes-admin-codigo, .cotacoes-admin-variacao) {
+    color: #c7bbd1;
+}
+
+.admin.admin-jogos {
+    width: min(1720px, 96%);
+    margin: 125px auto 40px;
+}
+
+.admin-jogos-layout {
+    display: grid;
+    grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+    align-items: start;
+    gap: 28px;
+}
+
+.admin-jogos-layout > .cotacoes-admin {
+    top: 100px;
+    margin-top: 0;
+}
+
+.admin-jogos-conteudo {
+    min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cotacoes-admin-dialog[open],
+    .cotacoes-admin-dialog[open]::backdrop {
+        animation: none;
+    }
+
+    .cotacoes-admin-dialog .cotacoes-admin-tigre {
+        will-change: auto;
+    }
+
+}
+
+@media (max-width: 800px) {
+    .admin-form-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cotacoes-admin {
+        position: static;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 0;
+    }
+
+    .cotacoes-admin h2,
+    .cotacoes-admin-status {
+        grid-column: 1 / -1;
+    }
+
+    .admin.admin-jogos {
+        width: min(1450px, 92%);
+    }
+
+    .admin-jogos-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-jogos-layout > .cotacoes-admin {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 0;
+    }
+
+    .admin-jogos-layout > .cotacoes-admin h2,
+    .admin-jogos-layout > .cotacoes-admin .cotacoes-admin-status {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 500px) {
+    .cotacoes-admin {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cotacoes-admin h2,
+    .cotacoes-admin-status {
+        grid-column: auto;
+    }
+
+    .admin-jogos-layout > .cotacoes-admin {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-jogos-layout > .cotacoes-admin h2,
+    .admin-jogos-layout > .cotacoes-admin .cotacoes-admin-status {
+        grid-column: auto;
+    }
+}
