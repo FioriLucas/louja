@@ -11,6 +11,4 @@
 
 ## Banco de dados
 
-Depois de importar `docs/louja.sql`, execute `docs/multiplas_plataformas_generos.sql` para criar e preencher as relações de gêneros e plataformas. Esse segundo script pode ser executado novamente sem duplicar relações.
-
-Se o banco de dados já existia antes do recurso de foto de perfil, execute `docs/migracao_foto_perfil.sql` uma vez para adicionar a coluna usada para armazenar o caminho da imagem.
+Importe apenas `docs/louja.sql`. O script cria o banco, as tabelas, os dados iniciais, as relações de gêneros e plataformas e aplica os ajustes finais do catálogo.
